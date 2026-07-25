@@ -25,7 +25,7 @@ export function GuardianReceivedEmail({
         <Text style={emailStyles.p}>
           Our team will verify your payment and send {playerName}&apos;s member code
           once the place is confirmed — usually within 2 working days. You can
-          check progress anytime at moyoursacademy.ng/status using this
+          check progress anytime at moyoursacademy.com/status using this
           reference or your phone number.
         </Text>
         <Text style={emailStyles.p}>Welcome to the Moyours family.</Text>
@@ -49,8 +49,8 @@ Thank you — we've received ${playerName}'s registration and your proof of paym
 
 Your application reference: ${reference}
 
-Our team will verify your payment and send ${playerName}'s member code once the place is confirmed — usually within 2 working days. Check progress anytime at moyoursacademy.ng/status.
+Our team will verify your payment and send ${playerName}'s member code once the place is confirmed — usually within 2 working days. Check progress anytime at moyoursacademy.com/status.
 
 Welcome to the Moyours family.
-Moyours Sports Academy · Suite A05, Tsukunda House, CBD, Abuja`;
+Moyours Football Club Academy · Suite A05, Tsukunda House, CBD, Abuja`;
 }

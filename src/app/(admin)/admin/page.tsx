@@ -48,12 +48,19 @@ export default async function AdminDashboard() {
           <Link
             key={stat.label}
             href={stat.href}
-            className="rounded-brand border border-line bg-white/60 p-5 transition-transform duration-150 hover:-translate-y-0.5 hover:shadow-md motion-reduce:hover:translate-y-0"
+            className={`rule-gold rounded-b-brand p-5 transition-[transform,box-shadow] duration-150 hover:-translate-y-0.5 hover:shadow-lg motion-reduce:hover:translate-y-0 ${
+              stat.accent
+                ? "goal-net bg-kit text-chalk"
+                : "surface-pitch text-chalk"
+            }`}
           >
-            <p className={`font-mono text-step-3 font-bold ${stat.accent ? "text-gold bg-pitch-deep -m-5 mb-0 p-5 rounded-t-brand" : "text-pitch"}`}>
-              {stat.value}
-            </p>
-            <p className={`text-step--1 font-semibold text-kit-soft ${stat.accent ? "pt-3" : "mt-1"}`}>{stat.label}</p>
+            <p className="tabular font-mono text-step-3 font-bold text-gold">{stat.value}</p>
+            <p className="mt-1 text-step--1 font-semibold text-chalk-dim">{stat.label}</p>
+            {stat.accent && stat.value > 0 && (
+              <p className="mt-2 font-mono text-[0.6875rem] uppercase tracking-widest text-gold">
+                Needs your whistle →
+              </p>
+            )}
           </Link>
         ))}
       </div>

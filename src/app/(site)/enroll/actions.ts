@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { generateReference } from "@/lib/codes";
-import { cloudinaryConfigured, signedProofUrl, verifyProofAsset } from "@/lib/cloudinary";
+import { cloudinaryConfigured, verifyProofAsset } from "@/lib/cloudinary";
 import { ageAt, ageGroupForDob } from "@/lib/constants";
 import { rateLimit, LIMITS } from "@/lib/rate-limit";
 import { getFees, getSetting } from "@/lib/settings";
@@ -171,9 +171,9 @@ export async function submitEnrollment(
   // never lose a registration. Failures land in NotificationLog.
   const age = ageAt(dateOfBirth);
   const genderLabel = form.gender === "MALE" ? "Boy" : "Girl";
-  const proofLink = isDevMockProof
-    ? `${site.url}/admin/registrations/${registrationId}`
-    : signedProofUrl(proof.proofPublicId, verifiedProof.format);
+  // Served from our own domain (admin session required) — no expiring
+  // third-party links in the inbox.
+  const proofLink = `${site.url}/admin/registrations/${registrationId}/proof`;
 
   await Promise.all([
     sendEmail({

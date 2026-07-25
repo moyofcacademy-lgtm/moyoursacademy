@@ -6,87 +6,115 @@ import { site } from "@/config/site";
 export const metadata: Metadata = {
   title: "About us",
   description:
-    "The story and philosophy of Moyours Sports Academy — structured youth football in Abuja built on skill, teamwork, and character.",
+    "Raising Champions — the story, mission, and impact of Moyours Football Club Academy, a FIFA- and NFF-registered youth academy in Abuja.",
 };
 
 export default function AboutPage() {
   return (
     <>
-      <section className="bg-pitch text-chalk">
-        <div className="mx-auto max-w-4xl px-[var(--gutter)] py-16">
+      {/* Mission / vision hero */}
+      <section className="relative isolate overflow-hidden bg-pitch text-chalk">
+        <div aria-hidden className="pitch-lines absolute inset-0 -z-10" />
+        <div aria-hidden className="glow-gold absolute inset-0 -z-10" />
+        <div className="mx-auto max-w-4xl px-[var(--gutter)] py-16 sm:py-20">
           <MoyoursCrest size={64} />
-          <h1 className="mt-6 font-display text-step-3">
-            More than an academy — a family.
-          </h1>
-          <p className="mt-4 max-w-2xl text-step-1 text-chalk-dim">
-            Moyours Sports Academy trains boys and girls aged 4–18 in the heart
-            of Abuja. We believe football is more than a game: it&apos;s a pathway
-            to growth, discipline, and opportunity.
+          <p className="mt-8 font-mono text-[0.6875rem] uppercase tracking-widest text-gold">
+            Our mission
           </p>
-        </div>
-      </section>
-
-      <section aria-labelledby="story-h" className="mx-auto max-w-4xl px-[var(--gutter)] py-16">
-        <h2 id="story-h" className="font-display text-step-2">
-          Our story
-        </h2>
-        <div className="mt-4 max-w-2xl space-y-4 text-step-0 leading-relaxed">
-          <p>
-            Moyours began with a simple observation: Abuja is full of talented
-            children who love the ball, and far too few places where that love
-            is taken seriously. We set out to build one — a club where a
-            four-year-old&apos;s first touch and a seventeen-year-old&apos;s trial
-            preparation get the same care.
+          <h1 className="mt-2 font-display text-step-3 sm:text-step-4">Raising Champions.</h1>
+          <p className="rule-gold mt-6 max-w-xl pt-4 text-step-1 text-chalk-dim">
+            Our vision: <span className="text-chalk">a society healed by sports.</span>
           </p>
-          <p>
-            Today our squads train twice a week at Tsukunda House in the Central
-            Business District, play friendlies and league football across the
-            FCT, and — most importantly — grow up together. Many of our
-            families have been with us for years; younger siblings follow older
-            ones through the age groups.
-          </p>
-        </div>
-      </section>
-
-      <section aria-labelledby="philosophy-h" className="bg-pitch-deep text-chalk">
-        <div className="mx-auto max-w-4xl px-[var(--gutter)] py-16">
-          <h2 id="philosophy-h" className="font-display text-step-2">
-            What we coach
-          </h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-3">
-            {[
-              {
-                title: "Skill",
-                body: "Technique first. Every session is built around touches on the ball — control, passing, dribbling, finishing — appropriate to each age.",
-              },
-              {
-                title: "Teamwork",
-                body: "Football is played with others. We coach communication, roles, and the joy of making a teammate better.",
-              },
-              {
-                title: "Character",
-                body: "Punctuality, respect, and effort are part of training. How our players behave matters as much as how they play.",
-              },
-            ].map((pillar) => (
-              <div key={pillar.title} className="rule-gold bg-pitch p-5">
-                <h3 className="font-display text-step-1">{pillar.title}</h3>
-                <p className="mt-2 text-step--1 leading-relaxed text-chalk-dim">{pillar.body}</p>
+          <dl className="mt-10 flex flex-wrap gap-x-8 gap-y-2">
+            {site.credentials.map((credential) => (
+              <div key={credential.label} className="flex items-baseline gap-2">
+                <dt className="text-[0.6875rem] uppercase tracking-widest text-chalk-dim">
+                  {credential.label}
+                </dt>
+                <dd className="font-mono text-step--1 font-bold text-chalk">{credential.value}</dd>
               </div>
             ))}
+          </dl>
+        </div>
+      </section>
+
+      {/* Our story */}
+      <section aria-labelledby="story-h" className="reveal mx-auto max-w-4xl px-[var(--gutter)] py-16">
+        <p className="font-mono text-[0.6875rem] uppercase tracking-widest text-pitch">Our story</p>
+        <h2 id="story-h" className="mt-2 font-display text-step-2">
+          It started with one student who just wanted to make the team.
+        </h2>
+        <div className="mt-6 max-w-2xl space-y-4 text-step-0 leading-relaxed">
+          <p>
+            Moyours began when Coach Moyiwa helped a student who was struggling to
+            join his school&apos;s football team. That single gesture grew into what
+            is now a FIFA- and NFF-registered academy in Abuja.
+          </p>
+          <p>
+            The road hasn&apos;t been easy — financial difficulties and facility
+            challenges tested us — but with the backing of our community, the
+            academy has persevered and today develops athletes competing at local
+            and global levels.
+          </p>
+        </div>
+      </section>
+
+      {/* Why we exist */}
+      <section aria-labelledby="why-h" className="reveal border-y border-line bg-white/40">
+        <div className="mx-auto grid max-w-4xl gap-8 px-[var(--gutter)] py-16 md:grid-cols-2">
+          <div>
+            <p className="font-mono text-[0.6875rem] uppercase tracking-widest text-pitch">
+              Why Moyours exists
+            </p>
+            <h2 id="why-h" className="mt-2 font-display text-step-2">
+              Talent is everywhere. Opportunity isn&apos;t.
+            </h2>
+          </div>
+          <div className="space-y-4 text-step-0 leading-relaxed">
+            <p>
+              Young footballers throughout Abuja and Nigeria face insufficient
+              training and limited exposure opportunities. Moyours closes that gap
+              with expert instruction, organized development programs, and
+              worldwide partnerships that enable emerging talents to achieve their
+              aspirations.
+            </p>
+            <p className="font-display text-step-1 text-pitch">
+              We are a family, a pathway, and a beacon of hope for young Nigerians
+              pursuing professional football.
+            </p>
           </div>
         </div>
       </section>
 
-      <section aria-labelledby="facilities-h" className="mx-auto max-w-4xl px-[var(--gutter)] py-16">
-        <h2 id="facilities-h" className="font-display text-step-2">
-          Where we train
+      {/* Impact */}
+      <section aria-labelledby="impact-h" className="reveal mx-auto max-w-4xl px-[var(--gutter)] py-16">
+        <p className="font-mono text-[0.6875rem] uppercase tracking-widest text-pitch">Our impact</p>
+        <h2 id="impact-h" className="mt-2 font-display text-step-2">
+          Nine years in, and counting.
         </h2>
-        <p className="mt-4 max-w-2xl text-step-0 leading-relaxed">
-          Our home is {site.address}. Sessions run on maintained pitches with
-          age-appropriate goals and equipment, qualified coaches, and first-aid
-          cover at every session. Guardians are welcome pitch-side.
-        </p>
-        <div className="mt-6 flex flex-wrap gap-3">
+        <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8">
+          {site.stats.map((stat) => (
+            <div key={stat.label} className="rule-gold pt-4">
+              <dd className="tabular font-mono text-step-3 font-bold text-pitch">{stat.value}</dd>
+              <dt className="mt-1 text-step--1 leading-relaxed text-kit-soft">{stat.label}</dt>
+            </div>
+          ))}
+        </dl>
+        <ul className="mt-10 grid gap-3 sm:grid-cols-2">
+          {[
+            "Scholarships supporting 35+ disadvantaged players",
+            "Community outreach programs across the FCT",
+            "Professional coaching staff with global experience",
+            "Youth mentorship that goes beyond athletics",
+            "An elite training initiative preparing players for international competition",
+          ].map((item) => (
+            <li key={item} className="flex gap-2.5 text-step-0 leading-relaxed">
+              <span aria-hidden className="mt-2.5 size-1.5 shrink-0 rounded-full bg-gold" />
+              {item}
+            </li>
+          ))}
+        </ul>
+        <div className="mt-10 flex flex-wrap gap-3">
           <Link
             href="/enroll"
             className="inline-flex h-12 items-center rounded-brand bg-gold px-6 text-step-0 font-semibold text-kit transition-[filter] hover:brightness-105"
@@ -94,10 +122,10 @@ export default function AboutPage() {
             Enroll your child
           </Link>
           <Link
-            href="/contact"
+            href="/support"
             className="inline-flex h-12 items-center rounded-brand border border-line px-6 text-step-0 font-semibold hover:border-kit"
           >
-            Come visit us
+            Support the academy
           </Link>
         </div>
       </section>

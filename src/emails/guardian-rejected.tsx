@@ -30,7 +30,7 @@ export function GuardianRejectedEmail({
         <Text style={emailStyles.p}>
           This is fixable — you can submit a fresh application with the
           corrected details or payment at{" "}
-          <a href={resubmitUrl}>moyoursacademy.ng/enroll</a>. If you believe this
+          <a href={resubmitUrl}>moyoursacademy.com/enroll</a>. If you believe this
           was a mistake, reply to this email or call 08099926480 and we&apos;ll
           look at it together.
         </Text>
@@ -48,5 +48,5 @@ ${props.reason}
 
 This is fixable — you can submit a fresh application with the corrected details or payment at ${props.resubmitUrl}. If you believe this was a mistake, reply to this email or call 08099926480 and we'll look at it together.
 
-Moyours Sports Academy`;
+Moyours Football Club Academy`;
 }

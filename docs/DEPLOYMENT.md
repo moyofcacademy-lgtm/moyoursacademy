@@ -22,12 +22,12 @@ preset configuration is needed — uploads are signed server-side. Folders
 upload. Payment proofs are stored `type: authenticated` — do not change the
 folder to public delivery.
 
-## 3. Resend + Termii
+## 3. Resend (email)
 
-- Resend: verify the `moyoursacademy.ng` sending domain, create an API key.
-- Termii: register the `Moyours` sender ID (takes a few days in Nigeria),
-  create an API key. Until both are configured, sends log as `QUEUED` in the
-  admin notification log and can be re-sent later.
+Verify the `moyoursacademy.com` sending domain and create an API key.
+Until it's configured, sends log as `QUEUED` in the admin notification log
+and can be re-sent later. SMS is intentionally not part of this system —
+guardians get everything by email.
 
 ## 4. Vercel
 
@@ -43,7 +43,6 @@ Import the repo. Build command `next build`, install `npm install`
 | `CLOUDINARY_CLOUD_NAME` / `CLOUDINARY_API_KEY` / `CLOUDINARY_API_SECRET` | server-side only |
 | `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` | same cloud name, exposed for delivery URLs |
 | `RESEND_API_KEY`, `EMAIL_FROM`, `ADMIN_EMAIL` | notification email |
-| `TERMII_API_KEY`, `TERMII_SENDER_ID` | SMS |
 
 ## 5. After deploy
 
@@ -52,7 +51,7 @@ Import the repo. Build command `next build`, install `npm install`
 2. Fill Settings: fees, bank account, schedule, WhatsApp group link.
 3. Upload club crests, create the season's fixtures.
 4. Submit a test enrollment end-to-end and accept it — confirm the guardian
-   email, admin email, and SMS all arrive and the proof link works.
+   email and admin email both arrive and the proof link works.
 
 ## Notes
 

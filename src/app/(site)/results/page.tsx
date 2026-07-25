@@ -5,7 +5,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 
 export const metadata: Metadata = {
   title: "Results",
-  description: "Match results and reports from Moyours Sports Academy squads.",
+  description: "Match results and reports from Moyours Football Club Academy squads.",
 };
 
 export const revalidate = 300;

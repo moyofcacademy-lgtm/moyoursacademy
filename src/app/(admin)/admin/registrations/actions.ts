@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { audit } from "@/lib/audit";
 import { nextMemberCode } from "@/lib/codes";
-import { sendEmail, sendSms } from "@/lib/notify";
+import { sendEmail } from "@/lib/notify";
 import { getSetting } from "@/lib/settings";
 import { site } from "@/config/site";
 import { REJECTION_REASONS } from "@/lib/constants";
@@ -25,11 +25,6 @@ import {
 export type ActionResult =
   | { ok: true; memberCode?: string; alreadyAccepted?: boolean }
   | { ok: false; error: string };
-
-/** SMS sent on acceptance — kept within one GSM-7 segment where possible. */
-function acceptanceSms(guardianName: string, playerName: string, code: string): string {
-  return `Hello ${guardianName}, your ward ${playerName} has been successfully registered at Moyours Football Academy. Member Code: ${code}. Check your email for full details. Welcome to the Moyours family.`;
-}
 
 /**
  * Accept a registration. One atomic transaction mints the member code,
@@ -110,32 +105,24 @@ export async function acceptRegistration(registrationId: string): Promise<Action
 
     // Notification failures must not roll back the acceptance — they land
     // in NotificationLog with a Resend button.
-    await Promise.all([
-      sendSms({
-        to: registration.guardianPhone,
-        body: acceptanceSms(registration.guardianName, playerName, memberCode),
-        template: "guardian-sms-accepted",
-        registrationId,
+    await sendEmail({
+      to: registration.guardianEmail,
+      subject: "Registration Confirmation – Moyours Football Academy",
+      react: GuardianConfirmationEmail({
+        guardianName: registration.guardianName,
+        playerName,
+        memberCode,
+        whatsappGroupUrl: whatsapp,
       }),
-      sendEmail({
-        to: registration.guardianEmail,
-        subject: "Registration Confirmation – Moyours Football Academy",
-        react: GuardianConfirmationEmail({
-          guardianName: registration.guardianName,
-          playerName,
-          memberCode,
-          whatsappGroupUrl: whatsapp,
-        }),
-        text: guardianConfirmationText({
-          guardianName: registration.guardianName,
-          playerName,
-          memberCode,
-          whatsappGroupUrl: whatsapp,
-        }),
-        template: "guardian-confirmation",
-        registrationId,
+      text: guardianConfirmationText({
+        guardianName: registration.guardianName,
+        playerName,
+        memberCode,
+        whatsappGroupUrl: whatsapp,
       }),
-    ]);
+      template: "guardian-confirmation",
+      registrationId,
+    });
 
     revalidatePath("/admin/registrations");
     revalidatePath(`/admin/registrations/${registrationId}`);
@@ -322,16 +309,6 @@ export async function resendNotification(logId: string): Promise<ActionResult> {
   const playerName = `${reg.firstName} ${reg.lastName}`;
 
   switch (log.template) {
-    case "guardian-sms-accepted": {
-      if (!reg.memberCode) return { ok: false, error: "No member code on this registration yet." };
-      await sendSms({
-        to: reg.guardianPhone,
-        body: acceptanceSms(reg.guardianName, playerName, reg.memberCode),
-        template: log.template,
-        registrationId: reg.id,
-      });
-      break;
-    }
     case "guardian-confirmation": {
       if (!reg.memberCode) return { ok: false, error: "No member code on this registration yet." };
       const whatsapp = (await getSetting("contact")).whatsappGroupUrl || undefined;

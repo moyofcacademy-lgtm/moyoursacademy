@@ -1,5 +1,6 @@
 import "./load-env";
 import bcrypt from "bcryptjs";
+import { REAL_COACHES } from "./real-coaches";
 import { prisma } from "../src/lib/prisma";
 import { SETTING_DEFAULTS } from "../src/lib/settings";
 
@@ -31,10 +32,10 @@ async function main() {
 
   // --- Teams ------------------------------------------------------------
   const teamDefs = [
-    { name: "Moyours U7", ageGroup: "U7", coachName: "Coach Emeka Obi" },
-    { name: "Moyours U11", ageGroup: "U11", coachName: "Coach Blessing Adamu" },
-    { name: "Moyours U15", ageGroup: "U15", coachName: "Coach Musa Ibrahim" },
-    { name: "Moyours U18", ageGroup: "U18", coachName: "Coach Tunde Bakare" },
+    { name: "Moyours U8", ageGroup: "U8", coachName: "Coach Abi Peter" },
+    { name: "Moyours U11", ageGroup: "U11", coachName: "Coach Chukwuemeka Paul" },
+    { name: "Moyours U14", ageGroup: "U14", coachName: "Coach Akinsanya David" },
+    { name: "Moyours U17", ageGroup: "U17", coachName: "Coach Ani Patrick" },
   ];
   const teams: Record<string, string> = {};
   for (const def of teamDefs) {
@@ -46,39 +47,19 @@ async function main() {
 
   // --- Coaches --------------------------------------------------------------
   if ((await prisma.coach.count()) === 0) {
-    const coachDefs = [
-      {
-        name: "Coach Emeka Obi",
-        role: "Head of Foundation Phase",
-        ageGroup: "U7",
-        bio: "Emeka has spent a decade making four-year-olds fall in love with the ball. His sessions are built on games, not drills — if the children are laughing, they're learning.",
-        badges: ["CAF D Licence", "Safeguarding certified"],
-      },
-      {
-        name: "Coach Blessing Adamu",
-        role: "Youth Development Coach",
-        ageGroup: "U11",
-        bio: "A former national youth team midfielder, Blessing teaches the habits that last: first touch, scanning, and the courage to want the ball under pressure.",
-        badges: ["CAF C Licence", "First aid certified"],
-      },
-      {
-        name: "Coach Musa Ibrahim",
-        role: "Academy Coach",
-        ageGroup: "U15",
-        bio: "Musa's teams are known across Abuja youth football for their discipline and shape. He pairs tactical work with mentorship on schoolwork and conduct.",
-        badges: ["CAF C Licence", "Safeguarding certified"],
-      },
-      {
-        name: "Coach Tunde Bakare",
-        role: "Head Coach, Performance Phase",
-        ageGroup: "U18",
-        bio: "Tunde prepares our oldest players for what comes next — trials, scholarships, and senior football — with individual development plans for every player.",
-        badges: ["CAF B Licence", "Talent ID certified"],
-      },
-    ];
+    const coachDefs = REAL_COACHES;
     let sortOrder = 0;
     for (const def of coachDefs) {
-      await prisma.coach.create({ data: { ...def, sortOrder: sortOrder++ } });
+      await prisma.coach.create({
+        data: {
+          name: def.name,
+          role: def.role,
+          ageGroup: def.ageGroup,
+          bio: def.bio,
+          badges: [...def.badges],
+          sortOrder: sortOrder++,
+        },
+      });
     }
     console.log("coaches seeded");
   }
@@ -124,9 +105,9 @@ async function main() {
     };
 
     const upcoming = [
-      { team: "U15", opp: 0, comp: "Abuja Youth League", kickoff: at(3, 15), home: true, venue: "Moyours Training Ground, CBD" },
+      { team: "U14", opp: 0, comp: "Abuja Youth League", kickoff: at(3, 15), home: true, venue: "Moyours Training Ground, CBD" },
       { team: "U11", opp: 1, comp: "Friendly", kickoff: at(8, 10), home: false, venue: "Wuse Zone 4 Pitch" },
-      { team: "U18", opp: 2, comp: "Abuja Youth League", kickoff: at(10, 15), home: true, venue: "Moyours Training Ground, CBD" },
+      { team: "U17", opp: 2, comp: "Abuja Youth League", kickoff: at(10, 15), home: true, venue: "Moyours Training Ground, CBD" },
     ];
     for (const f of upcoming) {
       await prisma.fixture.create({
@@ -146,8 +127,8 @@ async function main() {
     const past1 = await prisma.fixture.create({
       data: {
         competition: "Abuja Youth League",
-        ageGroup: "U15",
-        teamId: teams.U15,
+        ageGroup: "U14",
+        teamId: teams.U14,
         opponentId: clubs[3],
         isHome: true,
         kickoffAt: at(-6, 15),
@@ -163,7 +144,7 @@ async function main() {
         halfTimeFor: 1,
         halfTimeAgainst: 1,
         matchReport:
-          "A patient first half turned into a statement second. Two quick goals after the restart settled it, and the U15s saw the game out with real composure.",
+          "A patient first half turned into a statement second. Two quick goals after the restart settled it, and the U14s saw the game out with real composure.",
         events: {
           create: [
             { minute: 21, type: "GOAL", playerNameFallback: "A. Yusuf" },
@@ -238,7 +219,7 @@ async function main() {
         guardianPhone: "+2348092223344",
         guardianEmail: "fatima@example.com",
         address: "4 Kwame Nkrumah Crescent, Asokoro, Abuja",
-        ageGroup: "U15",
+        ageGroup: "U14",
       },
       {
         reference: "MOY-REF-DEMO4C",
@@ -250,7 +231,7 @@ async function main() {
         guardianPhone: "+2347051234567",
         guardianEmail: "chidi@example.com",
         address: "22 Gana Street, Maitama, Abuja",
-        ageGroup: "U7",
+        ageGroup: "U8",
       },
     ];
     for (const d of demo) {

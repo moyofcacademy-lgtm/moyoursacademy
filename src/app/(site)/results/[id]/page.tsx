@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { FixtureStrip } from "@/components/fixture-strip";
+import { Scoreboard } from "@/components/scoreboard";
 import { cn } from "@/lib/utils";
 
 export async function generateMetadata({
@@ -67,30 +67,26 @@ export default async function ResultDetailPage({
       </Link>
 
       <div className="mt-4">
-        <FixtureStrip fixture={fixture} />
+        <Scoreboard
+          competition={fixture.competition}
+          ageGroup={fixture.ageGroup}
+          teamName={fixture.team.name}
+          opponent={fixture.opponent}
+          isHome={fixture.isHome}
+          goalsFor={result.goalsFor}
+          goalsAgainst={result.goalsAgainst}
+          halfTimeFor={result.halfTimeFor}
+          halfTimeAgainst={result.halfTimeAgainst}
+        />
       </div>
 
-      {(result.halfTimeFor != null || motm) && (
-        <div className="mt-4 flex flex-wrap gap-4 text-step--1 text-kit-soft">
-          {result.halfTimeFor != null && (
-            <p>
-              Half-time:{" "}
-              <span className="font-mono font-bold text-kit">
-                {fixture.isHome
-                  ? `${result.halfTimeFor}–${result.halfTimeAgainst}`
-                  : `${result.halfTimeAgainst}–${result.halfTimeFor}`}
-              </span>
-            </p>
-          )}
-          {motm && (
-            <p>
-              Player of the match:{" "}
-              <span className="font-semibold text-kit">
-                {motm.registration.firstName} {motm.registration.lastName}
-              </span>
-            </p>
-          )}
-        </div>
+      {motm && (
+        <p className="mt-4 text-step--1 text-kit-soft">
+          Player of the match:{" "}
+          <span className="font-semibold text-kit">
+            {motm.registration.firstName} {motm.registration.lastName}
+          </span>
+        </p>
       )}
 
       {result.events.length > 0 && (

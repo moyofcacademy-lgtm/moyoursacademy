@@ -9,7 +9,10 @@ export const metadata: Metadata = {
 
 export default function AdminLoginPage() {
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-pitch-deep px-4">
+    <div className="relative isolate flex min-h-dvh items-center justify-center overflow-hidden bg-pitch-deep px-4">
+      <div aria-hidden className="turf absolute inset-0 -z-10" />
+      <div aria-hidden className="pitch-lines absolute inset-0 -z-10" />
+      <div aria-hidden className="glow-gold absolute inset-0 -z-10" />
       <div className="w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center gap-3 text-center text-chalk">
           <MoyoursCrest size={64} />

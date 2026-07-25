@@ -1,8 +1,31 @@
+// Squads mirror the club's real team structure (Under-8/11/14/17).
 export const AGE_GROUPS = [
-  { key: "U7", label: "Ages 4–7", min: 4, max: 7 },
-  { key: "U11", label: "Ages 8–11", min: 8, max: 11 },
-  { key: "U15", label: "Ages 12–15", min: 12, max: 15 },
-  { key: "U18", label: "Ages 16–18", min: 16, max: 18 },
+  { key: "U8", label: "Ages 4–8", min: 4, max: 8 },
+  { key: "U11", label: "Ages 9–11", min: 9, max: 11 },
+  { key: "U14", label: "Ages 12–14", min: 12, max: 14 },
+  { key: "U17", label: "Ages 15–18", min: 15, max: 18 },
+] as const;
+
+/** The academy's three training phases, as published by the club. */
+export const PROGRAM_PHASES = [
+  {
+    key: "foundations",
+    name: "Foundations",
+    ages: "Ages 5–8",
+    summary: "Building love for football through fun and structured play.",
+  },
+  {
+    key: "development",
+    name: "Development",
+    ages: "Ages 9–13",
+    summary: "Skill-building, tactical awareness, and teamwork.",
+  },
+  {
+    key: "performance",
+    name: "Performance",
+    ages: "Ages 14–18",
+    summary: "Advanced training, high-level competition, and exposure to scouts.",
+  },
 ] as const;
 
 export type AgeGroupKey = (typeof AGE_GROUPS)[number]["key"];

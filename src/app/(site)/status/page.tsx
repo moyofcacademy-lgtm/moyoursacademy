@@ -3,7 +3,7 @@ import { StatusChecker } from "./status-checker";
 
 export const metadata: Metadata = {
   title: "Application status",
-  description: "Check the progress of your Moyours Sports Academy enrollment.",
+  description: "Check the progress of your Moyours Football Club Academy enrollment.",
   robots: { index: false },
 };
 

@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Moyours Sports Academy — youth football in Abuja";
+export const alt = "Moyours Football Club Academy — youth football in Abuja";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -53,7 +53,7 @@ export default function OpenGraphImage() {
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ fontSize: 56, fontWeight: 700, color: "#F3F1E7", letterSpacing: -1 }}>
-              Moyours Sports Academy
+              Moyours Football Club Academy
             </div>
             <div style={{ fontSize: 30, color: "#C9C4AE" }}>
               Youth football · Abuja · Ages 4–18
@@ -61,7 +61,7 @@ export default function OpenGraphImage() {
           </div>
         </div>
         <div style={{ fontSize: 34, color: "#E8B319", fontWeight: 600 }}>
-          More than an academy — a family.
+          Raising Champions.
         </div>
       </div>
     ),

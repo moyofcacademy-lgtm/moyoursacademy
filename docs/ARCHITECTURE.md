@@ -59,8 +59,10 @@ Signed direct-to-Cloudinary uploads only — file bytes never touch the Next
 server. `/api/uploads/signature` pins folder/type server-side per intent:
 
 - `moyours/proofs/` — `type: authenticated`; viewable only through
-  `/admin/registrations/[id]/proof`, which requires an admin session and
-  redirects to a short-lived signed URL. Never publicly addressable.
+  `/admin/registrations/[id]/proof`, which requires an admin session, fetches
+  the asset with a server-side signed URL, and streams the bytes from our own
+  domain (downloads get a clean `payment-proof-<reference>` filename). Never
+  publicly addressable, never a Cloudinary link in the browser.
 - `crests/gallery/matches/news/players` — public; admin session required to
   obtain a signature. Deleting a club/album/asset destroys the Cloudinary
   asset by `publicId`.
@@ -76,9 +78,9 @@ Everything goes through `src/lib/notify.ts`, which writes a
 `NotificationLog` row for every send (SENT/FAILED/QUEUED — QUEUED when the
 provider isn't configured). Failures never roll back business transactions;
 the registration review page exposes a **Resend** button that rebuilds the
-message from current DB state. SMS is Termii behind a provider interface
-(`src/lib/sms.ts`) with one retry; emails are React Email templates in
-`src/emails/` sent via Resend with plain-text fallbacks.
+message from current DB state. All notifications are email (React Email
+templates in `src/emails/`, sent via Resend with plain-text fallbacks) —
+SMS was deliberately removed from the system.
 
 ## Settings
 

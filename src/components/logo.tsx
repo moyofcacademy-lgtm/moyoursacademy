@@ -10,7 +10,7 @@ export function MoyoursCrest({ size = 48, className }: { size?: number; classNam
   return (
     <Image
       src="/crest.png"
-      alt="Moyours Sports Academy crest"
+      alt="Moyours Football Club Academy crest"
       width={size}
       height={size}
       priority={size >= 64}

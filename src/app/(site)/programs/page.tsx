@@ -1,50 +1,34 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AGE_GROUPS } from "@/lib/constants";
+import { AGE_GROUPS, PROGRAM_PHASES } from "@/lib/constants";
+import { site } from "@/config/site";
 import { getFees, getSetting } from "@/lib/settings";
 import { formatNaira } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Programs",
   description:
-    "Training programs at Moyours Sports Academy for ages 4–18: schedule, what's included, and fees.",
+    "Foundations, Development, and Performance — Moyours Football Club Academy training programs for boys and girls aged 4–18, with schedule and fees.",
 };
 
 export const revalidate = 300;
 
-const PROGRAM_DETAIL: Record<string, { headline: string; focus: string[] }> = {
-  U7: {
-    headline: "Football through play",
-    focus: [
-      "Fun, game-based sessions that build love for the ball",
-      "Balance, coordination, and first touches",
-      "Listening, sharing, and taking turns",
-    ],
-  },
-  U11: {
-    headline: "The technical years",
-    focus: [
-      "Core technique: control, passing, dribbling, shooting",
-      "Small-sided games every session",
-      "Confidence on the ball under gentle pressure",
-    ],
-  },
-  U15: {
-    headline: "Learning the game",
-    focus: [
-      "Positional play and tactical understanding",
-      "Competitive fixtures in Abuja youth football",
-      "Physical development, done safely",
-    ],
-  },
-  U18: {
-    headline: "Performance and pathways",
-    focus: [
-      "Individual development plans for every player",
-      "Preparation for trials, scholarships, and senior football",
-      "Leadership and mentorship responsibilities",
-    ],
-  },
+const PHASE_DETAIL: Record<string, string[]> = {
+  foundations: [
+    "Fun, structured play that builds a lasting love for football",
+    "Balance, coordination, and confident first touches",
+    "Listening, sharing, and being part of a team",
+  ],
+  development: [
+    "Skill-building sessions: control, passing, dribbling, finishing",
+    "Tactical awareness introduced through small-sided games",
+    "Teamwork, discipline, and match experience",
+  ],
+  performance: [
+    "Advanced training with individual development plans",
+    "High-level competition across Abuja and beyond",
+    "Exposure to scouts, trials, and international pathways",
+  ],
 };
 
 export default async function ProgramsPage() {
@@ -52,15 +36,67 @@ export default async function ProgramsPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-[var(--gutter)] py-12">
-      <h1 className="font-display text-step-3">Programs</h1>
+      <p className="font-mono text-[0.6875rem] uppercase tracking-widest text-pitch">
+        Academy programs
+      </p>
+      <h1 className="mt-2 font-display text-step-3">One pathway, three phases</h1>
       <p className="mt-3 max-w-2xl text-step-0 text-kit-soft">
-        One pathway, four age groups. Every player trains twice a week and
-        plays regular matches, with coaching pitched to their stage of
-        development.
+        Every Moyours player — boys and girls aged 4–18 — moves through a
+        structured pathway: from falling in love with the ball to competing in
+        front of scouts.
       </p>
 
+      {/* The three phases */}
+      <div className="reveal mt-10 grid gap-5 md:grid-cols-3">
+        {PROGRAM_PHASES.map((phase, index) => (
+          <section
+            key={phase.key}
+            aria-labelledby={`phase-${phase.key}`}
+            className="rule-gold flex flex-col rounded-b-brand border border-line bg-white/60 p-6"
+          >
+            <p className="font-mono text-[0.6875rem] uppercase tracking-widest text-kit-soft">
+              Phase {index + 1} · {phase.ages}
+            </p>
+            <h2 id={`phase-${phase.key}`} className="mt-2 font-display text-step-1">
+              {phase.name}
+            </h2>
+            <p className="mt-1 text-step--1 text-kit-soft">{phase.summary}</p>
+            <ul className="mt-4 flex flex-col gap-2">
+              {PHASE_DETAIL[phase.key].map((item) => (
+                <li key={item} className="flex gap-2.5 text-step--1 leading-relaxed">
+                  <span aria-hidden className="mt-2 size-1.5 shrink-0 rounded-full bg-gold" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+
+      {/* Squads */}
+      <section aria-labelledby="squads-h" className="reveal mt-12">
+        <h2 id="squads-h" className="font-display text-step-2">
+          Our squads
+        </h2>
+        <p className="mt-2 max-w-2xl text-step--1 text-kit-soft">
+          Within the pathway, players compete in four age-group squads.
+        </p>
+        <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {AGE_GROUPS.map((group) => (
+            <Link
+              key={group.key}
+              href="/squads"
+              className="rounded-brand border border-line bg-white/50 p-5 transition-transform duration-150 hover:-translate-y-0.5 hover:shadow-md motion-reduce:hover:translate-y-0"
+            >
+              <p className="font-mono text-step-2 font-bold text-pitch">{group.key}</p>
+              <p className="mt-1 text-step--1 text-kit-soft">{group.label}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* Schedule */}
-      <div className="rule-gold mt-8 rounded-b-brand bg-pitch p-5 text-chalk sm:p-6">
+      <div className="rule-gold mt-12 rounded-b-brand bg-pitch p-5 text-chalk sm:p-6">
         <p className="font-mono text-[0.6875rem] uppercase tracking-widest text-chalk-dim">
           Training schedule — all age groups
         </p>
@@ -74,38 +110,13 @@ export default async function ProgramsPage() {
             </p>
           ))}
         </div>
-      </div>
-
-      {/* Age groups */}
-      <div className="mt-10 grid gap-5 md:grid-cols-2">
-        {AGE_GROUPS.map((group) => {
-          const detail = PROGRAM_DETAIL[group.key];
-          return (
-            <section
-              key={group.key}
-              aria-labelledby={`program-${group.key}`}
-              className="flex flex-col rounded-brand border border-line bg-white/60 p-6"
-            >
-              <p className="font-mono text-step-2 font-bold text-pitch">{group.key}</p>
-              <h2 id={`program-${group.key}`} className="mt-1 font-display text-step-1">
-                {detail.headline}
-              </h2>
-              <p className="text-step--1 text-kit-soft">{group.label}</p>
-              <ul className="mt-4 flex flex-col gap-2">
-                {detail.focus.map((item) => (
-                  <li key={item} className="flex gap-2.5 text-step--1 leading-relaxed">
-                    <span aria-hidden className="mt-2 size-1.5 shrink-0 rounded-full bg-gold" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          );
-        })}
+        <p className="mt-3 text-step--1 text-chalk-dim">
+          {site.address} · plus a second training location to meet growing demand.
+        </p>
       </div>
 
       {/* What's included + fees */}
-      <div className="mt-10 grid gap-8 md:grid-cols-2">
+      <div className="reveal mt-12 grid gap-8 md:grid-cols-2">
         <section aria-labelledby="included-h">
           <h2 id="included-h" className="font-display text-step-2">
             What&apos;s included
@@ -115,8 +126,8 @@ export default async function ProgramsPage() {
               "Two structured training sessions every week",
               "Two full sets of the Moyours jersey",
               "Friendly matches and league fixtures",
-              "Seasonal programs including summer camps",
-              "Continuous development feedback and mentorship",
+              "Summer camps combining rigorous training with fun activities",
+              "Mentorship pairing young athletes with experienced mentors",
               "First-aid cover and safeguarding-trained coaches",
             ].map((item) => (
               <li key={item} className="flex gap-2.5 text-step-0 leading-relaxed">
@@ -151,6 +162,14 @@ export default async function ProgramsPage() {
               </tr>
             </tbody>
           </table>
+          <p className="mt-3 text-step--1 text-kit-soft">
+            No family should be priced out of the game — 35 of our players train
+            on full scholarships.{" "}
+            <Link href="/support" className="font-semibold underline underline-offset-2">
+              Sponsor a player
+            </Link>
+            .
+          </p>
           <Link
             href="/enroll"
             className="mt-5 inline-flex h-12 items-center rounded-brand bg-gold px-6 text-step-0 font-semibold text-kit transition-[filter] hover:brightness-105"

@@ -13,12 +13,12 @@ Sign in at **moyoursacademy.ng/admin** with your admin email and password.
 3. Choose one:
    - **Accept player** (gold button) — issues the member code, creates the
      player in the matching age-group squad, and sends the guardian their
-     confirmation SMS and email. Clicking twice never sends twice.
+     confirmation email. Clicking twice never sends twice.
    - **Reject** — pick a reason (the guardian sees it) and they receive a
      polite email with re-submission instructions.
    - **Request better proof** — the guardian gets an email link to upload a
      clearer receipt against the same reference.
-4. If an SMS or email fails (shown under *Notifications* on the same page),
+4. If an email fails (shown under *Notifications* on the same page),
    press **Resend** once the problem (network, provider credit) is fixed.
 
 Bulk accept: tick several rows on the list → *Accept N selected* → confirm

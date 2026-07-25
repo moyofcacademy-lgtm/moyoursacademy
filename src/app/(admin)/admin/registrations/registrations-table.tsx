@@ -338,7 +338,7 @@ export function RegistrationsTable({
       >
         <p className="text-step--1 text-kit-soft">
           Each player gets a member code, and each guardian receives the
-          confirmation SMS and email:
+          confirmation email:
         </p>
         <ul className="mt-3 max-h-48 overflow-y-auto rounded-brand border border-line bg-white/70 p-3 text-step--1">
           {selectedRows.map((row) => (

@@ -13,7 +13,7 @@ football academy in Abuja, Nigeria (boys and girls, ages 4–18).
 
 Next.js 16 (App Router, Turbopack) · TypeScript strict · Tailwind CSS v4 ·
 Prisma 7 + PostgreSQL · NextAuth v5 (credentials, admin-only) · Cloudinary ·
-Resend + React Email · Termii SMS · Zod · react-hook-form · TanStack Table.
+Resend + React Email · Zod · react-hook-form · TanStack Table.
 
 ## Getting started
 
@@ -30,7 +30,7 @@ in `.pglite/` — zero setup, real Postgres semantics. Seeded admin login:
 
 For a real database (Neon/Supabase), set `DATABASE_URL` in `.env` and run
 `npm run db:setup` again. See `.env.example` for every variable (Cloudinary,
-Resend, Termii). Without provider keys, uploads fall back to a simulated
+Resend). Without provider keys, uploads fall back to a simulated
 dev-mode and notifications are logged as `QUEUED` instead of sent.
 
 ## Tests

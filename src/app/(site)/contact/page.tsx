@@ -5,7 +5,7 @@ import { ContactForm } from "./contact-form";
 
 export const metadata: Metadata = {
   title: "Contact us",
-  description: `Reach Moyours Sports Academy — ${site.address}.`,
+  description: `Reach Moyours Football Club Academy — ${site.address}.`,
 };
 
 export const revalidate = 300;
@@ -56,7 +56,7 @@ export default async function ContactPage() {
             </h2>
             <p className="mt-2 max-w-sm text-step-0 leading-relaxed">{contact.address}</p>
             <iframe
-              title="Map to Moyours Sports Academy"
+              title="Map to Moyours Football Club Academy"
               src={`https://www.google.com/maps?q=${encodeURIComponent(site.mapsQuery)}&output=embed`}
               className="mt-4 h-64 w-full rounded-brand border border-line"
               loading="lazy"

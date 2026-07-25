@@ -104,13 +104,13 @@ export function EmailShell({
       <Body style={emailStyles.body}>
         <Container style={emailStyles.container}>
           <Section style={emailStyles.header}>
-            <Text style={emailStyles.headerText}>Moyours Sports Academy</Text>
+            <Text style={emailStyles.headerText}>Moyours Football Club Academy</Text>
           </Section>
           {children}
           <Hr style={emailStyles.hr} />
           <Section style={emailStyles.footer}>
             <Text style={emailStyles.muted}>
-              Moyours Sports Academy · Suite A05, Tsukunda House, CBD, Abuja
+              Moyours Football Club Academy · Suite A05, Tsukunda House, CBD, Abuja
             </Text>
             <Text style={emailStyles.muted}>
               Questions? Reply to this email or call 08099926480.

@@ -45,5 +45,5 @@ Upload a clearer photo or the PDF receipt from your banking app and we'll contin
 
 Your application keeps the same reference — nothing else changes.
 
-Moyours Sports Academy`;
+Moyours Football Club Academy`;
 }

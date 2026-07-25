@@ -49,8 +49,7 @@ export function AdminNewRegistrationEmail(props: AdminNewRegistrationProps) {
           <br />
           Reference: <span style={emailStyles.mono}>{props.reference}</span>
           <br />
-          <a href={props.proofUrl}>View payment proof</a> (signed link, expires in
-          10 minutes)
+          <a href={props.proofUrl}>View payment proof</a> (admin sign-in required)
         </Text>
 
         <Button href={props.reviewUrl} style={emailStyles.button}>
@@ -73,7 +72,7 @@ ${props.address}
 
 Payment: ${props.amountLine}
 Reference: ${props.reference}
-Proof (signed link, expires in 10 minutes): ${props.proofUrl}
+Proof (admin sign-in required): ${props.proofUrl}
 
 Review: ${props.reviewUrl}`;
 }

@@ -8,7 +8,7 @@ import { cn, hoursAgo } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Fixtures",
-  description: "Upcoming Moyours Sports Academy matches across all age groups.",
+  description: "Upcoming Moyours Football Club Academy matches across all age groups.",
 };
 
 export default async function FixturesPage({

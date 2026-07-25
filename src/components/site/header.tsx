@@ -20,12 +20,12 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-pitch-mid bg-pitch text-chalk">
+    <header className="sticky top-0 z-40 border-b border-pitch-mid/70 bg-pitch text-chalk supports-[backdrop-filter]:bg-pitch/85 supports-[backdrop-filter]:backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-[var(--gutter)]">
         <Link
           href="/"
           className="flex items-center gap-2.5 font-display text-step-0"
-          aria-label="Moyours Sports Academy — home"
+          aria-label="Moyours Football Club Academy — home"
         >
           <MoyoursCrest size={36} />
           <span className="hidden sm:inline">Moyours</span>

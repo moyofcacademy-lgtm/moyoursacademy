@@ -114,6 +114,167 @@
     border-top: 2px solid var(--color-gold);
   }
 
+  /* Chalked pitch markings — halfway line, centre circle and spot up top,
+     penalty box, goal area, spot and arc grounded at the bottom. */
+  .pitch-lines {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 640' fill='none' stroke='%23F3F1E7' stroke-opacity='0.10' stroke-width='2.5'%3E%3Cline x1='0' y1='70' x2='1200' y2='70'/%3E%3Ccircle cx='600' cy='70' r='110'/%3E%3Ccircle cx='600' cy='70' r='3.5' fill='%23F3F1E7' fill-opacity='0.10' stroke='none'/%3E%3Crect x='330' y='470' width='540' height='170'/%3E%3Crect x='465' y='575' width='270' height='65'/%3E%3Ccircle cx='600' cy='525' r='3.5' fill='%23F3F1E7' fill-opacity='0.10' stroke='none'/%3E%3Cpath d='M 495 470 A 110 110 0 0 1 705 470'/%3E%3C/svg%3E");
+    background-size: 1200px 640px;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+  }
+
+  /* Mowed turf — the alternating grass bands of a stadium pitch */
+  .turf {
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 90px,
+      color-mix(in oklab, white 3.5%, transparent) 90px,
+      color-mix(in oklab, white 3.5%, transparent) 180px
+    );
+  }
+
+  /* Goal net — fine diagonal mesh for closing sections */
+  .goal-net {
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        color-mix(in oklab, var(--color-chalk) 5%, transparent) 0 1px,
+        transparent 1px 14px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        color-mix(in oklab, var(--color-chalk) 5%, transparent) 0 1px,
+        transparent 1px 14px
+      );
+  }
+
+  /* Touchline — the bold white boundary above the footer */
+  .touchline {
+    border-top: 3px solid color-mix(in oklab, var(--color-chalk) 28%, transparent);
+  }
+
+  /* Soft stadium-light glow used behind hero imagery */
+  .glow-gold {
+    background: radial-gradient(
+      42rem 28rem at 78% 8%,
+      color-mix(in oklab, var(--color-gold) 14%, transparent),
+      transparent 65%
+    );
+  }
+
+  /* Top-lit pitch surface — depth without leaving the palette */
+  .surface-pitch {
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--color-pitch) 88%, white) 0%,
+      var(--color-pitch) 45%
+    );
+  }
+
+  /* Scroll-driven entrance — progressive enhancement; browsers without
+     animation-timeline (and reduced-motion users) simply see the content. */
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 36%;
+    }
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* --- Panini sticker treatment ------------------------------------- */
+
+  /* Metallic foil edge — conic gradient behind a thin frame */
+  .foil-card {
+    padding: 3px;
+    border-radius: 7px;
+    background: conic-gradient(
+      from 210deg,
+      #e8b319,
+      #f6ead0 12%,
+      #b3922a 28%,
+      #e8b319 40%,
+      #f3f1e7 58%,
+      #c9c4ae 72%,
+      #b3922a 86%,
+      #e8b319
+    );
+    box-shadow: 0 1px 2px rgb(20 20 15 / 0.12);
+  }
+
+  /* Collector-sticker sheen sweeping across on hover */
+  .sheen {
+    position: relative;
+    overflow: hidden;
+    border-radius: 7px;
+  }
+  .sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 42%,
+      rgb(255 255 255 / 0.32) 50%,
+      transparent 58%
+    );
+    transform: translateX(-130%);
+    transition: transform 0.65s ease;
+    pointer-events: none;
+  }
+  .sheen:hover::after,
+  .sheen:focus-within::after {
+    transform: translateX(130%);
+  }
+
+  /* Big outlined kit numeral over the player photo */
+  .kit-number {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--color-gold);
+    text-stroke: 2px var(--color-gold);
+    letter-spacing: -0.04em;
+  }
+
+  /* The crest shield's stripes, whispered onto name plates */
+  .shield-stripes {
+    background-image: repeating-linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--color-gold) 10%, transparent) 0 10px,
+      transparent 10px 20px
+    );
+  }
+
+  /* --- Stadium scoreboard -------------------------------------------- */
+
+  /* Split-flap digit: two-tone panel with the horizontal flip seam */
+  .flip-digit {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #23231b 0%, #191913 49%, #0d0d09 51%, #131310 100%);
+    border-radius: 6px;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.09),
+      inset 0 -1px 0 rgb(0 0 0 / 0.5),
+      0 3px 8px rgb(0 0 0 / 0.35);
+  }
+  .flip-digit::after {
+    content: "";
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    top: 50%;
+    height: 1.5px;
+    background: rgb(0 0 0 / 0.55);
+  }
+
   .stagger > * {
     animation: var(--animate-rise);
   }

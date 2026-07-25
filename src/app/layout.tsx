@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { site } from "@/config/site";
@@ -19,6 +19,10 @@ const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains",
 });
+
+export const viewport: Viewport = {
+  themeColor: "#0B3D2C", // pitch green — colours the mobile browser chrome
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),

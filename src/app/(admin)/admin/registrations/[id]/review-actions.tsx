@@ -83,8 +83,8 @@ export function ReviewActions({
           </div>
         </dl>
         <p className="mt-4 text-step--1 text-kit-soft">
-          A member code is issued and the guardian receives the confirmation SMS
-          and email immediately.
+          A member code is issued and the guardian receives the confirmation
+          email immediately.
         </p>
         <DialogActions>
           <Button variant="secondary" onClick={() => setConfirmAccept(false)} disabled={pending}>

@@ -2,7 +2,6 @@ import "server-only";
 import { Resend } from "resend";
 import type { ReactElement } from "react";
 import { prisma } from "@/lib/prisma";
-import { smsProvider } from "@/lib/sms";
 
 /**
  * All guardian/admin communication goes through here so every send —
@@ -70,49 +69,6 @@ export async function sendEmail({
       registrationId,
     });
   }
-}
-
-export async function sendSms({
-  to,
-  body,
-  template,
-  registrationId,
-}: {
-  to: string;
-  body: string;
-  template: string;
-  registrationId?: string;
-}): Promise<void> {
-  if (!smsProvider.configured()) {
-    // SMS is optional — without a provider key the send is skipped quietly.
-    // (Guardians still get everything by email.) Configure TERMII_API_KEY
-    // and use Resend on the log entry to deliver retroactively.
-    await logNotification({
-      channel: "SMS",
-      template,
-      recipient: to,
-      status: "SKIPPED",
-      error: "SMS disabled — no provider configured",
-      registrationId,
-    });
-    return;
-  }
-
-  // One retry on transient failure.
-  let result = await smsProvider.send(to, body);
-  if (!result.ok) {
-    result = await smsProvider.send(to, body);
-  }
-
-  await logNotification({
-    channel: "SMS",
-    template,
-    recipient: to,
-    status: result.ok ? "SENT" : "FAILED",
-    providerId: result.ok ? result.providerId : undefined,
-    error: result.ok ? undefined : result.error,
-    registrationId,
-  });
 }
 
 async function logNotification(entry: {

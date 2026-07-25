@@ -78,7 +78,7 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         {/* teamsheet caption strip */}
         <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-gradient-to-t from-pitch-deep/95 via-pitch-deep/40 to-transparent p-4 pt-16">
           <p aria-live="polite" className="font-mono text-[0.6875rem] uppercase tracking-widest text-chalk">
-            {slides[index].caption ?? "Moyours Sports Academy"}
+            {slides[index].caption ?? "Moyours Football Club Academy"}
           </p>
           {slides.length > 1 && (
             <p className="font-mono text-[0.6875rem] text-chalk-dim">

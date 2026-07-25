@@ -17,6 +17,35 @@ export type FixtureStripData = {
   result?: { goalsFor: number; goalsAgainst: number } | null;
 };
 
+/** Match outcome from Moyours' perspective — WIN green, DRAW deep yellow, LOSS red. */
+export function OutcomeBadge({
+  goalsFor,
+  goalsAgainst,
+  compact = false,
+}: {
+  goalsFor: number;
+  goalsAgainst: number;
+  compact?: boolean;
+}) {
+  const outcome =
+    goalsFor > goalsAgainst
+      ? { label: "Win", classes: "bg-green-600 text-white" }
+      : goalsFor === goalsAgainst
+        ? { label: "Draw", classes: "bg-amber-500 text-kit" }
+        : { label: "Loss", classes: "bg-red-600 text-white" };
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center rounded-brand font-mono font-bold uppercase tracking-widest",
+        compact ? "px-1.5 py-0.5 text-[0.625rem]" : "px-2 py-0.5 text-[0.6875rem]",
+        outcome.classes,
+      )}
+    >
+      {outcome.label}
+    </span>
+  );
+}
+
 /**
  * The fixture board — a matchday teamsheet strip. Home crest, mono kickoff
  * time (or score), away crest, competition eyebrow, one gold rule. Reused on
@@ -45,10 +74,10 @@ export function FixtureStrip({
   const body = (
     <article
       className={cn(
-        "rule-gold bg-pitch text-chalk",
+        "rule-gold surface-pitch text-chalk",
         compact ? "px-4 py-3" : "px-5 py-5 sm:px-8",
         href &&
-          "transition-transform duration-150 hover:-translate-y-0.5 hover:shadow-lg motion-reduce:hover:translate-y-0",
+          "transition-[transform,box-shadow] duration-150 hover:-translate-y-0.5 hover:shadow-xl motion-reduce:hover:translate-y-0",
         className,
       )}
     >
@@ -62,6 +91,13 @@ export function FixtureStrip({
           {fixture.competition} · {fixture.ageGroup}
         </p>
         {fixture.status === "LIVE" && <Badge tone="gold">Live</Badge>}
+        {hasScore && (
+          <OutcomeBadge
+            goalsFor={fixture.result!.goalsFor}
+            goalsAgainst={fixture.result!.goalsAgainst}
+            compact={compact}
+          />
+        )}
         {(fixture.status === "POSTPONED" || fixture.status === "CANCELLED") && (
           <Badge tone="outline" className="text-chalk-dim">
             {fixture.status === "POSTPONED" ? "Postponed" : "Cancelled"}

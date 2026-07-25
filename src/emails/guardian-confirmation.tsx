@@ -71,7 +71,7 @@ export function GuardianConfirmationEmail({
 
         <Text style={emailStyles.p}>
           Welcome to the Moyours family.
-          <br />— The Moyours team, admin@moyoursacademy.ng
+          <br />— The Moyours team, admin@moyoursacademy.com
         </Text>
       </Section>
     </EmailShell>
@@ -105,5 +105,5 @@ IMPORTANT NOTES
 Please arrive 15 minutes before each session — punctuality is part of the training. Two sets of jerseys are included in your registration; appropriate football boots or trainers are required.
 
 Welcome to the Moyours family.
-— The Moyours team, admin@moyoursacademy.ng`;
+— The Moyours team, admin@moyoursacademy.com`;
 }

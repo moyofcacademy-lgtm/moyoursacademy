@@ -7,7 +7,7 @@ import { formatDateWAT } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "News",
-  description: "Announcements and stories from Moyours Sports Academy.",
+  description: "Announcements and stories from Moyours Football Club Academy.",
 };
 
 export const revalidate = 300;

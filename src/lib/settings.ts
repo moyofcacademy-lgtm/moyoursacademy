@@ -37,7 +37,7 @@ export const SETTING_DEFAULTS = {
   bank: {
     bankName: "Optimus Bank",
     accountNumber: "1000112942",
-    accountName: "Moyours Sports Academy",
+    accountName: "Moyours Sports Academy", // legal name on the Optimus account
   } satisfies BankSettings,
   schedule: [
     { day: "Friday", start: "4:00 PM", end: "6:00 PM" },
