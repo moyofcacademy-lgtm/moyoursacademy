@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Moyours Sports Academy
 
-## Getting Started
+Public website and admin platform for Moyours Sports Academy — a youth
+football academy in Abuja, Nigeria (boys and girls, ages 4–18).
 
-First, run the development server:
+- **Public site**: programs, fixtures, results, gallery, news, contact, and a
+  five-step enrollment flow with bank-transfer proof upload.
+- **Admin** (`/admin`): registration review with an accept/reject workflow,
+  member code issuance, fixtures/results/clubs management, squads, monthly
+  subscription tracking, gallery, news, settings, and a full audit log.
+
+## Stack
+
+Next.js 16 (App Router, Turbopack) · TypeScript strict · Tailwind CSS v4 ·
+Prisma 7 + PostgreSQL · NextAuth v5 (credentials, admin-only) · Cloudinary ·
+Resend + React Email · Termii SMS · Zod · react-hook-form · TanStack Table.
+
+## Getting started
 
 ```bash
+npm install          # also runs `prisma generate`
+npm run db:setup     # applies migrations + seeds (embedded PGlite when no DATABASE_URL)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+With no `DATABASE_URL` set, the app runs on an **embedded PGlite database**
+in `.pglite/` — zero setup, real Postgres semantics. Seeded admin login:
+`admin@moyoursacademy.ng` / `moyours-admin-2026` (override with
+`SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+For a real database (Neon/Supabase), set `DATABASE_URL` in `.env` and run
+`npm run db:setup` again. See `.env.example` for every variable (Cloudinary,
+Resend, Termii). Without provider keys, uploads fall back to a simulated
+dev-mode and notifications are logged as `QUEUED` instead of sent.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tests
 
-## Learn More
+```bash
+NODE_OPTIONS=--conditions=react-server npx tsx tests/member-code.test.ts
+```
 
-To learn more about Next.js, take a look at the following resources:
+Verifies member-code concurrency (distinct sequential codes under parallel
+accepts) and accept idempotency. Stop `next dev` first — PGlite is
+single-process.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Documentation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — how the pieces fit together
+- [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) — Vercel + Neon/Supabase deployment
+- [docs/ADMIN_GUIDE.md](docs/ADMIN_GUIDE.md) — day-to-day guide for academy staff

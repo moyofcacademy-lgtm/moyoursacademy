@@ -1,49 +1,132 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import "tailwindcss";
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/*
+ * Moyours design tokens — "Matchday Programme".
+ * Green is the ground, chalk is the page, gold is the single loud accent.
+ */
+@theme {
+  --color-pitch: #0b3d2c;
+  --color-pitch-deep: #062218;
+  --color-chalk: #f3f1e7;
+  --color-gold: #e8b319;
+  --color-kit: #14140f;
+  --color-line: #c9c4ae;
+
+  /* softer derivatives used for muted text and subtle surfaces */
+  --color-chalk-dim: #d9d5c4;
+  --color-pitch-mid: #0f5038;
+  --color-kit-soft: #4a4a40;
+
+  --font-display: var(--font-archivo), system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  /* type scale: 0.8125 / 1 / 1.25 / 1.75 / 2.5 / 4 rem */
+  --text-step--1: 0.8125rem;
+  --text-step--1--line-height: 1.5;
+  --text-step-0: 1rem;
+  --text-step-0--line-height: 1.65;
+  --text-step-1: 1.25rem;
+  --text-step-1--line-height: 1.45;
+  --text-step-2: 1.75rem;
+  --text-step-2--line-height: 1.25;
+  --text-step-3: 2.5rem;
+  --text-step-3--line-height: 1.1;
+  --text-step-4: 4rem;
+  --text-step-4--line-height: 1.02;
+
+  --radius-brand: 4px;
+
+  --animate-rise: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-hero-drift: heroDrift 7s ease-out both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes heroDrift {
+    from {
+      transform: scale(1.06);
+    }
+    to {
+      transform: scale(1);
+    }
   }
 }
 
-html {
-  height: 100%;
-}
+@layer base {
+  :root {
+    --gutter: clamp(1rem, 4vw, 3rem);
+  }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
   html {
-    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-chalk);
+    color: var(--color-kit);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Display type: wide grotesk, set tight, sentence case */
+  .font-display {
+    font-stretch: 118%;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-kit);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Chalk rule — the thin printed divider of a matchday programme */
+  .rule-gold {
+    border-top: 2px solid var(--color-gold);
+  }
+
+  .stagger > * {
+    animation: var(--animate-rise);
+  }
+  .stagger > *:nth-child(2) {
+    animation-delay: 90ms;
+  }
+  .stagger > *:nth-child(3) {
+    animation-delay: 180ms;
+  }
+  .stagger > *:nth-child(4) {
+    animation-delay: 270ms;
+  }
+  .stagger > *:nth-child(5) {
+    animation-delay: 360ms;
   }
 }

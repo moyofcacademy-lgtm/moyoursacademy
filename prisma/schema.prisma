@@ -1,0 +1,347 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  COACH
+}
+
+enum RegistrationStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  ACCEPTED
+  REJECTED
+}
+
+enum PaymentStatus {
+  AWAITING_PROOF
+  PROOF_SUBMITTED
+  VERIFIED
+  REJECTED
+}
+
+enum PaymentType {
+  INITIAL
+  MONTHLY_SUBSCRIPTION
+  OTHER
+}
+
+enum FixtureStatus {
+  SCHEDULED
+  LIVE
+  COMPLETED
+  POSTPONED
+  CANCELLED
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+model Admin {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         Role      @default(ADMIN)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Registration {
+  id         String  @id @default(cuid())
+  reference  String  @unique // MOY-REF-8KQ2P1 — issued on submit
+  memberCode String? @unique // MOY-YYYY-XXXX — issued only on acceptance
+
+  // Player
+  firstName           String
+  lastName            String
+  dateOfBirth         DateTime
+  gender              Gender
+  preferredPosition   String?
+  medicalNotes        String?
+  schoolName          String?
+  playerPhotoUrl      String?
+  playerPhotoPublicId String?
+
+  // Guardian
+  guardianName          String
+  guardianPhone         String
+  guardianAltPhone      String?
+  guardianEmail         String
+  guardianRelationship  String?
+  address               String
+  emergencyContactName  String?
+  emergencyContactPhone String?
+
+  // Consent
+  consentMedical Boolean @default(false)
+  consentMedia   Boolean @default(false)
+  consentTerms   Boolean @default(false)
+
+  status        RegistrationStatus @default(SUBMITTED)
+  paymentStatus PaymentStatus      @default(AWAITING_PROOF)
+  ageGroup      String? // derived from DOB at submit
+
+  reviewedById    String?
+  reviewedAt      DateTime?
+  rejectionReason String?
+  internalNotes   String?
+
+  payments      Payment[]
+  player        Player?
+  notifications NotificationLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@index([paymentStatus])
+  @@index([guardianPhone])
+  @@index([guardianEmail])
+  @@index([lastName, firstName])
+  @@index([ageGroup])
+}
+
+model Payment {
+  id             String        @id @default(cuid())
+  registrationId String
+  registration   Registration  @relation(fields: [registrationId], references: [id])
+  type           PaymentType   @default(INITIAL)
+  amountKobo     Int // store money in kobo, never floats
+  status         PaymentStatus @default(PROOF_SUBMITTED)
+  proofUrl       String // Cloudinary secure_url
+  proofPublicId  String
+  proofFormat    String // jpg | png | pdf
+  proofBytes     Int
+  depositorName  String?
+  paidAt         DateTime?
+  periodMonth    String? // "2026-07" for monthly subscriptions
+  verifiedById   String?
+  verifiedAt     DateTime?
+  note           String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([status, createdAt])
+  @@index([registrationId])
+  @@index([type, periodMonth])
+}
+
+model Player {
+  id             String       @id @default(cuid())
+  memberCode     String       @unique
+  registrationId String       @unique
+  registration   Registration @relation(fields: [registrationId], references: [id])
+  teamId         String?
+  team           Team?        @relation(fields: [teamId], references: [id])
+  squadNumber    Int?
+  active         Boolean      @default(true)
+  joinedAt       DateTime     @default(now())
+  appearances    MatchEvent[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([teamId])
+}
+
+// Sequential per-year counter backing member code generation.
+// Incremented atomically (UPSERT ... RETURNING) inside the accept
+// transaction so concurrent accepts can never mint the same code.
+model MemberCodeCounter {
+  year  Int @id
+  value Int @default(0)
+}
+
+model Team {
+  id           String    @id @default(cuid())
+  name         String // "Moyours U13"
+  ageGroup     String // "U13"
+  coachName    String?
+  players      Player[]
+  homeFixtures Fixture[] @relation("HomeTeam")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([ageGroup])
+}
+
+model Coach {
+  id            String   @id @default(cuid())
+  name          String
+  role          String // "Head Coach, Performance Phase"
+  ageGroup      String? // squad they lead, e.g. "U15"
+  bio           String
+  badges        Json // string[] — licences and certifications
+  photoUrl      String?
+  photoPublicId String?
+  sortOrder     Int      @default(0)
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([active, sortOrder])
+}
+
+model Club {
+  id           String    @id @default(cuid())
+  name         String
+  shortName    String?
+  logoUrl      String?
+  logoPublicId String?
+  city         String?
+  fixtures     Fixture[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([name])
+}
+
+model Fixture {
+  id          String        @id @default(cuid())
+  competition String // "Abuja Youth League", "Friendly"
+  ageGroup    String
+  teamId      String // our squad
+  team        Team          @relation("HomeTeam", fields: [teamId], references: [id])
+  opponentId  String
+  opponent    Club          @relation(fields: [opponentId], references: [id])
+  isHome      Boolean       @default(true)
+  kickoffAt   DateTime
+  venue       String
+  venueMapUrl String?
+  status      FixtureStatus @default(SCHEDULED)
+  ticketNote  String?
+  result      Result?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([kickoffAt, status])
+  @@index([ageGroup])
+}
+
+model Result {
+  id              String       @id @default(cuid())
+  fixtureId       String       @unique
+  fixture         Fixture      @relation(fields: [fixtureId], references: [id], onDelete: Cascade)
+  goalsFor        Int
+  goalsAgainst    Int
+  halfTimeFor     Int?
+  halfTimeAgainst Int?
+  matchReport     String?
+  motmPlayerId    String?
+  events          MatchEvent[]
+  media           MediaAsset[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+model MatchEvent {
+  id                 String   @id @default(cuid())
+  resultId           String
+  result             Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
+  minute             Int
+  type               String // GOAL | ASSIST | YELLOW | RED | SUB
+  playerId           String?
+  player             Player?  @relation(fields: [playerId], references: [id])
+  playerNameFallback String? // for opponents / unregistered players
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([resultId])
+}
+
+model MediaAsset {
+  id        String   @id @default(cuid())
+  url       String
+  publicId  String
+  width     Int?
+  height    Int?
+  caption   String?
+  albumId   String?
+  album     Album?   @relation(fields: [albumId], references: [id])
+  resultId  String?
+  result    Result?  @relation(fields: [resultId], references: [id])
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([albumId])
+  @@index([resultId])
+}
+
+model Album {
+  id        String       @id @default(cuid())
+  title     String
+  slug      String       @unique
+  coverUrl  String?
+  published Boolean      @default(false)
+  assets    MediaAsset[]
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@index([published])
+}
+
+model Post {
+  id            String    @id @default(cuid())
+  title         String
+  slug          String    @unique
+  excerpt       String?
+  body          String
+  coverUrl      String?
+  coverPublicId String?
+  published     Boolean   @default(false)
+  publishedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([published, publishedAt])
+}
+
+model NotificationLog {
+  id             String        @id @default(cuid())
+  registrationId String?
+  registration   Registration? @relation(fields: [registrationId], references: [id])
+  channel        String // EMAIL | SMS
+  template       String
+  recipient      String
+  status         String // QUEUED | SENT | FAILED
+  providerId     String?
+  error          String?
+  sentAt         DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([registrationId])
+  @@index([status, createdAt])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String
+  actorEmail String
+  action     String // registration.accepted, fixture.deleted…
+  entityType String
+  entityId   String
+  metadata   Json?
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@index([actorId, createdAt])
+  @@index([action, createdAt])
+}
+
+model Setting {
+  key   String @id
+  value Json
+}
