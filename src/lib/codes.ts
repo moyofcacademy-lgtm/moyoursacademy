@@ -5,6 +5,15 @@ import type { Prisma } from "@/generated/prisma/client";
 /** Unambiguous alphabet — no 0/O/1/I — for guardian-facing references. */
 const REFERENCE_ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
 
+export function generateCampReference(): string {
+  const bytes = randomBytes(6);
+  let out = "";
+  for (let i = 0; i < 6; i++) {
+    out += REFERENCE_ALPHABET[bytes[i] % REFERENCE_ALPHABET.length];
+  }
+  return `MOY-CAMP-${out}`;
+}
+
 export function generateReference(): string {
   const bytes = randomBytes(6);
   let out = "";

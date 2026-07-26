@@ -53,7 +53,7 @@ export default async function NewsPostPage({
           width={1200}
           height={675}
           priority
-          className="mt-6 aspect-video w-full rounded-brand border border-line object-cover"
+          className="mt-6 w-full rounded-brand border border-line object-contain"
         />
       )}
       <div className="rule-gold mt-8 bg-white/60 p-6">

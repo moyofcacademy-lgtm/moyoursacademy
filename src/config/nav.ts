@@ -1,4 +1,5 @@
 export const siteNav = [
+  { href: "/summer-camp", label: "Summer Camp" },
   { href: "/about", label: "About" },
   { href: "/programs", label: "Programs" },
   { href: "/squads", label: "Squads" },
@@ -37,6 +38,7 @@ export const adminNavGroups = [
     label: "Club",
     items: [
       { href: "/admin/payments", label: "Payments" },
+      { href: "/admin/camp", label: "Summer camp" },
       { href: "/admin/gallery", label: "Gallery" },
       { href: "/admin/news", label: "News" },
     ],

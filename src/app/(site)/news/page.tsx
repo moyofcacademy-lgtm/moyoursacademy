@@ -42,13 +42,13 @@ export default async function NewsPage() {
                   <Image
                     src={
                       post.coverUrl.includes("res.cloudinary.com")
-                        ? post.coverUrl.replace("/upload/", "/upload/f_auto,q_auto,w_400,h_260,c_fill/")
+                        ? post.coverUrl.replace("/upload/", "/upload/f_auto,q_auto,w_400/")
                         : post.coverUrl
                     }
                     alt=""
                     width={400}
                     height={260}
-                    className="aspect-[3/2] w-full shrink-0 rounded-brand object-cover sm:w-48"
+                    className="aspect-[3/2] w-full shrink-0 rounded-brand bg-pitch-deep/5 object-contain sm:w-48"
                   />
                 )}
                 <div className="min-w-0">

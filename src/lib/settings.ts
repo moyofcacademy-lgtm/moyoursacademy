@@ -28,6 +28,22 @@ export type ContactSettings = {
   whatsappGroupUrl: string;
 };
 
+export type CampSettings = {
+  active: boolean;
+  name: string;
+  startDate: string; // ISO date, WAT
+  endDate: string;
+  ageMin: number;
+  ageMax: number;
+  feeKobo: number;
+  durationLabel: string;
+  venue: string;
+  schedule: ScheduleSession[];
+  bank: BankSettings;
+  callPhone: string;
+  whatsappPhone: string;
+};
+
 export const SETTING_DEFAULTS = {
   fees: {
     registrationKobo: 150_000_00,
@@ -49,6 +65,31 @@ export const SETTING_DEFAULTS = {
     address: site.address,
     whatsappGroupUrl: "",
   } satisfies ContactSettings,
+  camp: {
+    active: true,
+    name: "Football Summer Camp",
+    startDate: "2026-07-27",
+    endDate: "2026-08-28",
+    ageMin: 2,
+    ageMax: 17,
+    feeKobo: 120_000_00,
+    durationLabel: "5 weeks",
+    venue: "DMAK Indaptil Limited, Wuse Zone 2, Abuja",
+    schedule: [
+      { day: "Monday", start: "7:00 AM", end: "11:00 AM" },
+      { day: "Tuesday", start: "7:00 AM", end: "11:00 AM" },
+      { day: "Thursday", start: "10:00 AM", end: "1:00 PM" },
+      { day: "Friday", start: "7:00 AM", end: "11:00 AM" },
+      { day: "Saturday", start: "10:00 AM", end: "1:00 PM" },
+    ],
+    bank: {
+      bankName: "Lightway Microfinance Bank",
+      accountNumber: "2020009050",
+      accountName: "Moyours Sports Academy Limited",
+    },
+    callPhone: "09139583674",
+    whatsappPhone: "09139583669",
+  } satisfies CampSettings,
   /** Day of month after which an unpaid monthly subscription is flagged overdue. */
   subscriptionOverdueDay: 7,
   /**

@@ -14,6 +14,9 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  // Preview the dev server from phones/other devices on the local network
+  // (hostnames/IPs only — add yours here if it differs).
+  allowedDevOrigins: ["172.20.10.3"],
   serverExternalPackages: ["@electric-sql/pglite", "pglite-prisma-adapter"],
   images: {
     remotePatterns: [

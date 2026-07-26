@@ -1,9 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { site } from "@/config/site";
 import { PROGRAM_PHASES } from "@/lib/constants";
 import { getFees } from "@/lib/settings";
-import { formatNaira, hoursAgo } from "@/lib/utils";
+import { formatDateWAT, formatNaira, hoursAgo } from "@/lib/utils";
 import { MoyoursCrest } from "@/components/logo";
 import { FixtureStrip } from "@/components/fixture-strip";
 import { HeroCarousel, type HeroSlide } from "@/components/hero-carousel";
@@ -53,7 +54,7 @@ const SERVICE_ICONS = [
 ];
 
 export default async function HomePage() {
-  const [nextFixture, recentResults, fees, slides, coaches] = await Promise.all([
+  const [nextFixture, recentResults, fees, slides, coaches, posts] = await Promise.all([
     prisma.fixture.findFirst({
       where: { status: { in: ["SCHEDULED", "LIVE"] }, kickoffAt: { gte: hoursAgo(3) } },
       orderBy: { kickoffAt: "asc" },
@@ -71,6 +72,12 @@ export default async function HomePage() {
       where: { active: true },
       orderBy: { sortOrder: "asc" },
       take: 4,
+    }),
+    prisma.post.findMany({
+      where: { published: true },
+      orderBy: { publishedAt: "desc" },
+      take: 3,
+      select: { id: true, title: true, slug: true, excerpt: true, coverUrl: true, publishedAt: true },
     }),
   ]);
 
@@ -347,6 +354,68 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* Latest news */}
+      {posts.length > 0 && (
+        <section aria-labelledby="news-heading" className="reveal border-t border-line bg-white/40">
+          <div className="mx-auto max-w-6xl px-[var(--gutter)] py-16">
+            <div className="flex items-end justify-between gap-4">
+              <h2 id="news-heading" className="font-display text-step-2">
+                Latest from the academy
+              </h2>
+              <Link href="/news" className="text-step--1 font-semibold underline-offset-4 hover:underline">
+                All news
+              </Link>
+            </div>
+            <div className="mt-8 grid gap-5 md:grid-cols-3">
+              {posts.map((post) => (
+                <article key={post.id}>
+                  <Link
+                    href={`/news/${post.slug}`}
+                    className="group flex h-full flex-col overflow-hidden rounded-brand border border-line bg-white/60 transition-[transform,box-shadow] duration-150 hover:-translate-y-0.5 hover:shadow-md motion-reduce:hover:translate-y-0"
+                  >
+                    {post.coverUrl ? (
+                      <Image
+                        src={
+                          post.coverUrl.includes("res.cloudinary.com")
+                            ? post.coverUrl.replace("/upload/", "/upload/f_auto,q_auto,w_600/")
+                            : post.coverUrl
+                        }
+                        alt=""
+                        width={600}
+                        height={340}
+                        className="aspect-[16/9] w-full bg-pitch-deep/5 object-contain"
+                      />
+                    ) : (
+                      <div aria-hidden className="rule-gold surface-pitch flex aspect-[16/9] w-full items-center justify-center">
+                        <MoyoursCrest size={56} />
+                      </div>
+                    )}
+                    <div className="flex flex-1 flex-col p-5">
+                      {post.publishedAt && (
+                        <p className="font-mono text-[0.6875rem] uppercase tracking-widest text-kit-soft">
+                          {formatDateWAT(post.publishedAt)}
+                        </p>
+                      )}
+                      <h3 className="mt-1.5 font-display text-step-0 group-hover:underline">
+                        {post.title}
+                      </h3>
+                      {post.excerpt && (
+                        <p className="mt-2 line-clamp-3 text-step--1 leading-relaxed text-kit-soft">
+                          {post.excerpt}
+                        </p>
+                      )}
+                      <span className="mt-auto pt-3 text-step--1 font-semibold text-pitch">
+                        Read more →
+                      </span>
+                    </div>
+                  </Link>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Enroll + support CTA */}
       <section className="reveal touchline relative isolate overflow-hidden bg-pitch text-chalk">

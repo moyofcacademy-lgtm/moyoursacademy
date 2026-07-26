@@ -345,3 +345,45 @@ model Setting {
   key   String @id
   value Json
 }
+
+// Summer camp signups — separate from academy Registration: wider age band
+// (2–17), lighter form, camp-specific payment details.
+model CampRegistration {
+  id        String @id @default(cuid())
+  reference String @unique // MOY-CAMP-XXXXXX
+
+  // Participant
+  fullName    String
+  gender      Gender
+  dateOfBirth DateTime
+  religion    String?
+  nationality String?
+  state       String?
+  address     String
+
+  // Parent / guardian
+  guardianName  String
+  guardianPhone String
+  guardianEmail String
+
+  // Payment
+  paymentMethod String // CASH | TRANSFER
+  amountKobo    Int?
+  proofUrl      String?
+  proofPublicId String?
+  proofFormat   String?
+  proofBytes    Int?
+  paymentStatus PaymentStatus @default(AWAITING_PROOF)
+  verifiedById  String?
+  verifiedAt    DateTime?
+
+  consentDeclaration Boolean @default(false)
+  internalNotes      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
+  @@index([guardianPhone])
+  @@index([paymentStatus])
+}

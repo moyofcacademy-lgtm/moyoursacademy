@@ -40,6 +40,7 @@ export function SiteHeader() {
               className={cn(
                 "rounded-brand px-3 py-2 text-step--1 transition-colors hover:bg-pitch-mid",
                 pathname.startsWith(item.href) && "bg-pitch-mid font-semibold",
+                item.href === "/summer-camp" && "font-semibold text-gold",
               )}
             >
               {item.label}
@@ -87,6 +88,7 @@ export function SiteHeader() {
               className={cn(
                 "block rounded-brand px-3 py-3 text-step-0 hover:bg-pitch-mid",
                 pathname.startsWith(item.href) && "bg-pitch-mid font-semibold",
+                item.href === "/summer-camp" && "font-semibold text-gold",
               )}
             >
               {item.label}
