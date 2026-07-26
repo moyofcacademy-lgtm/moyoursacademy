@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CopyButton } from "@/components/ui/copy-button";
+import { SponsorStrip } from "@/components/sponsor-strip";
 import { site } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -143,6 +144,8 @@ export default function SupportPage() {
           </div>
         </section>
       </div>
+
+      <SponsorStrip showCta={false} />
     </>
   );
 }

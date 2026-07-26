@@ -16,9 +16,15 @@ export const site = {
   supportEmail: "admin@moyoursfcacademy.com",
   mapsQuery: "Tsukunda House, Central Business District, Abuja",
   credentials: [
-    { label: "FIFA ID", value: "14DHVUF" },
-    { label: "NFF Member ID", value: "0733C" },
-    { label: "Club ID", value: "184592" },
+    { label: "FIFA ID", value: "14DHVUF", logo: "/badges/fifa.png" },
+    { label: "NFF Member ID", value: "0733C", logo: "/badges/nff.png" },
+    { label: "Club ID", value: "184592", logo: "/crest.png" },
+  ],
+  sponsors: [
+    { name: "DYNASPRO", logo: "/sponsors/dynaspro.png" },
+    { name: "FCV International Football Academy", logo: "/sponsors/fcv.png" },
+    { name: "NIMASA", logo: "/sponsors/nimasa.png" },
+    { name: "Noneldan Travels", logo: "/sponsors/noneldan.png" },
   ],
   stats: [
     { value: "9+", label: "Years of consistent operations in Abuja" },

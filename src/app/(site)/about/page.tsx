@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MoyoursCrest } from "@/components/logo";
+import { CredentialBadges } from "@/components/credential-badges";
 import { site } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -25,16 +26,7 @@ export default function AboutPage() {
           <p className="rule-gold mt-6 max-w-xl pt-4 text-step-1 text-chalk-dim">
             Our vision: <span className="text-chalk">a society healed by sports.</span>
           </p>
-          <dl className="mt-10 flex flex-wrap gap-x-8 gap-y-2">
-            {site.credentials.map((credential) => (
-              <div key={credential.label} className="flex items-baseline gap-2">
-                <dt className="text-[0.6875rem] uppercase tracking-widest text-chalk-dim">
-                  {credential.label}
-                </dt>
-                <dd className="font-mono text-step--1 font-bold text-chalk">{credential.value}</dd>
-              </div>
-            ))}
-          </dl>
+          <CredentialBadges className="mt-10" />
         </div>
       </section>
 

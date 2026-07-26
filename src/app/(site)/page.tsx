@@ -6,6 +6,8 @@ import { PROGRAM_PHASES } from "@/lib/constants";
 import { getFees } from "@/lib/settings";
 import { formatDateWAT, formatNaira, hoursAgo } from "@/lib/utils";
 import { MoyoursCrest } from "@/components/logo";
+import { CredentialBadges } from "@/components/credential-badges";
+import { SponsorStrip } from "@/components/sponsor-strip";
 import { FixtureStrip } from "@/components/fixture-strip";
 import { HeroCarousel, type HeroSlide } from "@/components/hero-carousel";
 import { CoachPortrait } from "@/components/coach-portrait";
@@ -139,16 +141,7 @@ export default async function HomePage() {
                 About us
               </Link>
             </div>
-            <dl className="flex flex-wrap gap-x-8 gap-y-2">
-              {site.credentials.map((credential) => (
-                <div key={credential.label} className="flex items-baseline gap-2">
-                  <dt className="text-[0.6875rem] uppercase tracking-widest text-chalk-dim">
-                    {credential.label}
-                  </dt>
-                  <dd className="font-mono text-step--1 font-bold text-chalk">{credential.value}</dd>
-                </div>
-              ))}
-            </dl>
+            <CredentialBadges />
             {nextFixture && (
               <div>
                 <p className="mb-2 flex items-center gap-1.5 font-mono text-[0.6875rem] uppercase tracking-widest text-chalk-dim">
@@ -416,6 +409,8 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      <SponsorStrip />
 
       {/* Enroll + support CTA */}
       <section className="reveal touchline relative isolate overflow-hidden bg-pitch text-chalk">
