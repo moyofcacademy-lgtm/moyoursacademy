@@ -67,7 +67,15 @@ export function SiteFooter() {
       <div className="border-t border-pitch-mid/50">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-[var(--gutter)] py-4">
           <p className="text-[0.75rem] text-chalk-dim">
-            © {new Date().getFullYear()} Moyours Academy. All Rights Reserved.
+            © {new Date().getFullYear()} Moyours Academy. All Rights Reserved. Built by{" "}
+            <a
+              href="https://techboxlimited.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-gold underline-offset-2 hover:underline"
+            >
+              TechBox
+            </a>
           </p>
           <Link href="/status" className="text-[0.75rem] text-chalk-dim underline-offset-2 hover:underline">
             Check application status
