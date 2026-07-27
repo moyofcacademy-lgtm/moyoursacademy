@@ -1,5 +1,6 @@
 import "server-only";
 import { Resend } from "resend";
+import { render } from "@react-email/render";
 import type { ReactElement } from "react";
 import { prisma } from "@/lib/prisma";
 
@@ -43,11 +44,15 @@ export async function sendEmail({
     return;
   }
   try {
+    // Render the template to HTML ourselves: Resend's own `react` option
+    // loads @react-email/render dynamically, which serverless bundlers
+    // miss ("Failed to render React component" in production).
+    const html = await render(react);
     const { data, error } = await client.emails.send({
-      from: process.env.EMAIL_FROM ?? "Moyours Academy <noreply@moyoursacademy.ng>",
+      from: process.env.EMAIL_FROM ?? "Moyours Academy <noreply@moyoursacademy.com>",
       to,
       subject,
-      react,
+      html,
       text,
     });
     await logNotification({
