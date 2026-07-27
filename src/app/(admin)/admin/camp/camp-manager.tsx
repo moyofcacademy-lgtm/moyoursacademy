@@ -101,9 +101,14 @@ export function CampManager({ rows }: { rows: CampRow[] }) {
                   <td className="px-3 py-2.5">
                     {row.paymentMethod === "CASH" ? "Cash at venue" : "Transfer"}
                     {row.proofUrl && (
-                      <span className="ml-1.5 rounded-brand border border-line px-1.5 py-0.5 font-mono text-[0.625rem] font-bold uppercase">
-                        proof
-                      </span>
+                      <a
+                        href={`/admin/camp/${row.id}/proof`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ml-1.5 inline-flex items-center gap-1 rounded-brand border border-line px-1.5 py-0.5 font-mono text-[0.625rem] font-bold uppercase text-pitch underline-offset-2 hover:border-pitch hover:underline"
+                      >
+                        View proof ↗
+                      </a>
                     )}
                   </td>
                   <td className="px-3 py-2.5">
