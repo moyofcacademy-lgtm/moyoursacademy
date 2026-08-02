@@ -294,6 +294,55 @@ export async function saveInternalNotes(
   }
 }
 
+export async function deleteRegistration(registrationId: string): Promise<ActionResult> {
+  const actor = await requireAdmin();
+  const registration = await prisma.registration.findUnique({
+    where: { id: registrationId },
+    include: {
+      payments: { select: { proofPublicId: true } },
+      player: { select: { id: true } },
+    },
+  });
+  if (!registration) return { ok: true };
+
+  await prisma.$transaction(async (tx) => {
+    if (registration.player) {
+      await tx.player.delete({ where: { id: registration.player.id } });
+    }
+    await tx.notificationLog.deleteMany({ where: { registrationId } });
+    await tx.payment.deleteMany({ where: { registrationId } });
+    await tx.registration.delete({ where: { id: registrationId } });
+    await audit({
+      tx,
+      actor,
+      action: "registration.deleted",
+      entityType: "Registration",
+      entityId: registrationId,
+      metadata: {
+        reference: registration.reference,
+        playerName: `${registration.firstName} ${registration.lastName}`,
+        memberCode: registration.memberCode,
+      },
+    });
+  });
+
+  const publicIds = [
+    registration.playerPhotoPublicId,
+    ...registration.payments.map((payment) => payment.proofPublicId),
+  ].filter(Boolean);
+  if (publicIds.length > 0) {
+    const { destroyAsset } = await import("@/lib/cloudinary");
+    await Promise.all(publicIds.map((publicId) => destroyAsset(publicId!)));
+  }
+
+  revalidatePath("/admin/registrations");
+  revalidatePath("/admin/players");
+  revalidatePath("/admin/payments");
+  revalidatePath("/squads");
+  revalidatePath("/");
+  return { ok: true };
+}
+
 /** Re-send a failed or queued notification from its log entry. */
 export async function resendNotification(logId: string): Promise<ActionResult> {
   const actor = await requireAdmin();

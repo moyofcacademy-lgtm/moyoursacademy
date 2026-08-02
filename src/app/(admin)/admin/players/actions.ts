@@ -7,6 +7,14 @@ import { audit } from "@/lib/audit";
 
 export type PlayerActionResult = { ok: true } | { ok: false; error: string };
 
+function revalidatePlayers() {
+  revalidatePath("/admin/players");
+  revalidatePath("/admin/teams");
+  revalidatePath("/admin/payments");
+  revalidatePath("/squads");
+  revalidatePath("/");
+}
+
 export async function updatePlayer(
   playerId: string,
   data: { teamId?: string | null; squadNumber?: number | null; active?: boolean },
@@ -40,8 +48,7 @@ export async function updatePlayer(
     entityId: playerId,
     metadata: data as never,
   });
-  revalidatePath("/admin/players");
-  revalidatePath("/admin/teams");
+  revalidatePlayers();
   return { ok: true };
 }
 
@@ -98,6 +105,55 @@ export async function updatePlayerProfile(
   return { ok: true };
 }
 
+export async function deletePlayer(playerId: string): Promise<PlayerActionResult> {
+  const actor = await requireAdmin();
+  const player = await prisma.player.findUnique({
+    where: { id: playerId },
+    include: {
+      registration: {
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          playerPhotoPublicId: true,
+        },
+      },
+    },
+  });
+  if (!player) return { ok: true };
+
+  await prisma.$transaction([
+    prisma.player.delete({ where: { id: playerId } }),
+    prisma.registration.update({
+      where: { id: player.registrationId },
+      data: {
+        playerPhotoUrl: null,
+        playerPhotoPublicId: null,
+        preferredPosition: null,
+      },
+    }),
+  ]);
+
+  if (player.registration.playerPhotoPublicId) {
+    const { destroyAsset } = await import("@/lib/cloudinary");
+    await destroyAsset(player.registration.playerPhotoPublicId);
+  }
+
+  await audit({
+    actor,
+    action: "player.deleted",
+    entityType: "Player",
+    entityId: playerId,
+    metadata: {
+      memberCode: player.memberCode,
+      name: `${player.registration.firstName} ${player.registration.lastName}`,
+      registrationId: player.registration.id,
+    },
+  });
+  revalidatePlayers();
+  return { ok: true };
+}
+
 export async function updateTeam(
   teamId: string,
   data: { name?: string; coachName?: string },
@@ -119,5 +175,30 @@ export async function updateTeam(
   }
   await audit({ actor, action: "team.updated", entityType: "Team", entityId: teamId });
   revalidatePath("/admin/teams");
+  return { ok: true };
+}
+
+export async function deleteTeam(teamId: string): Promise<PlayerActionResult> {
+  const actor = await requireAdmin();
+  const team = await prisma.team.findUnique({
+    where: { id: teamId },
+    include: {
+      _count: { select: { homeFixtures: true, players: true } },
+    },
+  });
+  if (!team) return { ok: true };
+  if (team._count.homeFixtures > 0) {
+    return { ok: false, error: "Delete this team's fixtures before deleting the team." };
+  }
+
+  await prisma.team.delete({ where: { id: teamId } });
+  await audit({
+    actor,
+    action: "team.deleted",
+    entityType: "Team",
+    entityId: teamId,
+    metadata: { name: team.name, ageGroup: team.ageGroup, playersUnassigned: team._count.players },
+  });
+  revalidatePlayers();
   return { ok: true };
 }

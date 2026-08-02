@@ -69,3 +69,25 @@ export async function saveCampNotes(registrationId: string, notes: string): Prom
   revalidatePath("/admin/camp");
   return { ok: true };
 }
+
+export async function deleteCampRegistration(registrationId: string): Promise<CampActionResult> {
+  const actor = await requireAdmin();
+  const registration = await prisma.campRegistration.findUnique({ where: { id: registrationId } });
+  if (!registration) return { ok: true };
+
+  await prisma.campRegistration.delete({ where: { id: registrationId } });
+  if (registration.proofPublicId) {
+    const { destroyAsset } = await import("@/lib/cloudinary");
+    await destroyAsset(registration.proofPublicId);
+  }
+
+  await audit({
+    actor,
+    action: "camp.registration_deleted",
+    entityType: "CampRegistration",
+    entityId: registrationId,
+    metadata: { reference: registration.reference, fullName: registration.fullName },
+  });
+  revalidatePath("/admin/camp");
+  return { ok: true };
+}

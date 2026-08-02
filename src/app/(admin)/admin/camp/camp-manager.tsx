@@ -5,11 +5,12 @@ import { useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogActions } from "@/components/ui/dialog";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Input, Select } from "@/components/ui/input";
 import { ageAt } from "@/lib/constants";
 import { formatDateTimeWAT } from "@/lib/utils";
-import { markCampPaid, unmarkCampPaid } from "./actions";
+import { deleteCampRegistration, markCampPaid, unmarkCampPaid } from "./actions";
 
 export type CampRow = {
   id: string;
@@ -32,6 +33,7 @@ export function CampManager({ rows }: { rows: CampRow[] }) {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [paidFilter, setPaidFilter] = useState("");
+  const [removing, setRemoving] = useState<CampRow | null>(null);
   const [pending, startTransition] = useTransition();
 
   const filtered = useMemo(() => {
@@ -124,40 +126,45 @@ export function CampManager({ rows }: { rows: CampRow[] }) {
                     {formatDateTimeWAT(new Date(row.createdAtIso))}
                   </td>
                   <td className="px-3 py-2.5 text-right">
-                    {row.paymentStatus === "VERIFIED" ? (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        disabled={pending}
-                        onClick={() =>
-                          startTransition(async () => {
-                            const result = await unmarkCampPaid(row.id);
-                            if (result.ok) {
-                              toast.success("Marked unpaid.");
-                              router.refresh();
-                            } else toast.error(result.error);
-                          })
-                        }
-                      >
-                        Undo
+                    <div className="flex justify-end gap-2">
+                      {row.paymentStatus === "VERIFIED" ? (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          disabled={pending}
+                          onClick={() =>
+                            startTransition(async () => {
+                              const result = await unmarkCampPaid(row.id);
+                              if (result.ok) {
+                                toast.success("Marked unpaid.");
+                                router.refresh();
+                              } else toast.error(result.error);
+                            })
+                          }
+                        >
+                          Undo
+                        </Button>
+                      ) : (
+                        <Button
+                          size="sm"
+                          disabled={pending}
+                          onClick={() =>
+                            startTransition(async () => {
+                              const result = await markCampPaid(row.id);
+                              if (result.ok) {
+                                toast.success(`${row.fullName} marked paid.`);
+                                router.refresh();
+                              } else toast.error(result.error);
+                            })
+                          }
+                        >
+                          Mark paid
+                        </Button>
+                      )}
+                      <Button variant="danger" size="sm" onClick={() => setRemoving(row)}>
+                        Delete
                       </Button>
-                    ) : (
-                      <Button
-                        size="sm"
-                        disabled={pending}
-                        onClick={() =>
-                          startTransition(async () => {
-                            const result = await markCampPaid(row.id);
-                            if (result.ok) {
-                              toast.success(`${row.fullName} marked paid.`);
-                              router.refresh();
-                            } else toast.error(result.error);
-                          })
-                        }
-                      >
-                        Mark paid
-                      </Button>
-                    )}
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -165,6 +172,36 @@ export function CampManager({ rows }: { rows: CampRow[] }) {
           </table>
         </div>
       )}
+
+      <Dialog open={removing !== null} onClose={() => setRemoving(null)} title={`Delete ${removing?.fullName}?`}>
+        <p className="text-step--1 text-kit-soft">
+          This permanently removes the camp registration and any uploaded payment proof.
+        </p>
+        <DialogActions>
+          <Button variant="secondary" onClick={() => setRemoving(null)} disabled={pending}>
+            Cancel
+          </Button>
+          <Button
+            variant="danger"
+            loading={pending}
+            onClick={() =>
+              startTransition(async () => {
+                if (!removing) return;
+                const result = await deleteCampRegistration(removing.id);
+                setRemoving(null);
+                if (result.ok) {
+                  toast.success("Camp registration deleted.");
+                  router.refresh();
+                } else {
+                  toast.error(result.error);
+                }
+              })
+            }
+          >
+            Delete registration
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

@@ -6,10 +6,12 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { AdminUpload } from "@/components/admin/admin-upload";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogActions } from "@/components/ui/dialog";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Input, Select } from "@/components/ui/input";
 import { POSITIONS } from "@/lib/constants";
-import { updatePlayer, updatePlayerProfile } from "./actions";
+import { deletePlayer, updatePlayer, updatePlayerProfile } from "./actions";
 
 export type PlayerRow = {
   id: string;
@@ -43,7 +45,8 @@ export function PlayersManager({
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [teamFilter, setTeamFilter] = useState("");
-  const [, startTransition] = useTransition();
+  const [removing, setRemoving] = useState<PlayerRow | null>(null);
+  const [pending, startTransition] = useTransition();
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -109,6 +112,7 @@ export function PlayersManager({
                 <th scope="col" className="px-3 py-2.5 font-semibold">Team</th>
                 <th scope="col" className="px-3 py-2.5 font-semibold">Squad #</th>
                 <th scope="col" className="px-3 py-2.5 font-semibold">Status</th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -261,12 +265,47 @@ export function PlayersManager({
                       {player.active ? "Active" : "Inactive"}
                     </button>
                   </td>
+                  <td className="px-3 py-2">
+                    <Button variant="danger" size="sm" onClick={() => setRemoving(player)}>
+                      Delete
+                    </Button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
+
+      <Dialog open={removing !== null} onClose={() => setRemoving(null)} title={`Delete ${removing?.name}?`}>
+        <p className="text-step--1 text-kit-soft">
+          This removes the player from squads, payments, and public pages permanently. Their original registration stays in the admin records.
+        </p>
+        <DialogActions>
+          <Button variant="secondary" onClick={() => setRemoving(null)} disabled={pending}>
+            Cancel
+          </Button>
+          <Button
+            variant="danger"
+            loading={pending}
+            onClick={() =>
+              startTransition(async () => {
+                if (!removing) return;
+                const result = await deletePlayer(removing.id);
+                setRemoving(null);
+                if (result.ok) {
+                  toast.success("Player deleted.");
+                  router.refresh();
+                } else {
+                  toast.error(result.error);
+                }
+              })
+            }
+          >
+            Delete player
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

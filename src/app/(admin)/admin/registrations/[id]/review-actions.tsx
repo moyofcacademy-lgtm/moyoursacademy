@@ -10,6 +10,7 @@ import { REJECTION_REASONS } from "@/lib/constants";
 import { formatNaira } from "@/lib/utils";
 import {
   acceptRegistration,
+  deleteRegistration,
   rejectRegistration,
   requestBetterProof,
   resendNotification,
@@ -32,38 +33,45 @@ export function ReviewActions({
   const router = useRouter();
   const [confirmAccept, setConfirmAccept] = useState(false);
   const [confirmReject, setConfirmReject] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [reasonKey, setReasonKey] = useState("");
   const [customReason, setCustomReason] = useState("");
   const [pending, startTransition] = useTransition();
 
   const reviewable = status === "SUBMITTED" || status === "UNDER_REVIEW";
-  if (!reviewable) return null;
 
   return (
     <div className="flex flex-wrap gap-3">
-      <Button size="lg" onClick={() => setConfirmAccept(true)}>
-        Accept player
-      </Button>
-      <Button variant="secondary" size="lg" onClick={() => setConfirmReject(true)}>
-        Reject
-      </Button>
-      <Button
-        variant="ghost"
-        size="lg"
-        loading={pending}
-        onClick={() =>
-          startTransition(async () => {
-            const result = await requestBetterProof(registrationId);
-            if (result.ok) {
-              toast.success("Guardian emailed — they can upload a new proof against the same reference.");
-              router.refresh();
-            } else {
-              toast.error(result.error);
+      {reviewable && (
+        <>
+          <Button size="lg" onClick={() => setConfirmAccept(true)}>
+            Accept player
+          </Button>
+          <Button variant="secondary" size="lg" onClick={() => setConfirmReject(true)}>
+            Reject
+          </Button>
+          <Button
+            variant="ghost"
+            size="lg"
+            loading={pending}
+            onClick={() =>
+              startTransition(async () => {
+                const result = await requestBetterProof(registrationId);
+                if (result.ok) {
+                  toast.success("Guardian emailed — they can upload a new proof against the same reference.");
+                  router.refresh();
+                } else {
+                  toast.error(result.error);
+                }
+              })
             }
-          })
-        }
-      >
-        Request better proof
+          >
+            Request better proof
+          </Button>
+        </>
+      )}
+      <Button variant="danger" size="lg" onClick={() => setConfirmDelete(true)}>
+        Delete registration
       </Button>
 
       {/* Accept confirmation */}
@@ -166,6 +174,36 @@ export function ReviewActions({
             }
           >
             Reject application
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={confirmDelete} onClose={() => setConfirmDelete(false)} title={`Delete ${playerName}?`}>
+        <p className="text-step--1 text-kit-soft">
+          This permanently removes the registration, payment proof, notifications, and linked player record if one exists.
+        </p>
+        <DialogActions>
+          <Button variant="secondary" onClick={() => setConfirmDelete(false)} disabled={pending}>
+            Cancel
+          </Button>
+          <Button
+            variant="danger"
+            loading={pending}
+            onClick={() =>
+              startTransition(async () => {
+                const result = await deleteRegistration(registrationId);
+                setConfirmDelete(false);
+                if (result.ok) {
+                  toast.success("Registration deleted.");
+                  router.push("/admin/registrations");
+                  router.refresh();
+                } else {
+                  toast.error(result.error);
+                }
+              })
+            }
+          >
+            Delete registration
           </Button>
         </DialogActions>
       </Dialog>

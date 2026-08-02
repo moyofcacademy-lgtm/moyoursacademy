@@ -17,7 +17,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Input, Select } from "@/components/ui/input";
 import { StatusBadge } from "@/components/ui/badge";
 import { cn, formatDateTimeWAT, formatNaira, timeAgo } from "@/lib/utils";
-import { bulkAcceptRegistrations } from "./actions";
+import { bulkAcceptRegistrations, deleteRegistration } from "./actions";
 
 export type RegistrationRow = {
   id: string;
@@ -56,6 +56,7 @@ export function RegistrationsTable({
   const searchParams = useSearchParams();
   const [selection, setSelection] = useState<RowSelectionState>({});
   const [confirmBulk, setConfirmBulk] = useState(false);
+  const [removing, setRemoving] = useState<RegistrationRow | null>(null);
   const [pending, startTransition] = useTransition();
   const [search, setSearch] = useState(searchParams.get("q") ?? "");
   const searchTimer = useRef<ReturnType<typeof setTimeout>>(null);
@@ -160,6 +161,15 @@ export function RegistrationsTable({
       columnHelper.accessor("status", {
         header: "Status",
         cell: (info) => <StatusBadge status={info.getValue()} />,
+      }),
+      columnHelper.display({
+        id: "actions",
+        header: () => <span className="sr-only">Actions</span>,
+        cell: ({ row }) => (
+          <Button variant="danger" size="sm" onClick={() => setRemoving(row.original)}>
+            Delete
+          </Button>
+        ),
       }),
     ],
     [canBulkAccept],
@@ -373,6 +383,37 @@ export function RegistrationsTable({
             }
           >
             Accept players
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={removing !== null} onClose={() => setRemoving(null)} title={`Delete ${removing?.playerName}?`}>
+        <p className="text-step--1 text-kit-soft">
+          This permanently removes the registration, payment proof, notifications, and linked player record if one exists.
+        </p>
+        <DialogActions>
+          <Button variant="secondary" onClick={() => setRemoving(null)} disabled={pending}>
+            Cancel
+          </Button>
+          <Button
+            variant="danger"
+            loading={pending}
+            onClick={() =>
+              startTransition(async () => {
+                if (!removing) return;
+                const result = await deleteRegistration(removing.id);
+                setRemoving(null);
+                if (result.ok) {
+                  toast.success("Registration deleted.");
+                  setSelection({});
+                  router.refresh();
+                } else {
+                  toast.error(result.error);
+                }
+              })
+            }
+          >
+            Delete registration
           </Button>
         </DialogActions>
       </Dialog>
