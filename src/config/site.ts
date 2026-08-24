@@ -1,3 +1,17 @@
+const fallbackSiteUrl = "http://localhost:3000";
+
+function getSiteUrl(): string {
+  const value = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (!value) return fallbackSiteUrl;
+
+  try {
+    return new URL(value).origin;
+  } catch {
+    console.warn("NEXT_PUBLIC_SITE_URL is invalid; using the local fallback URL.");
+    return fallbackSiteUrl;
+  }
+}
+
 export const site = {
   name: "Moyours Football Club Academy",
   shortName: "Moyours",
@@ -7,7 +21,7 @@ export const site = {
     "We believe football is more than a game. It's a path to growth, opportunity, and transformation.",
   description:
     "Moyours Football Club Academy is a FIFA- and NFF-registered youth football academy in Abuja, Nigeria — over 9 years training and mentoring boys and girls aged 4–18, bridging grassroots football with international career opportunities.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url: getSiteUrl(),
   address: "Suite A05, Tsukunda House, Central Business District, Abuja",
   city: "Abuja",
   country: "Nigeria",
