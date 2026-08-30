@@ -10,7 +10,7 @@ const nairaFormat = new Intl.NumberFormat("en-NG", {
   maximumFractionDigits: 0,
 });
 
-/** Format an amount stored in kobo for display, e.g. 18000000 → "₦180,000". */
+/** Format an amount stored in kobo for display, e.g. 22000000 → "₦220,000". */
 export function formatNaira(amountKobo: number): string {
   return nairaFormat.format(amountKobo / 100);
 }

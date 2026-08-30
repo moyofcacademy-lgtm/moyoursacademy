@@ -24,7 +24,7 @@ folder to public delivery.
 
 ## 3. Resend (email)
 
-Verify the `moyoursacademy.com` sending domain and create an API key.
+Verify the `moyoursacademy.ng` sending domain and create an API key.
 Until it's configured, sends log as `QUEUED` in the admin notification log
 and can be re-sent later. SMS is intentionally not part of this system —
 guardians get everything by email.

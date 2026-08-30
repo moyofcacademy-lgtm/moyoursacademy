@@ -23,7 +23,7 @@ export function LoginForm() {
           type="email"
           autoComplete="email"
           required
-          placeholder="you@moyoursacademy.com"
+          placeholder="you@moyoursacademy.ng"
         />
       </div>
       <div className="flex flex-col gap-1.5">

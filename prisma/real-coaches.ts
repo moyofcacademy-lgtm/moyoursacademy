@@ -1,15 +1,15 @@
 /**
  * The academy's real coaching staff, names and titles as published on
- * moyoursacademy.com. Bios are starter copy — edit photos and bios in
+ * moyoursacademy.ng. Bios are starter copy. Edit photos and bios in
  * Admin → Coaches. ageGroup maps each coach's cohort to the squad whose
  * age band contains it (used for the squad-coach chip on /squads).
  */
 export const REAL_COACHES = [
   {
-    name: "Coach Moyiwa",
+    name: "Coach Olumuyiwa",
     role: "Head Coach",
     ageGroup: null,
-    bio: "Founder and head coach. Moyours began when Coach Moyiwa helped a student struggling to make his school team — nine years later that gesture has grown into a FIFA- and NFF-registered academy developing players who compete at local and global levels.",
+    bio: "Founder and head coach. Moyours began when Coach Olumuyiwa helped a student struggling to make his school team. Nine years later, that gesture has grown into a FIFA and NFF registered academy developing players who compete at local and global levels.",
     badges: [],
   },
   {

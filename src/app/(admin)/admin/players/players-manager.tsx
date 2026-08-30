@@ -22,6 +22,8 @@ export type PlayerRow = {
   teamId: string;
   teamName: string | null;
   squadNumber: number | null;
+  preferredFoot: string;
+  abilities: string;
   active: boolean;
   registrationId: string;
   photoUrl: string | null;
@@ -128,6 +130,9 @@ export function PlayersManager({
                 </th>
                 <th scope="col" className="px-3 py-2.5 font-semibold">
                   Position
+                </th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Profile
                 </th>
                 <th scope="col" className="px-3 py-2.5 font-semibold">
                   Team
@@ -267,6 +272,50 @@ export function PlayersManager({
                         </option>
                       ))}
                     </Select>
+                  </td>
+                  <td className="px-3 py-2">
+                    <div className="flex min-w-56 flex-col gap-2">
+                      <Select
+                        aria-label={`Preferred foot for ${player.name}`}
+                        className="h-9 w-36"
+                        value={player.preferredFoot}
+                        onChange={(e) =>
+                          startTransition(async () => {
+                            const result = await updatePlayerProfile(player.id, {
+                              preferredFoot: e.target.value,
+                            });
+                            if (result.ok) {
+                              toast.success("Preferred foot updated.");
+                              router.refresh();
+                            } else toast.error(result.error);
+                          })
+                        }
+                      >
+                        <option value="">Preferred foot</option>
+                        <option value="Right">Right</option>
+                        <option value="Left">Left</option>
+                        <option value="Both">Both</option>
+                      </Select>
+                      <Input
+                        aria-label={`Abilities for ${player.name}`}
+                        className="h-9 w-56"
+                        defaultValue={player.abilities}
+                        placeholder="Abilities, e.g. pace, passing"
+                        onBlur={(e) => {
+                          if (e.target.value !== player.abilities) {
+                            startTransition(async () => {
+                              const result = await updatePlayerProfile(player.id, {
+                                abilities: e.target.value,
+                              });
+                              if (result.ok) {
+                                toast.success("Player profile updated.");
+                                router.refresh();
+                              } else toast.error(result.error);
+                            });
+                          }
+                        }}
+                      />
+                    </div>
                   </td>
                   <td className="px-3 py-2">
                     <Select

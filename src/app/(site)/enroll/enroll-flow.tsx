@@ -163,7 +163,7 @@ export function EnrollFlow({ fees, bank }: { fees: Fees; bank: Bank }) {
         <div className="flex flex-col gap-3 text-step-0 leading-relaxed">
           <p>
             At Moyours Football Academy, we believe football is more than just a
-            game it&apos;s a pathway to growth, discipline, and opportunity.
+            game. It&apos;s a pathway to growth, discipline, and opportunity.
           </p>
           <p>
             Our academy provides structured training for boys and girls aged 4–18,

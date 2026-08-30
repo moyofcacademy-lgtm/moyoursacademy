@@ -30,7 +30,7 @@ export function GuardianConfirmationEmail({
           <Text style={emailStyles.codeText}>{memberCode}</Text>
         </Section>
         <Text style={emailStyles.p}>
-          At Moyours, we believe football is more than just a game it&apos;s a
+          At Moyours, we believe football is more than just a game. It&apos;s a
           pathway to growth, discipline, and opportunity. We&apos;re committed
           to {playerName}&apos;s development on and off the pitch, and
           we&apos;re excited to be part of the journey.
@@ -66,14 +66,14 @@ export function GuardianConfirmationEmail({
 
         <Text style={emailStyles.h2}>Important notes</Text>
         <Text style={emailStyles.p}>
-          Please arrive 15 minutes before each session punctuality is part of
+          Please arrive 15 minutes before each session. Punctuality is part of
           the training. Two sets of jerseys are included in your registration;
           appropriate football boots or trainers are required.
         </Text>
 
         <Text style={emailStyles.p}>
           Welcome to the Moyours family.
-          <br /> The Moyours team, admin@moyoursacademy.com
+          <br /> The Moyours team, admin@moyoursacademy.ng
         </Text>
       </Section>
     </EmailShell>
@@ -104,8 +104,8 @@ Structured weekly training sessions, friendly matches, seasonal programmes inclu
 ${whatsappGroupUrl ? `Join the parents' WhatsApp group: ${whatsappGroupUrl}` : "You'll be added to the parents' WhatsApp group for updates and matchday news."}
 
 IMPORTANT NOTES
-Please arrive 15 minutes before each session punctuality is part of the training. Two sets of jerseys are included in your registration; appropriate football boots or trainers are required.
+Please arrive 15 minutes before each session. Punctuality is part of the training. Two sets of jerseys are included in your registration; appropriate football boots or trainers are required.
 
 Welcome to the Moyours family.
- The Moyours team, admin@moyoursacademy.com`;
+ The Moyours team, admin@moyoursacademy.ng`;
 }

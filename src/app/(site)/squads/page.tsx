@@ -25,7 +25,7 @@ function playerPhoto(url: string) {
 }
 
 export default async function SquadsPage() {
-  const [players, coaches] = await Promise.all([
+  const [players, coaches, profiles] = await Promise.all([
     // Only players whose guardians gave media consent appear publicly.
     prisma.player.findMany({
       where: { active: true, registration: { consentMedia: true } },
@@ -47,7 +47,12 @@ export default async function SquadsPage() {
       where: { active: true },
       orderBy: { sortOrder: "asc" },
     }),
+    prisma.$queryRaw<{ id: string; preferredFoot: string | null; abilities: string | null }[]>`
+      SELECT "id", "preferredFoot", "abilities" FROM "Player"
+      WHERE "active" = true
+    `,
   ]);
+  const profileById = new Map(profiles.map((profile) => [profile.id, profile]));
 
   const squads = AGE_GROUPS.map((group) => ({
     ...group,
@@ -186,6 +191,13 @@ export default async function SquadsPage() {
                                   "Moyours"}{" "}
                                 · {squad.key}
                               </p>
+                              {(profileById.get(player.id)?.preferredFoot || profileById.get(player.id)?.abilities) && (
+                                <p className="mt-1 line-clamp-2 text-[0.6875rem] text-kit-soft">
+                                  {profileById.get(player.id)?.preferredFoot && `${profileById.get(player.id)?.preferredFoot} foot`}
+                                  {profileById.get(player.id)?.preferredFoot && profileById.get(player.id)?.abilities && " · "}
+                                  {profileById.get(player.id)?.abilities}
+                                </p>
+                              )}
                             </div>
                           </div>
                         </li>

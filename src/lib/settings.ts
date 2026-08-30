@@ -46,7 +46,7 @@ export type CampSettings = {
 
 export const SETTING_DEFAULTS = {
   fees: {
-    registrationKobo: 150_000_00,
+    registrationKobo: 190_000_00,
     jerseyKobo: 30_000_00,
     monthlyKobo: 40_000_00,
   } satisfies FeeSettings,

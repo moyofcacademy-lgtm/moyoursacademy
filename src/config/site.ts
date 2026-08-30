@@ -29,7 +29,7 @@ export const site = {
   country: "Nigeria",
   phones: ["09139583674", "09139583669"],
   email: "admin@moyoursacademy.ng",
-  supportEmail: "admin@moyuoursacademy.ng",
+  supportEmail: "admin@moyoursacademy.ng",
   mapsQuery: "Tsukunda House, Central Business District, Abuja",
   credentials: [
     { label: "FIFA ID", value: "14DHVUF", logo: "/badges/fifa.png" },
@@ -37,10 +37,7 @@ export const site = {
     { label: "Club ID", value: "184592", logo: "/crest.png" },
   ],
   sponsors: [
-    { name: "DYNASPRO", logo: "/sponsors/dynaspro.png" },
-    { name: "FCV International Football Academy", logo: "/sponsors/fcv.png" },
     { name: "NIMASA", logo: "/sponsors/nimasa.png" },
-    { name: "Noneldan Travels", logo: "/sponsors/noneldan.png" },
   ],
   stats: [
     { value: "9+", label: "Years of consistent operations in Abuja" },

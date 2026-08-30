@@ -8,7 +8,7 @@ Sign in at **moyoursacademy.ng/admin** with your admin email and password.
    live counts. Search by name, reference, member code, phone, or email.
 2. Open an application. The left side shows the payment proof (zoom, rotate,
    download); the right side shows everything the guardian submitted. The
-   expected amount (₦180,000) is compared against what was recorded — a red
+   expected amount (₦220,000) is compared against what was recorded. A red
    "differs" flag means look closer.
 3. Choose one:
    - **Accept player** (gold button) — issues the member code, creates the

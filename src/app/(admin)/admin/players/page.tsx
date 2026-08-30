@@ -4,7 +4,7 @@ import { PlayersManager } from "./players-manager";
 export const dynamic = "force-dynamic";
 
 export default async function AdminPlayersPage() {
-  const [players, teams] = await Promise.all([
+  const [players, teams, profiles] = await Promise.all([
     prisma.player.findMany({
       orderBy: { createdAt: "desc" },
       include: {
@@ -23,7 +23,11 @@ export default async function AdminPlayersPage() {
       },
     }),
     prisma.team.findMany({ orderBy: { ageGroup: "asc" } }),
+    prisma.$queryRaw<{ id: string; preferredFoot: string | null; abilities: string | null }[]>`
+      SELECT "id", "preferredFoot", "abilities" FROM "Player"
+    `,
   ]);
+  const profileById = new Map(profiles.map((profile) => [profile.id, profile]));
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-6">
@@ -38,6 +42,8 @@ export default async function AdminPlayersPage() {
           teamId: p.team?.id ?? "",
           teamName: p.team?.name ?? null,
           squadNumber: p.squadNumber,
+          preferredFoot: profileById.get(p.id)?.preferredFoot ?? "",
+          abilities: profileById.get(p.id)?.abilities ?? "",
           active: p.active,
           registrationId: p.registrationId,
           photoUrl: p.registration.playerPhotoUrl,

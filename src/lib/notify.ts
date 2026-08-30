@@ -49,7 +49,7 @@ export async function sendEmail({
     // miss ("Failed to render React component" in production).
     const html = await render(react);
     const { data, error } = await client.emails.send({
-      from: process.env.EMAIL_FROM ?? "Moyours Academy <noreply@moyoursacademy.com>",
+      from: process.env.EMAIL_FROM ?? "Moyours Academy <noreply@moyoursacademy.ng>",
       to,
       subject,
       html,

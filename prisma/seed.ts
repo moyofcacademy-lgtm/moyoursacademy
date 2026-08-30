@@ -246,7 +246,7 @@ async function main() {
           payments: {
             create: {
               type: "INITIAL",
-              amountKobo: 180_000_00,
+              amountKobo: 220_000_00,
               status: "PROOF_SUBMITTED",
               proofUrl: "https://res.cloudinary.com/dev-mock/moyours/proofs/demo.jpg",
               proofPublicId: `moyours/proofs/dev-demo-${d.reference}`,

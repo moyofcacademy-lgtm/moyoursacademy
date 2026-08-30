@@ -10,7 +10,7 @@ export type AdminNewRegistrationProps = {
   guardianEmail: string;
   address: string;
   reference: string;
-  amountLine: string; // "₦180,000 (initial payment)"
+  amountLine: string; // "₦220,000 (initial payment)"
   proofUrl: string;
   reviewUrl: string;
 };

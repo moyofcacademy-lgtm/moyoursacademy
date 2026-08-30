@@ -145,6 +145,8 @@ model Player {
   teamId         String?
   team           Team?        @relation(fields: [teamId], references: [id])
   squadNumber    Int?
+  preferredFoot  String?
+  abilities      String?
   active         Boolean      @default(true)
   joinedAt       DateTime     @default(now())
   appearances    MatchEvent[]

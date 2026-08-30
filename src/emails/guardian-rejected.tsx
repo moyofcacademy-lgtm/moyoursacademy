@@ -32,7 +32,7 @@ export function GuardianRejectedEmail({
         <Text style={emailStyles.p}>
           This is fixable you can submit a fresh application with the corrected
           details or payment at{" "}
-          <a href={resubmitUrl}>moyoursacademy.com/enroll</a>. If you believe
+          <a href={resubmitUrl}>moyoursacademy.ng/enroll</a>. If you believe
           this was a mistake, reply to this email or call 09139583674 and
           we&apos;ll look at it together.
         </Text>

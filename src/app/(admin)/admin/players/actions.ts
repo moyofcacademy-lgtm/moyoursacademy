@@ -58,6 +58,8 @@ export async function updatePlayerProfile(
   data: {
     photo?: { url: string; publicId: string } | null;
     preferredPosition?: string;
+    preferredFoot?: string;
+    abilities?: string;
   },
 ): Promise<PlayerActionResult> {
   const actor = await requireAdmin();
@@ -81,6 +83,15 @@ export async function updatePlayerProfile(
         : {}),
     },
   });
+
+  if (data.preferredFoot !== undefined || data.abilities !== undefined) {
+    await prisma.$executeRaw`
+      UPDATE "Player"
+      SET "preferredFoot" = ${data.preferredFoot === undefined ? null : data.preferredFoot || null},
+          "abilities" = ${data.abilities === undefined ? null : data.abilities.trim() || null}
+      WHERE "id" = ${playerId}
+    `;
+  }
 
   // Replacing or removing a photo cleans up the old Cloudinary asset.
   if (
