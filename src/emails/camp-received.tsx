@@ -16,7 +16,9 @@ export type CampReceivedProps = {
 
 export function CampReceivedEmail(props: CampReceivedProps) {
   return (
-    <EmailShell preview={`${props.participantName} is registered for the Football Summer Camp`}>
+    <EmailShell
+      preview={`${props.participantName} is registered for the Football Summer Camp`}
+    >
       <Section style={emailStyles.section}>
         <Text style={emailStyles.h2}>Summer camp registration received</Text>
         <Text style={emailStyles.p}>Dear {props.guardianName},</Text>
@@ -49,7 +51,7 @@ export function CampReceivedEmail(props: CampReceivedProps) {
           Camp fee: {props.feeLine}.{" "}
           {props.paymentMethod === "TRANSFER"
             ? "We've received your transfer details and will confirm your payment shortly."
-            : "You chose to pay cash — please pay at the venue before the first session."}
+            : "You chose to pay cash please pay at the venue before the first session."}
           <br />
           Bank transfer: <span style={emailStyles.mono}>{props.bankLine}</span>
           <br />
@@ -81,7 +83,7 @@ PAYMENT
 Camp fee: ${props.feeLine}. ${
     props.paymentMethod === "TRANSFER"
       ? "We've received your transfer details and will confirm your payment shortly."
-      : "You chose to pay cash — please pay at the venue before the first session."
+      : "You chose to pay cash please pay at the venue before the first session."
   }
 Bank transfer: ${props.bankLine}
 Use your reference as the transfer narration.
@@ -134,7 +136,7 @@ export function CampAdminAlertEmail(props: CampAdminAlertProps) {
 }
 
 export function campAdminAlertText(props: CampAdminAlertProps): string {
-  return `New summer camp registration — ${props.participantName}
+  return `New summer camp registration ${props.participantName}
 
 Participant: ${props.participantName}
 ${props.ageLine}

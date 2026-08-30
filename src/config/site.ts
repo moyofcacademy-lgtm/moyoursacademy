@@ -7,7 +7,9 @@ function getSiteUrl(): string {
   try {
     return new URL(value).origin;
   } catch {
-    console.warn("NEXT_PUBLIC_SITE_URL is invalid; using the local fallback URL.");
+    console.warn(
+      "NEXT_PUBLIC_SITE_URL is invalid; using the local fallback URL.",
+    );
     return fallbackSiteUrl;
   }
 }
@@ -20,14 +22,14 @@ export const site = {
   heroTagline:
     "We believe football is more than a game. It's a path to growth, opportunity, and transformation.",
   description:
-    "Moyours Football Club Academy is a FIFA- and NFF-registered youth football academy in Abuja, Nigeria — over 9 years training and mentoring boys and girls aged 4–18, bridging grassroots football with international career opportunities.",
+    "Moyours Football Club Academy is a FIFA- and NFF-registered youth football academy in Abuja, Nigeria over 9 years training and mentoring boys and girls aged 4–18, bridging grassroots football with international career opportunities.",
   url: getSiteUrl(),
   address: "Suite A05, Tsukunda House, Central Business District, Abuja",
   city: "Abuja",
   country: "Nigeria",
-  phones: ["08099926480", "08034955885", "08099931151"],
-  email: "admin@moyoursacademy.com",
-  supportEmail: "admin@moyoursfcacademy.com",
+  phones: ["09139583674", "09139583669"],
+  email: "admin@moyoursacademy.ng",
+  supportEmail: "admin@moyuoursacademy.ng",
   mapsQuery: "Tsukunda House, Central Business District, Abuja",
   credentials: [
     { label: "FIFA ID", value: "14DHVUF", logo: "/badges/fifa.png" },
@@ -42,8 +44,11 @@ export const site = {
   ],
   stats: [
     { value: "9+", label: "Years of consistent operations in Abuja" },
-    { value: "65", label: "Players registered — 35 on full scholarships" },
-    { value: "2", label: "Training locations established to meet growing demand" },
+    { value: "65", label: "Players registered 35 on full scholarships" },
+    {
+      value: "2",
+      label: "Training locations established to meet growing demand",
+    },
     { value: "83%", label: "Win/draw record in the 2024–2025 season" },
   ],
   services: [

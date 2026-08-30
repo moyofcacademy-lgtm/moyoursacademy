@@ -37,11 +37,13 @@ export function ProofUpload({
 
     const format = ACCEPTED_TYPES[file.type];
     if (!format) {
-      setError("That file type won't work — upload a JPG, PNG, or PDF.");
+      setError("That file type won't work upload a JPG, PNG, or PDF.");
       return;
     }
     if (file.size > PROOF_MAX_BYTES) {
-      setError("That file is over 10MB. Take a smaller photo or export a compressed PDF.");
+      setError(
+        "That file is over 10MB. Take a smaller photo or export a compressed PDF.",
+      );
       return;
     }
 
@@ -54,12 +56,16 @@ export function ProofUpload({
       });
       const signature = await signatureResponse.json();
       if (!signatureResponse.ok) {
-        setError(signature.error ?? "Upload isn't available right now. Try again shortly.");
+        setError(
+          signature.error ??
+            "Upload isn't available right now. Try again shortly.",
+        );
         setProgress(null);
         return;
       }
 
-      const previewUrl = format === "pdf" ? undefined : URL.createObjectURL(file);
+      const previewUrl =
+        format === "pdf" ? undefined : URL.createObjectURL(file);
 
       if (signature.devMock) {
         // Local development without Cloudinary — simulate the upload so the
@@ -86,26 +92,34 @@ export function ProofUpload({
       form.append("folder", signature.folder);
       if (signature.type) form.append("type", signature.type);
 
-      const result = await new Promise<{ public_id: string; secure_url: string; format?: string; bytes: number }>(
-        (resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          xhr.open("POST", `https://api.cloudinary.com/v1_1/${signature.cloudName}/image/upload`);
-          xhr.upload.addEventListener("progress", (event) => {
-            if (event.lengthComputable) {
-              setProgress(Math.round((event.loaded / event.total) * 100));
-            }
-          });
-          xhr.addEventListener("load", () => {
-            if (xhr.status >= 200 && xhr.status < 300) {
-              resolve(JSON.parse(xhr.responseText));
-            } else {
-              reject(new Error(`Upload failed (${xhr.status})`));
-            }
-          });
-          xhr.addEventListener("error", () => reject(new Error("Network error during upload")));
-          xhr.send(form);
-        },
-      );
+      const result = await new Promise<{
+        public_id: string;
+        secure_url: string;
+        format?: string;
+        bytes: number;
+      }>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open(
+          "POST",
+          `https://api.cloudinary.com/v1_1/${signature.cloudName}/image/upload`,
+        );
+        xhr.upload.addEventListener("progress", (event) => {
+          if (event.lengthComputable) {
+            setProgress(Math.round((event.loaded / event.total) * 100));
+          }
+        });
+        xhr.addEventListener("load", () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            resolve(JSON.parse(xhr.responseText));
+          } else {
+            reject(new Error(`Upload failed (${xhr.status})`));
+          }
+        });
+        xhr.addEventListener("error", () =>
+          reject(new Error("Network error during upload")),
+        );
+        xhr.send(form);
+      });
 
       onChange({
         publicId: result.public_id,
@@ -116,7 +130,9 @@ export function ProofUpload({
         fileName: file.name,
       });
     } catch {
-      setError("The upload didn't finish. Check your connection and try again.");
+      setError(
+        "The upload didn't finish. Check your connection and try again.",
+      );
     } finally {
       setProgress(null);
     }
@@ -174,7 +190,9 @@ export function ProofUpload({
         >
           {progress !== null ? (
             <>
-              <span className="font-mono text-step-1 font-bold text-pitch">{progress}%</span>
+              <span className="font-mono text-step-1 font-bold text-pitch">
+                {progress}%
+              </span>
               <span
                 role="progressbar"
                 aria-valuenow={progress}
@@ -191,8 +209,12 @@ export function ProofUpload({
             </>
           ) : (
             <>
-              <span className="text-step-0 font-semibold">Tap to choose your receipt</span>
-              <span className="text-step--1 text-kit-soft">JPG, PNG, or PDF · up to 10MB</span>
+              <span className="text-step-0 font-semibold">
+                Tap to choose your receipt
+              </span>
+              <span className="text-step--1 text-kit-soft">
+                JPG, PNG, or PDF · up to 10MB
+              </span>
             </>
           )}
         </button>

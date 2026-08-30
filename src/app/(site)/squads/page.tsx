@@ -10,14 +10,17 @@ import { AGE_GROUPS } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Our squads",
   description:
-    "Meet the Moyours Football Club Academy players — four squads from U8 to U17.",
+    "Meet the Moyours Football Club Academy players four squads from U8 to U17.",
 };
 
 export const revalidate = 300;
 
 function playerPhoto(url: string) {
   return url.includes("res.cloudinary.com")
-    ? url.replace("/upload/", "/upload/f_auto,q_auto,w_480,h_600,c_fill,g_face/")
+    ? url.replace(
+        "/upload/",
+        "/upload/f_auto,q_auto,w_480,h_600,c_fill,g_face/",
+      )
     : url;
 }
 
@@ -40,7 +43,10 @@ export default async function SquadsPage() {
         },
       },
     }),
-    prisma.coach.findMany({ where: { active: true }, orderBy: { sortOrder: "asc" } }),
+    prisma.coach.findMany({
+      where: { active: true },
+      orderBy: { sortOrder: "asc" },
+    }),
   ]);
 
   const squads = AGE_GROUPS.map((group) => ({
@@ -73,10 +79,13 @@ export default async function SquadsPage() {
       <div className="mx-auto max-w-6xl px-[var(--gutter)] py-12">
         {!anyPlayers ? (
           <EmptyState
-            title="Squad profiles are coming soon — our first players are being registered now."
+            title="Squad profiles are coming soon our first players are being registered now."
             action={
-              <Link href="/enroll" className="inline-flex h-11 items-center rounded-brand bg-gold px-5 text-step--1 font-semibold text-kit">
-                Be one of the first — enroll
+              <Link
+                href="/enroll"
+                className="inline-flex h-11 items-center rounded-brand bg-gold px-5 text-step--1 font-semibold text-kit"
+              >
+                Be one of the first enroll
               </Link>
             }
           />
@@ -88,17 +97,32 @@ export default async function SquadsPage() {
                 <section key={squad.key} aria-labelledby={`squad-${squad.key}`}>
                   <div className="flex flex-wrap items-end justify-between gap-4 border-b-2 border-kit pb-3">
                     <div>
-                      <h2 id={`squad-${squad.key}`} className="font-display text-step-2">
-                        <span className="font-mono text-pitch">{squad.key}</span>{" "}
-                        <span className="text-step-1 text-kit-soft">{squad.label}</span>
+                      <h2
+                        id={`squad-${squad.key}`}
+                        className="font-display text-step-2"
+                      >
+                        <span className="font-mono text-pitch">
+                          {squad.key}
+                        </span>{" "}
+                        <span className="text-step-1 text-kit-soft">
+                          {squad.label}
+                        </span>
                       </h2>
                     </div>
                     {squad.coach && (
                       <div className="flex items-center gap-2.5">
-                        <CoachPortrait name={squad.coach.name} photoUrl={squad.coach.photoUrl} size={36} />
+                        <CoachPortrait
+                          name={squad.coach.name}
+                          photoUrl={squad.coach.photoUrl}
+                          size={36}
+                        />
                         <div>
-                          <p className="text-step--1 font-semibold">{squad.coach.name}</p>
-                          <p className="text-[0.6875rem] uppercase tracking-wide text-kit-soft">Squad coach</p>
+                          <p className="text-step--1 font-semibold">
+                            {squad.coach.name}
+                          </p>
+                          <p className="text-[0.6875rem] uppercase tracking-wide text-kit-soft">
+                            Squad coach
+                          </p>
                         </div>
                       </div>
                     )}
@@ -116,7 +140,9 @@ export default async function SquadsPage() {
                             <div className="turf relative aspect-[4/5] overflow-hidden bg-pitch-deep">
                               {player.registration.playerPhotoUrl ? (
                                 <Image
-                                  src={playerPhoto(player.registration.playerPhotoUrl)}
+                                  src={playerPhoto(
+                                    player.registration.playerPhotoUrl,
+                                  )}
                                   alt={`${name}, ${squad.key} squad`}
                                   fill
                                   sizes="(min-width: 1024px) 280px, 45vw"
@@ -129,7 +155,10 @@ export default async function SquadsPage() {
                                 </div>
                               )}
                               {/* photo vignette so the numeral always reads */}
-                              <div aria-hidden className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-kit/70 to-transparent" />
+                              <div
+                                aria-hidden
+                                className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-kit/70 to-transparent"
+                              />
                               <MoyoursCrest
                                 size={24}
                                 className="absolute left-2 top-2 opacity-90 drop-shadow"
@@ -146,12 +175,16 @@ export default async function SquadsPage() {
                             <div className="shield-stripes border-t-2 border-gold p-3">
                               <p className="truncate font-display text-step-0">
                                 {player.squadNumber != null && (
-                                  <span className="sr-only">Number {player.squadNumber}, </span>
+                                  <span className="sr-only">
+                                    Number {player.squadNumber},{" "}
+                                  </span>
                                 )}
                                 {name}
                               </p>
                               <p className="font-mono text-[0.6875rem] uppercase tracking-widest text-kit-soft">
-                                {player.registration.preferredPosition ?? "Moyours"} · {squad.key}
+                                {player.registration.preferredPosition ??
+                                  "Moyours"}{" "}
+                                · {squad.key}
                               </p>
                             </div>
                           </div>

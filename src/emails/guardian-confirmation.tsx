@@ -15,12 +15,14 @@ export function GuardianConfirmationEmail({
   whatsappGroupUrl,
 }: GuardianConfirmationProps) {
   return (
-    <EmailShell preview={`${playerName} is confirmed — member code ${memberCode}`}>
+    <EmailShell
+      preview={`${playerName} is confirmed member code ${memberCode}`}
+    >
       <Section style={emailStyles.section}>
         <Text style={emailStyles.h2}>Welcome to the Moyours family</Text>
         <Text style={emailStyles.p}>Dear {guardianName},</Text>
         <Text style={emailStyles.p}>
-          Wonderful news — {playerName}&apos;s registration at Moyours Football
+          Wonderful news {playerName}&apos;s registration at Moyours Football
           Academy is confirmed. This is {playerName}&apos;s member code; keep it
           safe and quote it in any correspondence with the academy:
         </Text>
@@ -28,10 +30,10 @@ export function GuardianConfirmationEmail({
           <Text style={emailStyles.codeText}>{memberCode}</Text>
         </Section>
         <Text style={emailStyles.p}>
-          At Moyours, we believe football is more than just a game — it&apos;s a
-          pathway to growth, discipline, and opportunity. We&apos;re committed to
-          {" "}{playerName}&apos;s development on and off the pitch, and we&apos;re
-          excited to be part of the journey.
+          At Moyours, we believe football is more than just a game it&apos;s a
+          pathway to growth, discipline, and opportunity. We&apos;re committed
+          to {playerName}&apos;s development on and off the pitch, and
+          we&apos;re excited to be part of the journey.
         </Text>
 
         <Text style={emailStyles.h2}>Training schedule</Text>
@@ -57,21 +59,21 @@ export function GuardianConfirmationEmail({
           </Text>
         ) : (
           <Text style={emailStyles.p}>
-            You&apos;ll be added to the parents&apos; WhatsApp group for updates and
-            matchday news.
+            You&apos;ll be added to the parents&apos; WhatsApp group for updates
+            and matchday news.
           </Text>
         )}
 
         <Text style={emailStyles.h2}>Important notes</Text>
         <Text style={emailStyles.p}>
-          Please arrive 15 minutes before each session — punctuality is part of
+          Please arrive 15 minutes before each session punctuality is part of
           the training. Two sets of jerseys are included in your registration;
           appropriate football boots or trainers are required.
         </Text>
 
         <Text style={emailStyles.p}>
           Welcome to the Moyours family.
-          <br />— The Moyours team, admin@moyoursacademy.com
+          <br /> The Moyours team, admin@moyoursacademy.com
         </Text>
       </Section>
     </EmailShell>
@@ -86,7 +88,7 @@ export function guardianConfirmationText({
 }: GuardianConfirmationProps): string {
   return `Dear ${guardianName},
 
-Wonderful news — ${playerName}'s registration at Moyours Football Academy is confirmed.
+Wonderful news ${playerName}'s registration at Moyours Football Academy is confirmed.
 
 MEMBER CODE: ${memberCode}
 Keep it safe and quote it in any correspondence with the academy.
@@ -102,8 +104,8 @@ Structured weekly training sessions, friendly matches, seasonal programmes inclu
 ${whatsappGroupUrl ? `Join the parents' WhatsApp group: ${whatsappGroupUrl}` : "You'll be added to the parents' WhatsApp group for updates and matchday news."}
 
 IMPORTANT NOTES
-Please arrive 15 minutes before each session — punctuality is part of the training. Two sets of jerseys are included in your registration; appropriate football boots or trainers are required.
+Please arrive 15 minutes before each session punctuality is part of the training. Two sets of jerseys are included in your registration; appropriate football boots or trainers are required.
 
 Welcome to the Moyours family.
-— The Moyours team, admin@moyoursacademy.com`;
+ The Moyours team, admin@moyoursacademy.com`;
 }

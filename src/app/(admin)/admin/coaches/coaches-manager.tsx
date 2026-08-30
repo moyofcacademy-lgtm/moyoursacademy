@@ -178,7 +178,7 @@ export function CoachesManager({ coaches }: { coaches: CoachRow[] }) {
               <Field label="Name" required>
                 {(a11y) => <Input {...a11y} value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} />}
               </Field>
-              <Field label="Squad" hint="Optional — the age group they lead">
+              <Field label="Squad" hint="Optional the age group they lead">
                 {(a11y) => (
                   <Select {...a11y} value={draft.ageGroup} onChange={(e) => setDraft({ ...draft, ageGroup: e.target.value })}>
                     <option value="">No squad</option>
@@ -194,7 +194,7 @@ export function CoachesManager({ coaches }: { coaches: CoachRow[] }) {
             <Field label="Role" required hint='e.g. "Youth Development Coach"'>
               {(a11y) => <Input {...a11y} value={draft.role} onChange={(e) => setDraft({ ...draft, role: e.target.value })} />}
             </Field>
-            <Field label="Bio" required hint="Two or three warm sentences — guardians read this">
+            <Field label="Bio" required hint="Two or three warm sentences guardians read this">
               {(a11y) => <Textarea {...a11y} rows={4} value={draft.bio} onChange={(e) => setDraft({ ...draft, bio: e.target.value })} />}
             </Field>
             <Field label="Licences & certifications" hint='Comma-separated, e.g. "CAF C Licence, First aid certified"'>

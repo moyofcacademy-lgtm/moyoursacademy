@@ -49,7 +49,8 @@ export function AdminNewRegistrationEmail(props: AdminNewRegistrationProps) {
           <br />
           Reference: <span style={emailStyles.mono}>{props.reference}</span>
           <br />
-          <a href={props.proofUrl}>View payment proof</a> (admin sign-in required)
+          <a href={props.proofUrl}>View payment proof</a> (admin sign-in
+          required)
         </Text>
 
         <Button href={props.reviewUrl} style={emailStyles.button}>
@@ -60,8 +61,10 @@ export function AdminNewRegistrationEmail(props: AdminNewRegistrationProps) {
   );
 }
 
-export function adminNewRegistrationText(props: AdminNewRegistrationProps): string {
-  return `New player registration — ${props.playerName}
+export function adminNewRegistrationText(
+  props: AdminNewRegistrationProps,
+): string {
+  return `New player registration ${props.playerName}
 
 Player: ${props.playerName}
 ${props.ageLine}${props.position ? `\nPreferred position: ${props.position}` : ""}

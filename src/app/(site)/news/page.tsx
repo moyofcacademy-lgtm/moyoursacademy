@@ -28,7 +28,7 @@ export default async function NewsPage() {
 
       {posts.length === 0 ? (
         <div className="mt-10">
-          <EmptyState title="No posts yet — the first announcement lands here soon." />
+          <EmptyState title="No posts yet the first announcement lands here soon." />
         </div>
       ) : (
         <div className="mt-10 flex flex-col gap-5">
@@ -42,7 +42,10 @@ export default async function NewsPage() {
                   <Image
                     src={
                       post.coverUrl.includes("res.cloudinary.com")
-                        ? post.coverUrl.replace("/upload/", "/upload/f_auto,q_auto,w_400/")
+                        ? post.coverUrl.replace(
+                            "/upload/",
+                            "/upload/f_auto,q_auto,w_400/",
+                          )
                         : post.coverUrl
                     }
                     alt=""
@@ -57,9 +60,13 @@ export default async function NewsPage() {
                       {formatDateWAT(post.publishedAt)}
                     </p>
                   )}
-                  <h2 className="mt-1 font-display text-step-1 group-hover:underline">{post.title}</h2>
+                  <h2 className="mt-1 font-display text-step-1 group-hover:underline">
+                    {post.title}
+                  </h2>
                   {post.excerpt && (
-                    <p className="mt-2 text-step--1 leading-relaxed text-kit-soft">{post.excerpt}</p>
+                    <p className="mt-2 text-step--1 leading-relaxed text-kit-soft">
+                      {post.excerpt}
+                    </p>
                   )}
                 </div>
               </Link>

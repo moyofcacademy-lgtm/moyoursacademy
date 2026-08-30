@@ -130,7 +130,7 @@ export function EnrollFlow({ fees, bank }: { fees: Fees; bank: Bank }) {
           Registration received
         </h1>
         <p className="mt-3 text-step-0">
-          Thank you — <strong>{done.playerName}</strong>&apos;s application is with us.
+          Thank you <strong>{done.playerName}</strong>&apos;s application is with us.
           Your reference:
         </p>
         <div className="mt-4 flex flex-wrap items-center gap-3 rounded-brand bg-pitch-deep px-5 py-4">
@@ -163,7 +163,7 @@ export function EnrollFlow({ fees, bank }: { fees: Fees; bank: Bank }) {
         <div className="flex flex-col gap-3 text-step-0 leading-relaxed">
           <p>
             At Moyours Football Academy, we believe football is more than just a
-            game—it&apos;s a pathway to growth, discipline, and opportunity.
+            game it&apos;s a pathway to growth, discipline, and opportunity.
           </p>
           <p>
             Our academy provides structured training for boys and girls aged 4–18,
@@ -172,7 +172,7 @@ export function EnrollFlow({ fees, bank }: { fees: Fees; bank: Bank }) {
           </p>
           <p>
             With experienced coaches and a strong commitment to youth development,
-            Moyours is more than an academy—it&apos;s a family.
+            Moyours is more than an academy it&apos;s a family.
           </p>
           <p>
             We&apos;re excited to be part of your child&apos;s football journey.
@@ -279,7 +279,7 @@ export function EnrollFlow({ fees, bank }: { fees: Fees; bank: Bank }) {
               <tr>
                 <th scope="row" className="py-3 text-left font-normal text-kit-soft">
                   Monthly subscription{" "}
-                  <span className="block text-step--1">recurring — not part of today&apos;s payment</span>
+                  <span className="block text-step--1">recurring not part of today&apos;s payment</span>
                 </th>
                 <td className="py-3 text-right font-mono text-kit-soft">{formatNaira(fees.monthlyKobo)}</td>
               </tr>
@@ -348,7 +348,7 @@ export function EnrollFlow({ fees, bank }: { fees: Fees; bank: Bank }) {
             Upload proof of payment
           </h1>
           <p className="mt-2 mb-6 text-step-0 text-kit-soft">
-            A photo or PDF of your transfer receipt — JPG, PNG, or PDF, up to 10MB.
+            A photo or PDF of your transfer receipt JPG, PNG, or PDF, up to 10MB.
           </p>
 
           <ProofUpload

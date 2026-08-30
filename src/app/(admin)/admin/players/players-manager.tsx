@@ -61,7 +61,11 @@ export function PlayersManager({
     });
   }, [players, query, teamFilter]);
 
-  function patch(playerId: string, data: Parameters<typeof updatePlayer>[1], okMessage: string) {
+  function patch(
+    playerId: string,
+    data: Parameters<typeof updatePlayer>[1],
+    okMessage: string,
+  ) {
     startTransition(async () => {
       const result = await updatePlayer(playerId, data);
       if (result.ok) {
@@ -76,8 +80,14 @@ export function PlayersManager({
   return (
     <div className="flex flex-col gap-4">
       <p className="max-w-2xl text-step--1 text-kit-soft">
-        Photos and details here feed the public <Link href="/squads" className="font-semibold underline underline-offset-2">Squads</Link> page
-        and the homepage carousel. Players appear publicly only when their
+        Photos and details here feed the public{" "}
+        <Link
+          href="/squads"
+          className="font-semibold underline underline-offset-2"
+        >
+          Squads
+        </Link>{" "}
+        page and the homepage carousel. Players appear publicly only when their
         guardian gave media consent at enrollment.
       </p>
       <div className="grid gap-3 sm:grid-cols-3">
@@ -89,7 +99,11 @@ export function PlayersManager({
           onChange={(e) => setQuery(e.target.value)}
           className="sm:col-span-2"
         />
-        <Select aria-label="Filter by team" value={teamFilter} onChange={(e) => setTeamFilter(e.target.value)}>
+        <Select
+          aria-label="Filter by team"
+          value={teamFilter}
+          onChange={(e) => setTeamFilter(e.target.value)}
+        >
           <option value="">All teams</option>
           {teams.map((t) => (
             <option key={t.id} value={t.id}>
@@ -106,18 +120,35 @@ export function PlayersManager({
           <table className="w-full min-w-[900px] border-collapse text-step--1">
             <thead>
               <tr className="border-b-2 border-kit text-left">
-                <th scope="col" className="px-3 py-2.5 font-semibold">Player</th>
-                <th scope="col" className="px-3 py-2.5 font-semibold">Photo</th>
-                <th scope="col" className="px-3 py-2.5 font-semibold">Position</th>
-                <th scope="col" className="px-3 py-2.5 font-semibold">Team</th>
-                <th scope="col" className="px-3 py-2.5 font-semibold">Squad #</th>
-                <th scope="col" className="px-3 py-2.5 font-semibold">Status</th>
-                <th scope="col" className="px-3 py-2.5 font-semibold">Actions</th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Player
+                </th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Photo
+                </th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Position
+                </th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Team
+                </th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Squad #
+                </th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Status
+                </th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((player) => (
-                <tr key={player.id} className="border-b border-line align-middle last:border-0 hover:bg-kit/5">
+                <tr
+                  key={player.id}
+                  className="border-b border-line align-middle last:border-0 hover:bg-kit/5"
+                >
                   <td className="px-3 py-2">
                     <div className="flex items-center gap-3">
                       {player.photoUrl ? (
@@ -129,8 +160,15 @@ export function PlayersManager({
                           className="size-10 shrink-0 rounded-full border border-line object-cover"
                         />
                       ) : (
-                        <span aria-hidden className="flex size-10 shrink-0 items-center justify-center rounded-full bg-pitch font-mono text-[0.75rem] font-bold text-chalk">
-                          {player.name.split(/\s+/).map((w) => w[0]).join("").slice(0, 2)}
+                        <span
+                          aria-hidden
+                          className="flex size-10 shrink-0 items-center justify-center rounded-full bg-pitch font-mono text-[0.75rem] font-bold text-chalk"
+                        >
+                          {player.name
+                            .split(/\s+/)
+                            .map((w) => w[0])
+                            .join("")
+                            .slice(0, 2)}
                         </span>
                       )}
                       <div className="min-w-0">
@@ -145,7 +183,7 @@ export function PlayersManager({
                           {player.ageGroup && ` · ${player.ageGroup}`}
                           {!player.consentMedia && (
                             <span className="ml-1.5 rounded-brand bg-amber-100 px-1.5 py-0.5 font-sans font-semibold text-amber-900">
-                              no media consent — never shown publicly
+                              no media consent never shown publicly
                             </span>
                           )}
                         </p>
@@ -160,9 +198,15 @@ export function PlayersManager({
                         onUploaded={([asset]) =>
                           asset &&
                           startTransition(async () => {
-                            const result = await updatePlayerProfile(player.id, {
-                              photo: { url: asset.url, publicId: asset.publicId },
-                            });
+                            const result = await updatePlayerProfile(
+                              player.id,
+                              {
+                                photo: {
+                                  url: asset.url,
+                                  publicId: asset.publicId,
+                                },
+                              },
+                            );
                             if (result.ok) {
                               toast.success("Photo updated.");
                               router.refresh();
@@ -179,7 +223,10 @@ export function PlayersManager({
                           className="text-[0.75rem] font-semibold text-kit-soft underline-offset-2 hover:underline"
                           onClick={() =>
                             startTransition(async () => {
-                              const result = await updatePlayerProfile(player.id, { photo: null });
+                              const result = await updatePlayerProfile(
+                                player.id,
+                                { photo: null },
+                              );
                               if (result.ok) {
                                 toast.success("Photo removed.");
                                 router.refresh();
@@ -226,7 +273,13 @@ export function PlayersManager({
                       aria-label={`Team for ${player.name}`}
                       className="h-9 w-36"
                       value={player.teamId}
-                      onChange={(e) => patch(player.id, { teamId: e.target.value || null }, "Team updated.")}
+                      onChange={(e) =>
+                        patch(
+                          player.id,
+                          { teamId: e.target.value || null },
+                          "Team updated.",
+                        )
+                      }
                     >
                       <option value="">Unassigned</option>
                       {teams.map((t) => (
@@ -245,9 +298,14 @@ export function PlayersManager({
                       className="h-9 w-20"
                       defaultValue={player.squadNumber ?? ""}
                       onBlur={(e) => {
-                        const value = e.target.value === "" ? null : Number(e.target.value);
+                        const value =
+                          e.target.value === "" ? null : Number(e.target.value);
                         if (value !== player.squadNumber) {
-                          patch(player.id, { squadNumber: value }, "Squad number updated.");
+                          patch(
+                            player.id,
+                            { squadNumber: value },
+                            "Squad number updated.",
+                          );
                         }
                       }}
                     />
@@ -255,7 +313,15 @@ export function PlayersManager({
                   <td className="px-3 py-2">
                     <button
                       type="button"
-                      onClick={() => patch(player.id, { active: !player.active }, player.active ? "Player removed from active squads." : "Player reactivated.")}
+                      onClick={() =>
+                        patch(
+                          player.id,
+                          { active: !player.active },
+                          player.active
+                            ? "Player removed from active squads."
+                            : "Player reactivated.",
+                        )
+                      }
                       className={
                         player.active
                           ? "rounded-brand bg-pitch px-2.5 py-1 text-[0.6875rem] font-semibold uppercase tracking-wide text-chalk"
@@ -266,7 +332,11 @@ export function PlayersManager({
                     </button>
                   </td>
                   <td className="px-3 py-2">
-                    <Button variant="danger" size="sm" onClick={() => setRemoving(player)}>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => setRemoving(player)}
+                    >
                       Delete
                     </Button>
                   </td>
@@ -277,12 +347,21 @@ export function PlayersManager({
         </div>
       )}
 
-      <Dialog open={removing !== null} onClose={() => setRemoving(null)} title={`Delete ${removing?.name}?`}>
+      <Dialog
+        open={removing !== null}
+        onClose={() => setRemoving(null)}
+        title={`Delete ${removing?.name}?`}
+      >
         <p className="text-step--1 text-kit-soft">
-          This removes the player from squads, payments, and public pages permanently. Their original registration stays in the admin records.
+          This removes the player from squads, payments, and public pages
+          permanently. Their original registration stays in the admin records.
         </p>
         <DialogActions>
-          <Button variant="secondary" onClick={() => setRemoving(null)} disabled={pending}>
+          <Button
+            variant="secondary"
+            onClick={() => setRemoving(null)}
+            disabled={pending}
+          >
             Cancel
           </Button>
           <Button

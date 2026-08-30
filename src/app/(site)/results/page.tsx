@@ -5,7 +5,8 @@ import { EmptyState } from "@/components/ui/empty-state";
 
 export const metadata: Metadata = {
   title: "Results",
-  description: "Match results and reports from Moyours Football Club Academy squads.",
+  description:
+    "Match results and reports from Moyours Football Club Academy squads.",
 };
 
 export const revalidate = 300;
@@ -27,10 +28,14 @@ export default async function ResultsPage() {
 
       <div className="mt-8 flex flex-col gap-4">
         {fixtures.length === 0 ? (
-          <EmptyState title="No results published yet — the season is just getting started." />
+          <EmptyState title="No results published yet the season is just getting started." />
         ) : (
           fixtures.map((fixture) => (
-            <FixtureStrip key={fixture.id} fixture={fixture} href={`/results/${fixture.id}`} />
+            <FixtureStrip
+              key={fixture.id}
+              fixture={fixture}
+              href={`/results/${fixture.id}`}
+            />
           ))
         )}
       </div>

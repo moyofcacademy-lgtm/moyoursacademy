@@ -25,7 +25,7 @@ export function SiteHeader() {
         <Link
           href="/"
           className="flex items-center gap-2.5 font-display text-step-0"
-          aria-label="Moyours Football Club Academy — home"
+          aria-label="Moyours Football Club Academy home"
         >
           <MoyoursCrest size={36} />
           <span className="hidden sm:inline">Moyours</span>
@@ -63,7 +63,16 @@ export function SiteHeader() {
             onClick={() => setOpen((v) => !v)}
             className="inline-flex size-10 items-center justify-center rounded-brand border border-pitch-mid lg:hidden"
           >
-            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              aria-hidden
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            >
               {open ? (
                 <path d="M5 5l10 10M15 5L5 15" />
               ) : (

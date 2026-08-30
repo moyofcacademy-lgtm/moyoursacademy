@@ -10,7 +10,14 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogActions } from "@/components/ui/dialog";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
-import { addAssetsToAlbum, createAlbum, deleteAlbum, deleteAsset, updateAlbum, updateAssetCaption } from "./actions";
+import {
+  addAssetsToAlbum,
+  createAlbum,
+  deleteAlbum,
+  deleteAsset,
+  updateAlbum,
+  updateAssetCaption,
+} from "./actions";
 
 export type AlbumRow = {
   id: string;
@@ -42,7 +49,7 @@ export function GalleryManager({ albums }: { albums: AlbumRow[] }) {
           startTransition(async () => {
             const result = await createAlbum(newTitle);
             if (result.ok) {
-              toast.success("Album created — add photos below.");
+              toast.success("Album created add photos below.");
               setNewTitle("");
               router.refresh();
             } else {
@@ -58,7 +65,11 @@ export function GalleryManager({ albums }: { albums: AlbumRow[] }) {
           onChange={(e) => setNewTitle(e.target.value)}
           className="max-w-sm"
         />
-        <Button type="submit" loading={pending} disabled={newTitle.trim().length < 2}>
+        <Button
+          type="submit"
+          loading={pending}
+          disabled={newTitle.trim().length < 2}
+        >
           Create album
         </Button>
       </form>
@@ -83,7 +94,9 @@ export function GalleryManager({ albums }: { albums: AlbumRow[] }) {
                   {album.published ? "Published" : "Draft"}
                 </Badge>
               )}
-              <span className="text-step--1 text-kit-soft">{album.assets.length} photos</span>
+              <span className="text-step--1 text-kit-soft">
+                {album.assets.length} photos
+              </span>
               <div className="ml-auto flex flex-wrap gap-2">
                 <AdminUpload
                   intent="gallery"
@@ -93,7 +106,9 @@ export function GalleryManager({ albums }: { albums: AlbumRow[] }) {
                     startTransition(async () => {
                       const result = await addAssetsToAlbum(album.id, assets);
                       if (result.ok) {
-                        toast.success(`${assets.length} photo${assets.length === 1 ? "" : "s"} added.`);
+                        toast.success(
+                          `${assets.length} photo${assets.length === 1 ? "" : "s"} added.`,
+                        );
                         router.refresh();
                       } else {
                         toast.error(result.error);
@@ -108,9 +123,15 @@ export function GalleryManager({ albums }: { albums: AlbumRow[] }) {
                       size="sm"
                       onClick={() =>
                         startTransition(async () => {
-                          const result = await updateAlbum(album.id, { published: !album.published });
+                          const result = await updateAlbum(album.id, {
+                            published: !album.published,
+                          });
                           if (result.ok) {
-                            toast.success(album.published ? "Album unpublished." : "Album published.");
+                            toast.success(
+                              album.published
+                                ? "Album unpublished."
+                                : "Album published.",
+                            );
                             router.refresh();
                           } else {
                             toast.error(result.error);
@@ -120,7 +141,11 @@ export function GalleryManager({ albums }: { albums: AlbumRow[] }) {
                     >
                       {album.published ? "Unpublish" : "Publish"}
                     </Button>
-                    <Button variant="danger" size="sm" onClick={() => setRemoving(album)}>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => setRemoving(album)}
+                    >
                       Delete
                     </Button>
                   </>
@@ -129,7 +154,7 @@ export function GalleryManager({ albums }: { albums: AlbumRow[] }) {
             </div>
             {album.slug === "homepage-hero" && (
               <p className="text-step--1 text-kit-soft">
-                Photos in this album rotate in the homepage hero carousel — action
+                Photos in this album rotate in the homepage hero carousel action
                 shots of the players look best. It never appears in the public
                 gallery. With no photos here, the hero falls back to player
                 profile photos (media-consented players only).
@@ -155,7 +180,10 @@ export function GalleryManager({ albums }: { albums: AlbumRow[] }) {
                         onBlur={(e) => {
                           if (e.target.value !== (asset.caption ?? "")) {
                             startTransition(async () => {
-                              const result = await updateAssetCaption(asset.id, e.target.value);
+                              const result = await updateAssetCaption(
+                                asset.id,
+                                e.target.value,
+                              );
                               if (result.ok) toast.success("Caption saved.");
                               else toast.error(result.error);
                               router.refresh();
@@ -191,13 +219,21 @@ export function GalleryManager({ albums }: { albums: AlbumRow[] }) {
         ))
       )}
 
-      <Dialog open={removing !== null} onClose={() => setRemoving(null)} title={`Delete "${removing?.title}"?`}>
+      <Dialog
+        open={removing !== null}
+        onClose={() => setRemoving(null)}
+        title={`Delete "${removing?.title}"?`}
+      >
         <p className="text-step--1 text-kit-soft">
-          The album and all {removing?.assets.length} photo(s) are removed permanently,
-          including from Cloudinary.
+          The album and all {removing?.assets.length} photo(s) are removed
+          permanently, including from Cloudinary.
         </p>
         <DialogActions>
-          <Button variant="secondary" onClick={() => setRemoving(null)} disabled={pending}>
+          <Button
+            variant="secondary"
+            onClick={() => setRemoving(null)}
+            disabled={pending}
+          >
             Cancel
           </Button>
           <Button

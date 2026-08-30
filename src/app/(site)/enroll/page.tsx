@@ -5,7 +5,7 @@ import { EnrollFlow } from "./enroll-flow";
 export const metadata: Metadata = {
   title: "Enroll your child",
   description:
-    "Register your child at Moyours Football Club Academy, Abuja — structured football training for boys and girls aged 4–18.",
+    "Register your child at Moyours Football Club Academy, Abuja structured football training for boys and girls aged 4–18.",
 };
 
 export const dynamic = "force-dynamic";

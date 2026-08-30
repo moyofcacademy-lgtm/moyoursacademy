@@ -3,7 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { AdminUpload, type UploadedAsset } from "@/components/admin/admin-upload";
+import {
+  AdminUpload,
+  type UploadedAsset,
+} from "@/components/admin/admin-upload";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogActions } from "@/components/ui/dialog";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -79,8 +82,14 @@ export function ResultsManager({
       teamId: fixture.teamId,
       goalsFor: String(fixture.result?.goalsFor ?? ""),
       goalsAgainst: String(fixture.result?.goalsAgainst ?? ""),
-      halfTimeFor: fixture.result?.halfTimeFor != null ? String(fixture.result.halfTimeFor) : "",
-      halfTimeAgainst: fixture.result?.halfTimeAgainst != null ? String(fixture.result.halfTimeAgainst) : "",
+      halfTimeFor:
+        fixture.result?.halfTimeFor != null
+          ? String(fixture.result.halfTimeFor)
+          : "",
+      halfTimeAgainst:
+        fixture.result?.halfTimeAgainst != null
+          ? String(fixture.result.halfTimeAgainst)
+          : "",
       matchReport: fixture.result?.matchReport ?? "",
       motmPlayerId: fixture.result?.motmPlayerId ?? "",
       events: fixture.result?.events ?? [],
@@ -97,8 +106,10 @@ export function ResultsManager({
         fixtureId: draft.fixtureId,
         goalsFor: Number(draft.goalsFor),
         goalsAgainst: Number(draft.goalsAgainst),
-        halfTimeFor: draft.halfTimeFor === "" ? null : Number(draft.halfTimeFor),
-        halfTimeAgainst: draft.halfTimeAgainst === "" ? null : Number(draft.halfTimeAgainst),
+        halfTimeFor:
+          draft.halfTimeFor === "" ? null : Number(draft.halfTimeFor),
+        halfTimeAgainst:
+          draft.halfTimeAgainst === "" ? null : Number(draft.halfTimeAgainst),
         matchReport: draft.matchReport,
         motmPlayerId: draft.motmPlayerId,
         events: draft.events.map((e) => ({
@@ -115,7 +126,7 @@ export function ResultsManager({
         })),
       });
       if (result.ok) {
-        toast.success("Result published — it's live on the site.");
+        toast.success("Result published it's live on the site.");
         setDraft(null);
         router.refresh();
       } else {
@@ -131,7 +142,10 @@ export function ResultsManager({
       ) : (
         <ul className="divide-y divide-line rounded-brand border border-line bg-white/60">
           {fixtures.map((fixture) => (
-            <li key={fixture.id} className="flex flex-wrap items-center gap-3 px-4 py-3">
+            <li
+              key={fixture.id}
+              className="flex flex-wrap items-center gap-3 px-4 py-3"
+            >
               <div className="min-w-0 flex-1">
                 <p className="font-semibold">
                   {fixture.label}
@@ -143,17 +157,29 @@ export function ResultsManager({
                 </p>
                 <p className="text-step--1 text-kit-soft">
                   {fixture.competition} · {fixture.ageGroup} ·{" "}
-                  <span className="font-mono">{formatKickoffWAT(new Date(fixture.kickoffAtIso))}</span>
-                  {fixture.result && fixture.result.photoCount > 0 && ` · ${fixture.result.photoCount} photos`}
+                  <span className="font-mono">
+                    {formatKickoffWAT(new Date(fixture.kickoffAtIso))}
+                  </span>
+                  {fixture.result &&
+                    fixture.result.photoCount > 0 &&
+                    ` · ${fixture.result.photoCount} photos`}
                 </p>
               </div>
               <StatusBadge status={fixture.status} />
               <div className="flex gap-2">
-                <Button variant={fixture.result ? "secondary" : "primary"} size="sm" onClick={() => openFor(fixture)}>
+                <Button
+                  variant={fixture.result ? "secondary" : "primary"}
+                  size="sm"
+                  onClick={() => openFor(fixture)}
+                >
                   {fixture.result ? "Edit result" : "Add result"}
                 </Button>
                 {fixture.result && (
-                  <Button variant="danger" size="sm" onClick={() => setRemoving(fixture)}>
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => setRemoving(fixture)}
+                  >
                     Delete
                   </Button>
                 )}
@@ -175,24 +201,60 @@ export function ResultsManager({
             <div className="grid grid-cols-2 gap-4">
               <Field label="Goals for (Moyours)" required>
                 {(a11y) => (
-                  <Input {...a11y} type="number" min={0} max={99} value={draft.goalsFor} onChange={(e) => setDraft({ ...draft, goalsFor: e.target.value })} />
+                  <Input
+                    {...a11y}
+                    type="number"
+                    min={0}
+                    max={99}
+                    value={draft.goalsFor}
+                    onChange={(e) =>
+                      setDraft({ ...draft, goalsFor: e.target.value })
+                    }
+                  />
                 )}
               </Field>
               <Field label="Goals against" required>
                 {(a11y) => (
-                  <Input {...a11y} type="number" min={0} max={99} value={draft.goalsAgainst} onChange={(e) => setDraft({ ...draft, goalsAgainst: e.target.value })} />
+                  <Input
+                    {...a11y}
+                    type="number"
+                    min={0}
+                    max={99}
+                    value={draft.goalsAgainst}
+                    onChange={(e) =>
+                      setDraft({ ...draft, goalsAgainst: e.target.value })
+                    }
+                  />
                 )}
               </Field>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <Field label="Half-time for">
                 {(a11y) => (
-                  <Input {...a11y} type="number" min={0} max={99} value={draft.halfTimeFor} onChange={(e) => setDraft({ ...draft, halfTimeFor: e.target.value })} />
+                  <Input
+                    {...a11y}
+                    type="number"
+                    min={0}
+                    max={99}
+                    value={draft.halfTimeFor}
+                    onChange={(e) =>
+                      setDraft({ ...draft, halfTimeFor: e.target.value })
+                    }
+                  />
                 )}
               </Field>
               <Field label="Half-time against">
                 {(a11y) => (
-                  <Input {...a11y} type="number" min={0} max={99} value={draft.halfTimeAgainst} onChange={(e) => setDraft({ ...draft, halfTimeAgainst: e.target.value })} />
+                  <Input
+                    {...a11y}
+                    type="number"
+                    min={0}
+                    max={99}
+                    value={draft.halfTimeAgainst}
+                    onChange={(e) =>
+                      setDraft({ ...draft, halfTimeAgainst: e.target.value })
+                    }
+                  />
                 )}
               </Field>
             </div>
@@ -201,7 +263,10 @@ export function ResultsManager({
             <div className="flex flex-col gap-2">
               <p className="text-step--1 font-semibold">Match events</p>
               {draft.events.map((event, index) => (
-                <div key={index} className="grid grid-cols-[4.5rem_7rem_1fr_auto] items-center gap-2">
+                <div
+                  key={index}
+                  className="grid grid-cols-[4.5rem_7rem_1fr_auto] items-center gap-2"
+                >
                   <Input
                     aria-label={`Event ${index + 1} minute`}
                     type="number"
@@ -211,7 +276,10 @@ export function ResultsManager({
                     value={event.minute}
                     onChange={(e) => {
                       const events = [...draft.events];
-                      events[index] = { ...event, minute: Number(e.target.value) };
+                      events[index] = {
+                        ...event,
+                        minute: Number(e.target.value),
+                      };
                       setDraft({ ...draft, events });
                     }}
                   />
@@ -238,7 +306,11 @@ export function ResultsManager({
                       value={event.playerId}
                       onChange={(e) => {
                         const events = [...draft.events];
-                        events[index] = { ...event, playerId: e.target.value, playerNameFallback: "" };
+                        events[index] = {
+                          ...event,
+                          playerId: e.target.value,
+                          playerNameFallback: "",
+                        };
                         setDraft({ ...draft, events });
                       }}
                     >
@@ -258,7 +330,10 @@ export function ResultsManager({
                         value={event.playerNameFallback}
                         onChange={(e) => {
                           const events = [...draft.events];
-                          events[index] = { ...event, playerNameFallback: e.target.value };
+                          events[index] = {
+                            ...event,
+                            playerNameFallback: e.target.value,
+                          };
                           setDraft({ ...draft, events });
                         }}
                       />
@@ -268,7 +343,12 @@ export function ResultsManager({
                     variant="ghost"
                     size="sm"
                     aria-label={`Remove event ${index + 1}`}
-                    onClick={() => setDraft({ ...draft, events: draft.events.filter((_, i) => i !== index) })}
+                    onClick={() =>
+                      setDraft({
+                        ...draft,
+                        events: draft.events.filter((_, i) => i !== index),
+                      })
+                    }
                   >
                     ✕
                   </Button>
@@ -281,7 +361,15 @@ export function ResultsManager({
                 onClick={() =>
                   setDraft({
                     ...draft,
-                    events: [...draft.events, { minute: 0, type: "GOAL", playerId: "", playerNameFallback: "" }],
+                    events: [
+                      ...draft.events,
+                      {
+                        minute: 0,
+                        type: "GOAL",
+                        playerId: "",
+                        playerNameFallback: "",
+                      },
+                    ],
                   })
                 }
               >
@@ -291,7 +379,13 @@ export function ResultsManager({
 
             <Field label="Player of the match">
               {(a11y) => (
-                <Select {...a11y} value={draft.motmPlayerId} onChange={(e) => setDraft({ ...draft, motmPlayerId: e.target.value })}>
+                <Select
+                  {...a11y}
+                  value={draft.motmPlayerId}
+                  onChange={(e) =>
+                    setDraft({ ...draft, motmPlayerId: e.target.value })
+                  }
+                >
                   <option value="">None</option>
                   {squad(draft.teamId).map((p) => (
                     <option key={p.id} value={p.id}>
@@ -304,7 +398,14 @@ export function ResultsManager({
 
             <Field label="Match report">
               {(a11y) => (
-                <Textarea {...a11y} rows={5} value={draft.matchReport} onChange={(e) => setDraft({ ...draft, matchReport: e.target.value })} />
+                <Textarea
+                  {...a11y}
+                  rows={5}
+                  value={draft.matchReport}
+                  onChange={(e) =>
+                    setDraft({ ...draft, matchReport: e.target.value })
+                  }
+                />
               )}
             </Field>
 
@@ -313,23 +414,32 @@ export function ResultsManager({
                 intent="matches"
                 label="Add match photos"
                 multiple
-                onUploaded={(assets) => setDraft({ ...draft, photos: [...draft.photos, ...assets] })}
+                onUploaded={(assets) =>
+                  setDraft({ ...draft, photos: [...draft.photos, ...assets] })
+                }
               />
               {draft.photos.length > 0 && (
                 <span className="text-step--1 text-kit-soft">
-                  {draft.photos.length} new photo{draft.photos.length === 1 ? "" : "s"} attached
+                  {draft.photos.length} new photo
+                  {draft.photos.length === 1 ? "" : "s"} attached
                 </span>
               )}
             </div>
           </div>
         )}
         <DialogActions>
-          <Button variant="secondary" onClick={() => setDraft(null)} disabled={pending}>
+          <Button
+            variant="secondary"
+            onClick={() => setDraft(null)}
+            disabled={pending}
+          >
             Cancel
           </Button>
           <Button
             loading={pending}
-            disabled={!draft || draft.goalsFor === "" || draft.goalsAgainst === ""}
+            disabled={
+              !draft || draft.goalsFor === "" || draft.goalsAgainst === ""
+            }
             onClick={publish}
           >
             Publish result
@@ -338,13 +448,21 @@ export function ResultsManager({
       </Dialog>
 
       {/* Delete result */}
-      <Dialog open={removing !== null} onClose={() => setRemoving(null)} title="Delete this result?">
+      <Dialog
+        open={removing !== null}
+        onClose={() => setRemoving(null)}
+        title="Delete this result?"
+      >
         <p className="text-step--1 text-kit-soft">
           The scoreline, events, report, and match photos are removed, and the
           fixture returns to Scheduled.
         </p>
         <DialogActions>
-          <Button variant="secondary" onClick={() => setRemoving(null)} disabled={pending}>
+          <Button
+            variant="secondary"
+            onClick={() => setRemoving(null)}
+            disabled={pending}
+          >
             Cancel
           </Button>
           <Button

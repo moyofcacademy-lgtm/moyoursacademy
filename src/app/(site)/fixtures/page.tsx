@@ -8,7 +8,8 @@ import { cn, hoursAgo } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Fixtures",
-  description: "Upcoming Moyours Football Club Academy matches across all age groups.",
+  description:
+    "Upcoming Moyours Football Club Academy matches across all age groups.",
 };
 
 export default async function FixturesPage({
@@ -38,8 +39,10 @@ export default async function FixturesPage({
 
   function filterHref(patch: { ageGroup?: string; competition?: string }) {
     const next = new URLSearchParams();
-    const ageGroup = patch.ageGroup !== undefined ? patch.ageGroup : params.ageGroup;
-    const competition = patch.competition !== undefined ? patch.competition : params.competition;
+    const ageGroup =
+      patch.ageGroup !== undefined ? patch.ageGroup : params.ageGroup;
+    const competition =
+      patch.competition !== undefined ? patch.competition : params.competition;
     if (ageGroup) next.set("ageGroup", ageGroup);
     if (competition) next.set("competition", competition);
     const qs = next.toString();
@@ -50,23 +53,41 @@ export default async function FixturesPage({
     <div className="mx-auto max-w-4xl px-[var(--gutter)] py-12">
       <h1 className="font-display text-step-3">Fixtures</h1>
       <p className="mt-2 max-w-xl text-step-0 text-kit-soft">
-        Come and support the squads — kickoff times are West Africa Time.
+        Come and support the squads kickoff times are West Africa Time.
       </p>
 
       {/* Filters */}
-      <div className="mt-6 flex flex-wrap items-center gap-2" role="group" aria-label="Filter by age group">
-        <FilterChip href={filterHref({ ageGroup: "" })} active={!params.ageGroup}>
+      <div
+        className="mt-6 flex flex-wrap items-center gap-2"
+        role="group"
+        aria-label="Filter by age group"
+      >
+        <FilterChip
+          href={filterHref({ ageGroup: "" })}
+          active={!params.ageGroup}
+        >
           All ages
         </FilterChip>
         {AGE_GROUPS.map((g) => (
-          <FilterChip key={g.key} href={filterHref({ ageGroup: g.key })} active={params.ageGroup === g.key}>
+          <FilterChip
+            key={g.key}
+            href={filterHref({ ageGroup: g.key })}
+            active={params.ageGroup === g.key}
+          >
             {g.key}
           </FilterChip>
         ))}
       </div>
       {competitions.length > 1 && (
-        <div className="mt-2 flex flex-wrap items-center gap-2" role="group" aria-label="Filter by competition">
-          <FilterChip href={filterHref({ competition: "" })} active={!params.competition}>
+        <div
+          className="mt-2 flex flex-wrap items-center gap-2"
+          role="group"
+          aria-label="Filter by competition"
+        >
+          <FilterChip
+            href={filterHref({ competition: "" })}
+            active={!params.competition}
+          >
             All competitions
           </FilterChip>
           {competitions.map((c) => (
@@ -83,10 +104,14 @@ export default async function FixturesPage({
 
       <div className="mt-8 flex flex-col gap-4">
         {fixtures.length === 0 ? (
-          <EmptyState title="No upcoming fixtures in this view — check back soon or follow us on social media." />
+          <EmptyState title="No upcoming fixtures in this view check back soon or follow us on social media." />
         ) : (
           fixtures.map((fixture) => (
-            <FixtureStrip key={fixture.id} fixture={fixture} href={`/fixtures/${fixture.id}`} />
+            <FixtureStrip
+              key={fixture.id}
+              fixture={fixture}
+              href={`/fixtures/${fixture.id}`}
+            />
           ))
         )}
       </div>
@@ -109,7 +134,9 @@ function FilterChip({
       aria-current={active ? "true" : undefined}
       className={cn(
         "rounded-brand border px-3 py-1.5 text-step--1 font-semibold transition-colors",
-        active ? "border-pitch bg-pitch text-chalk" : "border-line text-kit-soft hover:border-kit hover:text-kit",
+        active
+          ? "border-pitch bg-pitch text-chalk"
+          : "border-line text-kit-soft hover:border-kit hover:text-kit",
       )}
     >
       {children}

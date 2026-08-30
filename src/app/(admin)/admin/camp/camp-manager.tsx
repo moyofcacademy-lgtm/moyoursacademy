@@ -10,7 +10,11 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Input, Select } from "@/components/ui/input";
 import { ageAt } from "@/lib/constants";
 import { formatDateTimeWAT } from "@/lib/utils";
-import { deleteCampRegistration, markCampPaid, unmarkCampPaid } from "./actions";
+import {
+  deleteCampRegistration,
+  markCampPaid,
+  unmarkCampPaid,
+} from "./actions";
 
 export type CampRow = {
   id: string;
@@ -40,7 +44,8 @@ export function CampManager({ rows }: { rows: CampRow[] }) {
     const q = query.trim().toLowerCase();
     return rows.filter((r) => {
       if (paidFilter === "paid" && r.paymentStatus !== "VERIFIED") return false;
-      if (paidFilter === "unpaid" && r.paymentStatus === "VERIFIED") return false;
+      if (paidFilter === "unpaid" && r.paymentStatus === "VERIFIED")
+        return false;
       if (!q) return true;
       return (
         r.fullName.toLowerCase().includes(q) ||
@@ -62,7 +67,11 @@ export function CampManager({ rows }: { rows: CampRow[] }) {
           onChange={(e) => setQuery(e.target.value)}
           className="sm:col-span-2"
         />
-        <Select aria-label="Filter by payment" value={paidFilter} onChange={(e) => setPaidFilter(e.target.value)}>
+        <Select
+          aria-label="Filter by payment"
+          value={paidFilter}
+          onChange={(e) => setPaidFilter(e.target.value)}
+        >
           <option value="">Everyone</option>
           <option value="unpaid">Unpaid only</option>
           <option value="paid">Paid only</option>
@@ -70,38 +79,60 @@ export function CampManager({ rows }: { rows: CampRow[] }) {
       </div>
 
       {filtered.length === 0 ? (
-        <EmptyState title="No camp registrations in this view — they appear here the moment a parent registers." />
+        <EmptyState title="No camp registrations in this view they appear here the moment a parent registers." />
       ) : (
         <div className="overflow-x-auto rounded-brand border border-line bg-white/60">
           <table className="w-full min-w-[860px] border-collapse text-step--1">
             <thead>
               <tr className="border-b-2 border-kit text-left">
-                <th scope="col" className="px-3 py-2.5 font-semibold">Participant</th>
-                <th scope="col" className="px-3 py-2.5 font-semibold">Guardian</th>
-                <th scope="col" className="px-3 py-2.5 font-semibold">Method</th>
-                <th scope="col" className="px-3 py-2.5 font-semibold">Payment</th>
-                <th scope="col" className="px-3 py-2.5 font-semibold">Registered</th>
-                <th scope="col" className="px-3 py-2.5 font-semibold"><span className="sr-only">Actions</span></th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Participant
+                </th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Guardian
+                </th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Method
+                </th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Payment
+                </th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Registered
+                </th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  <span className="sr-only">Actions</span>
+                </th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((row) => (
-                <tr key={row.id} className="border-b border-line align-middle last:border-0 hover:bg-kit/5">
+                <tr
+                  key={row.id}
+                  className="border-b border-line align-middle last:border-0 hover:bg-kit/5"
+                >
                   <td className="px-3 py-2.5">
                     <p className="font-semibold">
                       {row.fullName}
                       <span className="ml-2 font-mono text-[0.6875rem] font-normal text-kit-soft">
-                        {ageAt(new Date(row.dateOfBirthIso))}y · {row.gender === "MALE" ? "Boy" : "Girl"}
+                        {ageAt(new Date(row.dateOfBirthIso))}y ·{" "}
+                        {row.gender === "MALE" ? "Boy" : "Girl"}
                       </span>
                     </p>
-                    <p className="font-mono text-[0.6875rem] text-kit-soft">{row.reference}</p>
+                    <p className="font-mono text-[0.6875rem] text-kit-soft">
+                      {row.reference}
+                    </p>
                   </td>
                   <td className="px-3 py-2.5">
                     <p>{row.guardianName}</p>
-                    <p className="font-mono text-[0.75rem] text-kit-soft">{row.guardianPhone}</p>
+                    <p className="font-mono text-[0.75rem] text-kit-soft">
+                      {row.guardianPhone}
+                    </p>
                   </td>
                   <td className="px-3 py-2.5">
-                    {row.paymentMethod === "CASH" ? "Cash at venue" : "Transfer"}
+                    {row.paymentMethod === "CASH"
+                      ? "Cash at venue"
+                      : "Transfer"}
                     {row.proofUrl && (
                       <a
                         href={`/admin/camp/${row.id}/proof`}
@@ -122,7 +153,10 @@ export function CampManager({ rows }: { rows: CampRow[] }) {
                       <Badge tone="outline">Unpaid</Badge>
                     )}
                   </td>
-                  <td className="px-3 py-2.5 text-kit-soft" title={formatDateTimeWAT(new Date(row.createdAtIso))}>
+                  <td
+                    className="px-3 py-2.5 text-kit-soft"
+                    title={formatDateTimeWAT(new Date(row.createdAtIso))}
+                  >
                     {formatDateTimeWAT(new Date(row.createdAtIso))}
                   </td>
                   <td className="px-3 py-2.5 text-right">
@@ -161,7 +195,11 @@ export function CampManager({ rows }: { rows: CampRow[] }) {
                           Mark paid
                         </Button>
                       )}
-                      <Button variant="danger" size="sm" onClick={() => setRemoving(row)}>
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() => setRemoving(row)}
+                      >
                         Delete
                       </Button>
                     </div>
@@ -173,12 +211,21 @@ export function CampManager({ rows }: { rows: CampRow[] }) {
         </div>
       )}
 
-      <Dialog open={removing !== null} onClose={() => setRemoving(null)} title={`Delete ${removing?.fullName}?`}>
+      <Dialog
+        open={removing !== null}
+        onClose={() => setRemoving(null)}
+        title={`Delete ${removing?.fullName}?`}
+      >
         <p className="text-step--1 text-kit-soft">
-          This permanently removes the camp registration and any uploaded payment proof.
+          This permanently removes the camp registration and any uploaded
+          payment proof.
         </p>
         <DialogActions>
-          <Button variant="secondary" onClick={() => setRemoving(null)} disabled={pending}>
+          <Button
+            variant="secondary"
+            onClick={() => setRemoving(null)}
+            disabled={pending}
+          >
             Cancel
           </Button>
           <Button

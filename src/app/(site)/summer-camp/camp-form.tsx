@@ -72,7 +72,7 @@ export function CampForm({
         <p className="mt-4 text-step--1 leading-relaxed text-kit-soft">
           We&apos;ve emailed your confirmation with the schedule and what to bring.
           {done.paymentMethod === "CASH" && " Please pay at the venue before the first session."}{" "}
-          First session: {venue.split(",")[0]}, Wuse Zone 2 — arrive 15 minutes early.
+          First session: {venue.split(",")[0]}, Wuse Zone 2 arrive 15 minutes early.
         </p>
         <a
           href={whatsappUrl}
@@ -216,7 +216,7 @@ export function CampForm({
         {form.paymentMethod === "TRANSFER" && (
           <div>
             <p className="mb-1.5 text-step--1 font-semibold">
-              Transfer receipt <span className="font-normal text-kit-soft">(optional — you can also send it on WhatsApp)</span>
+              Transfer receipt <span className="font-normal text-kit-soft">(optional you can also send it on WhatsApp)</span>
             </p>
             <ProofUpload proof={proof} onChange={setProof} />
           </div>

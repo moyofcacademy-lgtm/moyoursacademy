@@ -22,7 +22,10 @@ async function heroSlides(): Promise<HeroSlide[]> {
     include: { assets: { orderBy: { sortOrder: "asc" }, take: 8 } },
   });
   if (album && album.assets.length > 0) {
-    return album.assets.map((asset) => ({ url: asset.url, caption: asset.caption }));
+    return album.assets.map((asset) => ({
+      url: asset.url,
+      caption: asset.caption,
+    }));
   }
   // … otherwise fall back to accepted players with photos and media consent.
   const players = await prisma.player.findMany({
@@ -32,7 +35,11 @@ async function heroSlides(): Promise<HeroSlide[]> {
     },
     take: 8,
     orderBy: { joinedAt: "desc" },
-    include: { registration: { select: { firstName: true, playerPhotoUrl: true, ageGroup: true } } },
+    include: {
+      registration: {
+        select: { firstName: true, playerPhotoUrl: true, ageGroup: true },
+      },
+    },
   });
   return players
     .filter((p) => p.registration.playerPhotoUrl)
@@ -56,32 +63,43 @@ const SERVICE_ICONS = [
 ];
 
 export default async function HomePage() {
-  const [nextFixture, recentResults, fees, slides, coaches, posts] = await Promise.all([
-    prisma.fixture.findFirst({
-      where: { status: { in: ["SCHEDULED", "LIVE"] }, kickoffAt: { gte: hoursAgo(3) } },
-      orderBy: { kickoffAt: "asc" },
-      include: { team: true, opponent: true, result: true },
-    }),
-    prisma.fixture.findMany({
-      where: { status: "COMPLETED", result: { isNot: null } },
-      orderBy: { kickoffAt: "desc" },
-      take: 2,
-      include: { team: true, opponent: true, result: true },
-    }),
-    getFees(),
-    heroSlides(),
-    prisma.coach.findMany({
-      where: { active: true },
-      orderBy: { sortOrder: "asc" },
-      take: 4,
-    }),
-    prisma.post.findMany({
-      where: { published: true },
-      orderBy: { publishedAt: "desc" },
-      take: 3,
-      select: { id: true, title: true, slug: true, excerpt: true, coverUrl: true, publishedAt: true },
-    }),
-  ]);
+  const [nextFixture, recentResults, fees, slides, coaches, posts] =
+    await Promise.all([
+      prisma.fixture.findFirst({
+        where: {
+          status: { in: ["SCHEDULED", "LIVE"] },
+          kickoffAt: { gte: hoursAgo(3) },
+        },
+        orderBy: { kickoffAt: "asc" },
+        include: { team: true, opponent: true, result: true },
+      }),
+      prisma.fixture.findMany({
+        where: { status: "COMPLETED", result: { isNot: null } },
+        orderBy: { kickoffAt: "desc" },
+        take: 2,
+        include: { team: true, opponent: true, result: true },
+      }),
+      getFees(),
+      heroSlides(),
+      prisma.coach.findMany({
+        where: { active: true },
+        orderBy: { sortOrder: "asc" },
+        take: 4,
+      }),
+      prisma.post.findMany({
+        where: { published: true },
+        orderBy: { publishedAt: "desc" },
+        take: 3,
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          excerpt: true,
+          coverUrl: true,
+          publishedAt: true,
+        },
+      }),
+    ]);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -102,7 +120,10 @@ export default async function HomePage() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* Hero — the one orchestrated moment */}
       <section className="relative isolate overflow-hidden bg-pitch text-chalk">
@@ -122,9 +143,9 @@ export default async function HomePage() {
                 Welcome to Moyours Football Club Academy.
               </h1>
               <p className="mt-5 max-w-xl text-step-0 text-chalk-dim sm:text-step-1">
-                {site.heroTagline} For over 9 years we&apos;ve trained and mentored
-                young athletes in Abuja — bridging grassroots football with
-                international career opportunities.
+                {site.heroTagline} For over 9 years we&apos;ve trained and
+                mentored young athletes in Abuja bridging grassroots football
+                with international career opportunities.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-4">
@@ -161,7 +182,10 @@ export default async function HomePage() {
                 <HeroCarousel slides={slides} />
               </div>
               <p className="mt-2 text-right font-mono text-[0.6875rem] uppercase tracking-widest text-chalk-dim">
-                <Link href="/squads" className="underline-offset-4 hover:underline">
+                <Link
+                  href="/squads"
+                  className="underline-offset-4 hover:underline"
+                >
                   Meet the squads →
                 </Link>
               </p>
@@ -171,11 +195,16 @@ export default async function HomePage() {
       </section>
 
       {/* Stats band */}
-      <section aria-label="Academy in numbers" className="reveal bg-pitch-deep text-chalk">
+      <section
+        aria-label="Academy in numbers"
+        className="reveal bg-pitch-deep text-chalk"
+      >
         <dl className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-10 px-[var(--gutter)] py-12 lg:grid-cols-4">
           {site.stats.map((stat) => (
             <div key={stat.label} className="rule-gold pt-4">
-              <dd className="tabular font-mono text-step-3 font-bold text-gold">{stat.value}</dd>
+              <dd className="tabular font-mono text-step-3 font-bold text-gold">
+                {stat.value}
+              </dd>
               <dt className="mt-1 max-w-52 text-step--1 leading-relaxed text-chalk-dim">
                 {stat.label}
               </dt>
@@ -185,7 +214,10 @@ export default async function HomePage() {
       </section>
 
       {/* Programs — the three phases */}
-      <section aria-labelledby="programs-heading" className="reveal mx-auto max-w-6xl px-[var(--gutter)] py-16 sm:py-20">
+      <section
+        aria-labelledby="programs-heading"
+        className="reveal mx-auto max-w-6xl px-[var(--gutter)] py-16 sm:py-20"
+      >
         <p className="flex items-center gap-2 font-mono text-[0.6875rem] uppercase tracking-widest text-pitch">
           <Minute value="15" /> Academy programs
         </p>
@@ -193,7 +225,10 @@ export default async function HomePage() {
           <h2 id="programs-heading" className="font-display text-step-2">
             One pathway, three phases
           </h2>
-          <Link href="/programs" className="text-step--1 font-semibold underline-offset-4 hover:underline">
+          <Link
+            href="/programs"
+            className="text-step--1 font-semibold underline-offset-4 hover:underline"
+          >
             All programs
           </Link>
         </div>
@@ -207,25 +242,38 @@ export default async function HomePage() {
               <p className="font-mono text-[0.6875rem] uppercase tracking-widest text-kit-soft">
                 Phase {index + 1} · {phase.ages}
               </p>
-              <p className="mt-2 font-display text-step-1 group-hover:underline">{phase.name}</p>
-              <p className="mt-2 text-step--1 leading-relaxed text-kit-soft">{phase.summary}</p>
+              <p className="mt-2 font-display text-step-1 group-hover:underline">
+                {phase.name}
+              </p>
+              <p className="mt-2 text-step--1 leading-relaxed text-kit-soft">
+                {phase.summary}
+              </p>
             </Link>
           ))}
         </div>
       </section>
 
       {/* Services */}
-      <section aria-labelledby="services-heading" className="reveal border-y border-line bg-white/40">
+      <section
+        aria-labelledby="services-heading"
+        className="reveal border-y border-line bg-white/40"
+      >
         <div className="mx-auto max-w-6xl px-[var(--gutter)] py-16 sm:py-20">
           <p className="flex items-center gap-2 font-mono text-[0.6875rem] uppercase tracking-widest text-pitch">
             <Minute value="30" /> What we offer
           </p>
-          <h2 id="services-heading" className="mt-2 max-w-xl font-display text-step-2">
+          <h2
+            id="services-heading"
+            className="mt-2 max-w-xl font-display text-step-2"
+          >
             Beyond the training ground
           </h2>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {site.services.map((service, index) => (
-              <div key={service.name} className="rounded-brand border border-line bg-white/60 p-6">
+              <div
+                key={service.name}
+                className="rounded-brand border border-line bg-white/60 p-6"
+              >
                 <svg
                   width="28"
                   height="28"
@@ -239,7 +287,9 @@ export default async function HomePage() {
                 >
                   <path d={SERVICE_ICONS[index]} />
                 </svg>
-                <h3 className="mt-4 font-display text-step-0">{service.name}</h3>
+                <h3 className="mt-4 font-display text-step-0">
+                  {service.name}
+                </h3>
                 <p className="mt-2 text-step--1 leading-relaxed text-kit-soft">
                   {service.description}
                 </p>
@@ -261,7 +311,10 @@ export default async function HomePage() {
       </section>
 
       {/* Featured story — Danladi */}
-      <section aria-labelledby="story-heading" className="reveal relative isolate overflow-hidden bg-pitch text-chalk">
+      <section
+        aria-labelledby="story-heading"
+        className="reveal relative isolate overflow-hidden bg-pitch text-chalk"
+      >
         <div aria-hidden className="goal-net absolute inset-0 -z-10" />
         <div className="mx-auto grid max-w-6xl gap-10 px-[var(--gutter)] py-16 sm:py-20 lg:grid-cols-[minmax(0,26rem)_1fr]">
           <div>
@@ -278,16 +331,17 @@ export default async function HomePage() {
           </div>
           <div className="max-w-2xl space-y-4 text-step-0 leading-relaxed text-chalk-dim">
             <p>
-              Danladi&apos;s story reflects the heart of Moyours Academy. Discovered
-              in 2016 by Coach Moyiwa, his raw talent and passion stood out — but
-              financial challenges threatened his dream. Moyours stepped in,
-              offering a scholarship that covered his training, kits, and meals.
+              Danladi&apos;s story reflects the heart of Moyours Academy.
+              Discovered in 2016 by Coach Moyiwa, his raw talent and passion
+              stood out but financial challenges threatened his dream. Moyours
+              stepped in, offering a scholarship that covered his training,
+              kits, and meals.
             </p>
             <p>
-              With dedication and support, Danladi rose quickly — excelling in
-              Lagos trials, earning a place among the top five players, and later
-              traveling to Manchester for international training. His journey
-              reached its peak with trials at AC Milan.
+              With dedication and support, Danladi rose quickly excelling in
+              Lagos trials, earning a place among the top five players, and
+              later traveling to Manchester for international training. His
+              journey reached its peak with trials at AC Milan.
             </p>
             <Link
               href="/support"
@@ -301,12 +355,18 @@ export default async function HomePage() {
 
       {/* Recent results */}
       {recentResults.length > 0 && (
-        <section aria-labelledby="results-heading" className="reveal mx-auto max-w-6xl px-[var(--gutter)] py-16">
+        <section
+          aria-labelledby="results-heading"
+          className="reveal mx-auto max-w-6xl px-[var(--gutter)] py-16"
+        >
           <div className="flex items-end justify-between gap-4">
             <h2 id="results-heading" className="font-display text-step-2">
               Recent results
             </h2>
-            <Link href="/results" className="text-step--1 font-semibold underline-offset-4 hover:underline">
+            <Link
+              href="/results"
+              className="text-step--1 font-semibold underline-offset-4 hover:underline"
+            >
               All results
             </Link>
           </div>
@@ -323,25 +383,42 @@ export default async function HomePage() {
       )}
 
       {/* Coaches */}
-      <section aria-labelledby="coaches-heading" className="reveal mx-auto max-w-6xl px-[var(--gutter)] pb-16">
+      <section
+        aria-labelledby="coaches-heading"
+        className="reveal mx-auto max-w-6xl px-[var(--gutter)] pb-16"
+      >
         <div className="flex items-end justify-between gap-4">
           <h2 id="coaches-heading" className="font-display text-step-2">
             Let&apos;s help coach you to greatness
           </h2>
-          <Link href="/coaches" className="text-step--1 font-semibold underline-offset-4 hover:underline">
+          <Link
+            href="/coaches"
+            className="text-step--1 font-semibold underline-offset-4 hover:underline"
+          >
             Full coaching staff
           </Link>
         </div>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {coaches.map((coach) => (
-            <div key={coach.id} className="flex items-center gap-3 rounded-brand border border-line bg-white/50 p-5">
-              <CoachPortrait name={coach.name} photoUrl={coach.photoUrl} size={52} />
+            <div
+              key={coach.id}
+              className="flex items-center gap-3 rounded-brand border border-line bg-white/50 p-5"
+            >
+              <CoachPortrait
+                name={coach.name}
+                photoUrl={coach.photoUrl}
+                size={52}
+              />
               <div className="min-w-0">
                 <p className="font-mono text-[0.6875rem] uppercase tracking-widest text-pitch">
                   {coach.ageGroup}
                 </p>
-                <p className="mt-0.5 truncate font-display text-step-0">{coach.name}</p>
-                <p className="truncate text-step--1 text-kit-soft">{coach.role}</p>
+                <p className="mt-0.5 truncate font-display text-step-0">
+                  {coach.name}
+                </p>
+                <p className="truncate text-step--1 text-kit-soft">
+                  {coach.role}
+                </p>
               </div>
             </div>
           ))}
@@ -350,13 +427,19 @@ export default async function HomePage() {
 
       {/* Latest news */}
       {posts.length > 0 && (
-        <section aria-labelledby="news-heading" className="reveal border-t border-line bg-white/40">
+        <section
+          aria-labelledby="news-heading"
+          className="reveal border-t border-line bg-white/40"
+        >
           <div className="mx-auto max-w-6xl px-[var(--gutter)] py-16">
             <div className="flex items-end justify-between gap-4">
               <h2 id="news-heading" className="font-display text-step-2">
                 Latest from the academy
               </h2>
-              <Link href="/news" className="text-step--1 font-semibold underline-offset-4 hover:underline">
+              <Link
+                href="/news"
+                className="text-step--1 font-semibold underline-offset-4 hover:underline"
+              >
                 All news
               </Link>
             </div>
@@ -371,7 +454,10 @@ export default async function HomePage() {
                       <Image
                         src={
                           post.coverUrl.includes("res.cloudinary.com")
-                            ? post.coverUrl.replace("/upload/", "/upload/f_auto,q_auto,w_600/")
+                            ? post.coverUrl.replace(
+                                "/upload/",
+                                "/upload/f_auto,q_auto,w_600/",
+                              )
                             : post.coverUrl
                         }
                         alt=""
@@ -380,7 +466,10 @@ export default async function HomePage() {
                         className="aspect-[16/9] w-full bg-pitch-deep/5 object-contain"
                       />
                     ) : (
-                      <div aria-hidden className="rule-gold surface-pitch flex aspect-[16/9] w-full items-center justify-center">
+                      <div
+                        aria-hidden
+                        className="rule-gold surface-pitch flex aspect-[16/9] w-full items-center justify-center"
+                      >
                         <MoyoursCrest size={56} />
                       </div>
                     )}
@@ -418,8 +507,12 @@ export default async function HomePage() {
         <div aria-hidden className="glow-gold absolute inset-0 -z-10" />
         <div className="mx-auto grid max-w-6xl gap-8 px-[var(--gutter)] py-16 sm:grid-cols-2">
           <div className="flex flex-col items-start gap-4">
-            <p className="flex items-center gap-2 font-mono text-[0.6875rem] uppercase tracking-widest text-gold"><Minute value="90+" light /> Full time</p>
-            <h2 className="font-display text-step-2">Ready to join the family?</h2>
+            <p className="flex items-center gap-2 font-mono text-[0.6875rem] uppercase tracking-widest text-gold">
+              <Minute value="90+" light /> Full time
+            </p>
+            <h2 className="font-display text-step-2">
+              Ready to join the family?
+            </h2>
             <p className="max-w-md text-step-0 text-chalk-dim">
               Registration is {formatNaira(fees.initialTotalKobo)} including two
               sets of jerseys. Training holds Fridays and Saturdays at{" "}
@@ -433,7 +526,9 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="flex flex-col items-start gap-4 border-t border-pitch-mid pt-8 sm:border-l sm:border-t-0 sm:pl-8 sm:pt-0">
-            <h2 className="font-display text-step-2">Give a child the chance to play.</h2>
+            <h2 className="font-display text-step-2">
+              Give a child the chance to play.
+            </h2>
             <p className="max-w-md text-step-0 text-chalk-dim">
               35 of our players train on full scholarships. Your sponsorship
               covers kits, coaching, matches, and mentorship.

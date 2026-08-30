@@ -6,7 +6,7 @@ import { BallIcon } from "@/components/football";
 import { CampForm } from "./camp-form";
 
 export const metadata: Metadata = {
-  title: "Football Summer Camp 2026 — Register now",
+  title: "Football Summer Camp 2026 Register now",
   description:
     "Moyours Football Summer Camp: 27 July – 28 August at DMAK Indaptil, Wuse Zone 2, Abuja. Ages 2–17, five weeks of training, ₦120,000. Register online in two minutes.",
 };
@@ -15,16 +15,23 @@ export const dynamic = "force-dynamic";
 
 /** "Starts tomorrow!" / "Starts today!" / "Week 2 — join mid-camp" */
 function urgencyLabel(startIso: string, endIso: string): string {
-  const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Africa/Lagos" }));
+  const now = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Africa/Lagos" }),
+  );
   const start = new Date(`${startIso}T00:00:00`);
   const end = new Date(`${endIso}T23:59:59`);
-  const days = Math.ceil((start.getTime() - now.getTime()) / (24 * 60 * 60 * 1000));
+  const days = Math.ceil(
+    (start.getTime() - now.getTime()) / (24 * 60 * 60 * 1000),
+  );
   if (days > 1) return `Kicks off in ${days} days`;
-  if (days === 1) return "Starts tomorrow — secure a place today";
-  if (days === 0) return "Starts today — last chance to register";
+  if (days === 1) return "Starts tomorrow secure a place today";
+  if (days === 0) return "Starts today last chance to register";
   if (now <= end) {
-    const week = Math.floor((now.getTime() - start.getTime()) / (7 * 24 * 60 * 60 * 1000)) + 1;
-    return `Week ${week} of 5 — late registration open`;
+    const week =
+      Math.floor(
+        (now.getTime() - start.getTime()) / (7 * 24 * 60 * 60 * 1000),
+      ) + 1;
+    return `Week ${week} of 5 late registration open`;
   }
   return "Camp completed";
 }
@@ -44,8 +51,15 @@ export default async function SummerCampPage() {
     name: `Moyours ${camp.name}`,
     startDate: camp.startDate,
     endDate: camp.endDate,
-    location: { "@type": "Place", name: camp.venue, address: "Wuse Zone 2, Abuja" },
-    organizer: { "@type": "SportsOrganization", name: "Moyours Sports Academy" },
+    location: {
+      "@type": "Place",
+      name: camp.venue,
+      address: "Wuse Zone 2, Abuja",
+    },
+    organizer: {
+      "@type": "SportsOrganization",
+      name: "Moyours Sports Academy",
+    },
     offers: {
       "@type": "Offer",
       price: camp.feeKobo / 100,
@@ -56,7 +70,10 @@ export default async function SummerCampPage() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-pitch text-chalk">
@@ -72,7 +89,7 @@ export default async function SummerCampPage() {
           </h1>
           <p className="mt-4 max-w-xl text-step-0 text-chalk-dim sm:text-step-1">
             Five weeks of rigorous training and serious fun for boys and girls
-            aged {camp.ageMin}–{camp.ageMax} — coached by the Moyours team at{" "}
+            aged {camp.ageMin}–{camp.ageMax} coached by the Moyours team at{" "}
             {camp.venue.split(",")[0]}, Wuse Zone 2.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -95,24 +112,36 @@ export default async function SummerCampPage() {
           {/* Key facts strip */}
           <dl className="rule-gold mt-10 grid max-w-3xl grid-cols-2 gap-x-6 gap-y-6 bg-pitch-deep/60 p-5 sm:grid-cols-4">
             <div>
-              <dt className="text-[0.6875rem] uppercase tracking-widest text-chalk-dim">Dates</dt>
-              <dd className="mt-1 font-mono text-step--1 font-bold">{dateRange}</dd>
+              <dt className="text-[0.6875rem] uppercase tracking-widest text-chalk-dim">
+                Dates
+              </dt>
+              <dd className="mt-1 font-mono text-step--1 font-bold">
+                {dateRange}
+              </dd>
             </div>
             <div>
-              <dt className="text-[0.6875rem] uppercase tracking-widest text-chalk-dim">Ages</dt>
+              <dt className="text-[0.6875rem] uppercase tracking-widest text-chalk-dim">
+                Ages
+              </dt>
               <dd className="mt-1 font-mono text-step--1 font-bold">
                 {camp.ageMin}–{camp.ageMax} years
               </dd>
             </div>
             <div>
-              <dt className="text-[0.6875rem] uppercase tracking-widest text-chalk-dim">Fee</dt>
+              <dt className="text-[0.6875rem] uppercase tracking-widest text-chalk-dim">
+                Fee
+              </dt>
               <dd className="mt-1 font-mono text-step--1 font-bold text-gold">
                 {formatNaira(camp.feeKobo)} · {camp.durationLabel}
               </dd>
             </div>
             <div>
-              <dt className="text-[0.6875rem] uppercase tracking-widest text-chalk-dim">Venue</dt>
-              <dd className="mt-1 text-step--1 font-semibold">{camp.venue.split(",")[0]}, Wuse Zone 2</dd>
+              <dt className="text-[0.6875rem] uppercase tracking-widest text-chalk-dim">
+                Venue
+              </dt>
+              <dd className="mt-1 text-step--1 font-semibold">
+                {camp.venue.split(",")[0]}, Wuse Zone 2
+              </dd>
             </div>
           </dl>
         </div>
@@ -127,7 +156,10 @@ export default async function SummerCampPage() {
             </h2>
             <ul className="mt-4 divide-y divide-line rounded-brand border border-line bg-white/60">
               {camp.schedule.map((session) => (
-                <li key={session.day} className="flex items-center justify-between px-4 py-3">
+                <li
+                  key={session.day}
+                  className="flex items-center justify-between px-4 py-3"
+                >
                   <span className="font-semibold">{session.day}</span>
                   <span className="font-mono text-step--1 text-kit-soft">
                     {session.start} – {session.end}
@@ -150,11 +182,14 @@ export default async function SummerCampPage() {
               {[
                 "Five weeks of structured coaching by the Moyours team",
                 "Rigorous training combined with fun activities",
-                "Small groups by age — from first touches to match play",
+                "Small groups by age from first touches to match play",
                 "Mentorship, discipline, and new friendships",
                 "A pathway into the academy for standout campers",
               ].map((item) => (
-                <li key={item} className="flex gap-2.5 text-step-0 leading-relaxed">
+                <li
+                  key={item}
+                  className="flex gap-2.5 text-step-0 leading-relaxed"
+                >
                   <BallIcon size={16} className="mt-1.5 shrink-0 text-pitch" />
                   {item}
                 </li>
@@ -180,10 +215,16 @@ export default async function SummerCampPage() {
                   <dd className="font-semibold">{camp.bank.bankName}</dd>
                 </div>
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <dt className="text-step--1 text-chalk-dim">Account number</dt>
+                  <dt className="text-step--1 text-chalk-dim">
+                    Account number
+                  </dt>
                   <dd className="flex items-center gap-2 font-mono text-step-1 font-bold tracking-widest">
                     {camp.bank.accountNumber}
-                    <CopyButton value={camp.bank.accountNumber} label="camp account number" className="border-pitch-mid text-chalk" />
+                    <CopyButton
+                      value={camp.bank.accountNumber}
+                      label="camp account number"
+                      className="border-pitch-mid text-chalk"
+                    />
                   </dd>
                 </div>
                 <div className="flex flex-wrap items-center justify-between gap-2">
@@ -192,12 +233,20 @@ export default async function SummerCampPage() {
                 </div>
               </dl>
               <p className="mt-4 text-step--1 text-chalk-dim">
-                Transfer before camp or pay cash at the venue. Questions — call{" "}
-                <a href={`tel:+234${camp.callPhone.slice(1)}`} className="font-mono font-semibold text-chalk underline-offset-2 hover:underline">
+                Transfer before camp or pay cash at the venue. Questions call{" "}
+                <a
+                  href={`tel:+234${camp.callPhone.slice(1)}`}
+                  className="font-mono font-semibold text-chalk underline-offset-2 hover:underline"
+                >
                   {camp.callPhone}
                 </a>{" "}
                 or WhatsApp{" "}
-                <a href={wa} target="_blank" rel="noopener noreferrer" className="font-mono font-semibold text-chalk underline-offset-2 hover:underline">
+                <a
+                  href={wa}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono font-semibold text-chalk underline-offset-2 hover:underline"
+                >
                   {camp.whatsappPhone}
                 </a>
                 .
@@ -207,7 +256,11 @@ export default async function SummerCampPage() {
         </div>
 
         {/* Registration form */}
-        <section id="register" aria-labelledby="camp-register-h" className="lg:sticky lg:top-24 lg:self-start">
+        <section
+          id="register"
+          aria-labelledby="camp-register-h"
+          className="lg:sticky lg:top-24 lg:self-start"
+        >
           <div className="rule-gold rounded-b-brand border border-line bg-white/70 p-6 shadow-xl">
             <h2 id="camp-register-h" className="font-display text-step-2">
               Register for camp
@@ -215,7 +268,12 @@ export default async function SummerCampPage() {
             <p className="mt-1 mb-6 text-step--1 text-kit-soft">
               Two minutes, and your child is on the teamsheet.
             </p>
-            <CampForm ageMin={camp.ageMin} ageMax={camp.ageMax} whatsappUrl={wa} venue={camp.venue} />
+            <CampForm
+              ageMin={camp.ageMin}
+              ageMax={camp.ageMax}
+              whatsappUrl={wa}
+              venue={camp.venue}
+            />
           </div>
         </section>
       </div>

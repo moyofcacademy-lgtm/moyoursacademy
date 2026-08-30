@@ -47,7 +47,11 @@ export function ReviewActions({
           <Button size="lg" onClick={() => setConfirmAccept(true)}>
             Accept player
           </Button>
-          <Button variant="secondary" size="lg" onClick={() => setConfirmReject(true)}>
+          <Button
+            variant="secondary"
+            size="lg"
+            onClick={() => setConfirmReject(true)}
+          >
             Reject
           </Button>
           <Button
@@ -58,7 +62,9 @@ export function ReviewActions({
               startTransition(async () => {
                 const result = await requestBetterProof(registrationId);
                 if (result.ok) {
-                  toast.success("Guardian emailed — they can upload a new proof against the same reference.");
+                  toast.success(
+                    "Guardian emailed they can upload a new proof against the same reference.",
+                  );
                   router.refresh();
                 } else {
                   toast.error(result.error);
@@ -75,7 +81,11 @@ export function ReviewActions({
       </Button>
 
       {/* Accept confirmation */}
-      <Dialog open={confirmAccept} onClose={() => setConfirmAccept(false)} title="Accept this player?">
+      <Dialog
+        open={confirmAccept}
+        onClose={() => setConfirmAccept(false)}
+        title="Accept this player?"
+      >
         <dl className="flex flex-col gap-2 text-step--1">
           <div className="flex justify-between gap-4">
             <dt className="text-kit-soft">Player</dt>
@@ -87,7 +97,9 @@ export function ReviewActions({
           </div>
           <div className="flex justify-between gap-4">
             <dt className="text-kit-soft">Payment</dt>
-            <dd className="font-mono font-semibold">{amountKobo != null ? formatNaira(amountKobo) : "—"}</dd>
+            <dd className="font-mono font-semibold">
+              {amountKobo != null ? formatNaira(amountKobo) : "—"}
+            </dd>
           </div>
         </dl>
         <p className="mt-4 text-step--1 text-kit-soft">
@@ -95,7 +107,11 @@ export function ReviewActions({
           email immediately.
         </p>
         <DialogActions>
-          <Button variant="secondary" onClick={() => setConfirmAccept(false)} disabled={pending}>
+          <Button
+            variant="secondary"
+            onClick={() => setConfirmAccept(false)}
+            disabled={pending}
+          >
             Cancel
           </Button>
           <Button
@@ -107,7 +123,7 @@ export function ReviewActions({
                 if (result.ok) {
                   toast.success(
                     result.alreadyAccepted
-                      ? "This player was already accepted — nothing was re-sent."
+                      ? "This player was already accepted nothing was re-sent."
                       : `Player accepted. Member code ${result.memberCode}.`,
                   );
                   router.refresh();
@@ -123,7 +139,11 @@ export function ReviewActions({
       </Dialog>
 
       {/* Reject dialog */}
-      <Dialog open={confirmReject} onClose={() => setConfirmReject(false)} title={`Reject ${playerName}'s application?`}>
+      <Dialog
+        open={confirmReject}
+        onClose={() => setConfirmReject(false)}
+        title={`Reject ${playerName}'s application?`}
+      >
         <div className="flex flex-col gap-3">
           <label htmlFor="reject-reason" className="text-step--1 font-semibold">
             Reason (the guardian sees this)
@@ -153,19 +173,31 @@ export function ReviewActions({
           )}
         </div>
         <DialogActions>
-          <Button variant="secondary" onClick={() => setConfirmReject(false)} disabled={pending}>
+          <Button
+            variant="secondary"
+            onClick={() => setConfirmReject(false)}
+            disabled={pending}
+          >
             Cancel
           </Button>
           <Button
             variant="danger"
             loading={pending}
-            disabled={!reasonKey || (reasonKey === "OTHER" && !customReason.trim())}
+            disabled={
+              !reasonKey || (reasonKey === "OTHER" && !customReason.trim())
+            }
             onClick={() =>
               startTransition(async () => {
-                const result = await rejectRegistration(registrationId, reasonKey, customReason);
+                const result = await rejectRegistration(
+                  registrationId,
+                  reasonKey,
+                  customReason,
+                );
                 setConfirmReject(false);
                 if (result.ok) {
-                  toast.success("Application rejected — the guardian has been emailed an explanation.");
+                  toast.success(
+                    "Application rejected the guardian has been emailed an explanation.",
+                  );
                   router.refresh();
                 } else {
                   toast.error(result.error);
@@ -178,12 +210,21 @@ export function ReviewActions({
         </DialogActions>
       </Dialog>
 
-      <Dialog open={confirmDelete} onClose={() => setConfirmDelete(false)} title={`Delete ${playerName}?`}>
+      <Dialog
+        open={confirmDelete}
+        onClose={() => setConfirmDelete(false)}
+        title={`Delete ${playerName}?`}
+      >
         <p className="text-step--1 text-kit-soft">
-          This permanently removes the registration, payment proof, notifications, and linked player record if one exists.
+          This permanently removes the registration, payment proof,
+          notifications, and linked player record if one exists.
         </p>
         <DialogActions>
-          <Button variant="secondary" onClick={() => setConfirmDelete(false)} disabled={pending}>
+          <Button
+            variant="secondary"
+            onClick={() => setConfirmDelete(false)}
+            disabled={pending}
+          >
             Cancel
           </Button>
           <Button
@@ -248,7 +289,10 @@ export function InternalNotes({
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor="internal-notes" className="text-step--1 font-semibold">
-        Internal notes <span className="font-normal text-kit-soft">(never shown to guardians)</span>
+        Internal notes{" "}
+        <span className="font-normal text-kit-soft">
+          (never shown to guardians)
+        </span>
       </label>
       <Textarea
         id="internal-notes"

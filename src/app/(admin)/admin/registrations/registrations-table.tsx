@@ -94,7 +94,8 @@ export function RegistrationsTable({
                 />
               ),
               cell: ({ row }) =>
-                row.original.status === "SUBMITTED" || row.original.status === "UNDER_REVIEW" ? (
+                row.original.status === "SUBMITTED" ||
+                row.original.status === "UNDER_REVIEW" ? (
                   <input
                     type="checkbox"
                     aria-label={`Select ${row.original.playerName}`}
@@ -125,7 +126,9 @@ export function RegistrationsTable({
         cell: (info) => (
           <div>
             <p>{info.getValue()}</p>
-            <p className="font-mono text-[0.75rem] text-kit-soft">{info.row.original.guardianPhone}</p>
+            <p className="font-mono text-[0.75rem] text-kit-soft">
+              {info.row.original.guardianPhone}
+            </p>
           </div>
         ),
       }),
@@ -133,7 +136,11 @@ export function RegistrationsTable({
         header: "Amount",
         cell: (info) => {
           const v = info.getValue();
-          return v == null ? "—" : <span className="font-mono">{formatNaira(v)}</span>;
+          return v == null ? (
+            "—"
+          ) : (
+            <span className="font-mono">{formatNaira(v)}</span>
+          );
         },
       }),
       columnHelper.accessor("proofFormat", {
@@ -153,7 +160,10 @@ export function RegistrationsTable({
       columnHelper.accessor("submittedAtIso", {
         header: "Submitted",
         cell: (info) => (
-          <span title={formatDateTimeWAT(new Date(info.getValue()))} className="text-kit-soft">
+          <span
+            title={formatDateTimeWAT(new Date(info.getValue()))}
+            className="text-kit-soft"
+          >
             {timeAgo(new Date(info.getValue()))}
           </span>
         ),
@@ -166,7 +176,11 @@ export function RegistrationsTable({
         id: "actions",
         header: () => <span className="sr-only">Actions</span>,
         cell: ({ row }) => (
-          <Button variant="danger" size="sm" onClick={() => setRemoving(row.original)}>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => setRemoving(row.original)}
+          >
             Delete
           </Button>
         ),
@@ -183,7 +197,8 @@ export function RegistrationsTable({
     getCoreRowModel: getCoreRowModel(),
     getRowId: (row) => row.id,
     enableRowSelection: (row) =>
-      row.original.status === "SUBMITTED" || row.original.status === "UNDER_REVIEW",
+      row.original.status === "SUBMITTED" ||
+      row.original.status === "UNDER_REVIEW",
   });
 
   const selectedRows = table.getSelectedRowModel().rows.map((r) => r.original);
@@ -278,7 +293,11 @@ export function RegistrationsTable({
           />
         </label>
         {selectedRows.length > 0 && (
-          <Button size="sm" className="ml-auto" onClick={() => setConfirmBulk(true)}>
+          <Button
+            size="sm"
+            className="ml-auto"
+            onClick={() => setConfirmBulk(true)}
+          >
             Accept {selectedRows.length} selected
           </Button>
         )}
@@ -292,10 +311,20 @@ export function RegistrationsTable({
           <table className="w-full min-w-[760px] border-collapse text-step--1">
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id} className="border-b-2 border-kit text-left">
+                <tr
+                  key={headerGroup.id}
+                  className="border-b-2 border-kit text-left"
+                >
                   {headerGroup.headers.map((header) => (
-                    <th key={header.id} scope="col" className="px-3 py-2.5 font-semibold">
-                      {flexRender(header.column.columnDef.header, header.getContext())}
+                    <th
+                      key={header.id}
+                      scope="col"
+                      className="px-3 py-2.5 font-semibold"
+                    >
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
                     </th>
                   ))}
                 </tr>
@@ -305,11 +334,17 @@ export function RegistrationsTable({
               {table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  className={cn("border-b border-line last:border-0 hover:bg-kit/5", row.getIsSelected() && "bg-gold/10")}
+                  className={cn(
+                    "border-b border-line last:border-0 hover:bg-kit/5",
+                    row.getIsSelected() && "bg-gold/10",
+                  )}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id} className="px-3 py-2.5 align-middle">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
                     </td>
                   ))}
                 </tr>
@@ -321,18 +356,27 @@ export function RegistrationsTable({
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <nav aria-label="Pages" className="flex items-center justify-between text-step--1">
+        <nav
+          aria-label="Pages"
+          className="flex items-center justify-between text-step--1"
+        >
           <p className="text-kit-soft">
             Page {page} of {totalPages} · {total} total
           </p>
           <div className="flex gap-2">
             {page > 1 && (
-              <Link href={pageHref(page - 1)} className="rounded-brand border border-line px-3 py-1.5 font-semibold hover:border-kit">
+              <Link
+                href={pageHref(page - 1)}
+                className="rounded-brand border border-line px-3 py-1.5 font-semibold hover:border-kit"
+              >
                 Previous
               </Link>
             )}
             {page < totalPages && (
-              <Link href={pageHref(page + 1)} className="rounded-brand border border-line px-3 py-1.5 font-semibold hover:border-kit">
+              <Link
+                href={pageHref(page + 1)}
+                className="rounded-brand border border-line px-3 py-1.5 font-semibold hover:border-kit"
+              >
                 Next
               </Link>
             )}
@@ -359,18 +403,26 @@ export function RegistrationsTable({
           ))}
         </ul>
         <DialogActions>
-          <Button variant="secondary" onClick={() => setConfirmBulk(false)} disabled={pending}>
+          <Button
+            variant="secondary"
+            onClick={() => setConfirmBulk(false)}
+            disabled={pending}
+          >
             Cancel
           </Button>
           <Button
             loading={pending}
             onClick={() =>
               startTransition(async () => {
-                const result = await bulkAcceptRegistrations(selectedRows.map((r) => r.id));
+                const result = await bulkAcceptRegistrations(
+                  selectedRows.map((r) => r.id),
+                );
                 setConfirmBulk(false);
                 setSelection({});
                 if (result.failed > 0) {
-                  toast.error(`${result.accepted} accepted, ${result.failed} failed — check and retry.`);
+                  toast.error(
+                    `${result.accepted} accepted, ${result.failed} failed check and retry.`,
+                  );
                 } else {
                   toast.success(
                     result.skipped > 0
@@ -387,12 +439,21 @@ export function RegistrationsTable({
         </DialogActions>
       </Dialog>
 
-      <Dialog open={removing !== null} onClose={() => setRemoving(null)} title={`Delete ${removing?.playerName}?`}>
+      <Dialog
+        open={removing !== null}
+        onClose={() => setRemoving(null)}
+        title={`Delete ${removing?.playerName}?`}
+      >
         <p className="text-step--1 text-kit-soft">
-          This permanently removes the registration, payment proof, notifications, and linked player record if one exists.
+          This permanently removes the registration, payment proof,
+          notifications, and linked player record if one exists.
         </p>
         <DialogActions>
-          <Button variant="secondary" onClick={() => setRemoving(null)} disabled={pending}>
+          <Button
+            variant="secondary"
+            onClick={() => setRemoving(null)}
+            disabled={pending}
+          >
             Cancel
           </Button>
           <Button

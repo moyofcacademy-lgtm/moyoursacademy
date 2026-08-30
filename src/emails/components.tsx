@@ -113,7 +113,7 @@ export function EmailShell({
               Moyours Football Club Academy · Suite A05, Tsukunda House, CBD, Abuja
             </Text>
             <Text style={emailStyles.muted}>
-              Questions? Reply to this email or call 08099926480.
+              Questions? Reply to this email or call 09139583674.
             </Text>
           </Section>
         </Container>

@@ -468,7 +468,7 @@ export function FixturesManager({
                   <Input {...a11y} type="url" value={draft.venueMapUrl} onChange={(e) => setDraft({ ...draft, venueMapUrl: e.target.value })} />
                 )}
               </Field>
-              <Field label="Ticket / entry note" hint='e.g. "Free entry — come early"'>
+              <Field label="Ticket / entry note" hint='e.g. "Free entry come early"'>
                 {(a11y) => (
                   <Input {...a11y} value={draft.ticketNote} onChange={(e) => setDraft({ ...draft, ticketNote: e.target.value })} />
                 )}

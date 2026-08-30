@@ -13,13 +13,22 @@ export type TeamCard = {
   name: string;
   ageGroup: string;
   coachName: string;
-  players: { id: string; name: string; squadNumber: number | null; memberCode: string }[];
+  players: {
+    id: string;
+    name: string;
+    squadNumber: number | null;
+    memberCode: string;
+  }[];
 };
 
 export function TeamsManager({ teams }: { teams: TeamCard[] }) {
   const router = useRouter();
-  const [drafts, setDrafts] = useState<Record<string, { name: string; coachName: string }>>(
-    Object.fromEntries(teams.map((t) => [t.id, { name: t.name, coachName: t.coachName }])),
+  const [drafts, setDrafts] = useState<
+    Record<string, { name: string; coachName: string }>
+  >(
+    Object.fromEntries(
+      teams.map((t) => [t.id, { name: t.name, coachName: t.coachName }]),
+    ),
   );
   const [removing, setRemoving] = useState<TeamCard | null>(null);
   const [pending, startTransition] = useTransition();
@@ -29,7 +38,8 @@ export function TeamsManager({ teams }: { teams: TeamCard[] }) {
       <div className="grid gap-5 md:grid-cols-2">
         {teams.map((team) => {
           const draft = drafts[team.id];
-          const dirty = draft.name !== team.name || draft.coachName !== team.coachName;
+          const dirty =
+            draft.name !== team.name || draft.coachName !== team.coachName;
           return (
             <section
               key={team.id}
@@ -41,7 +51,8 @@ export function TeamsManager({ teams }: { teams: TeamCard[] }) {
                   {team.ageGroup}
                 </h2>
                 <span className="font-mono text-step--1 text-kit-soft">
-                  {team.players.length} player{team.players.length === 1 ? "" : "s"}
+                  {team.players.length} player
+                  {team.players.length === 1 ? "" : "s"}
                 </span>
               </div>
 
@@ -50,7 +61,12 @@ export function TeamsManager({ teams }: { teams: TeamCard[] }) {
                   Team name
                   <Input
                     value={draft.name}
-                    onChange={(e) => setDrafts({ ...drafts, [team.id]: { ...draft, name: e.target.value } })}
+                    onChange={(e) =>
+                      setDrafts({
+                        ...drafts,
+                        [team.id]: { ...draft, name: e.target.value },
+                      })
+                    }
                   />
                 </label>
                 <label className="flex flex-col gap-1 text-step--1 font-semibold">
@@ -58,7 +74,12 @@ export function TeamsManager({ teams }: { teams: TeamCard[] }) {
                   <Input
                     value={draft.coachName}
                     placeholder="Coach name"
-                    onChange={(e) => setDrafts({ ...drafts, [team.id]: { ...draft, coachName: e.target.value } })}
+                    onChange={(e) =>
+                      setDrafts({
+                        ...drafts,
+                        [team.id]: { ...draft, coachName: e.target.value },
+                      })
+                    }
                   />
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -81,7 +102,11 @@ export function TeamsManager({ teams }: { teams: TeamCard[] }) {
                       Save team
                     </Button>
                   )}
-                  <Button variant="danger" size="sm" onClick={() => setRemoving(team)}>
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => setRemoving(team)}
+                  >
                     Delete team
                   </Button>
                 </div>
@@ -89,17 +114,25 @@ export function TeamsManager({ teams }: { teams: TeamCard[] }) {
 
               {team.players.length === 0 ? (
                 <p className="text-step--1 text-kit-soft">
-                  No players yet — accepted registrations in this age group land here.
+                  No players yet accepted registrations in this age group land
+                  here.
                 </p>
               ) : (
                 <ul className="divide-y divide-line rounded-brand border border-line">
                   {team.players.map((player) => (
-                    <li key={player.id} className="flex items-center gap-3 px-3 py-2 text-step--1">
+                    <li
+                      key={player.id}
+                      className="flex items-center gap-3 px-3 py-2 text-step--1"
+                    >
                       <span className="w-8 font-mono font-bold text-pitch">
-                        {player.squadNumber != null ? `#${player.squadNumber}` : "—"}
+                        {player.squadNumber != null
+                          ? `#${player.squadNumber}`
+                          : "—"}
                       </span>
                       <span className="flex-1 truncate">{player.name}</span>
-                      <span className="font-mono text-[0.6875rem] text-kit-soft">{player.memberCode}</span>
+                      <span className="font-mono text-[0.6875rem] text-kit-soft">
+                        {player.memberCode}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -109,12 +142,21 @@ export function TeamsManager({ teams }: { teams: TeamCard[] }) {
         })}
       </div>
 
-      <Dialog open={removing !== null} onClose={() => setRemoving(null)} title={`Delete ${removing?.name}?`}>
+      <Dialog
+        open={removing !== null}
+        onClose={() => setRemoving(null)}
+        title={`Delete ${removing?.name}?`}
+      >
         <p className="text-step--1 text-kit-soft">
-          This removes the squad and unassigns its players. Teams with fixtures must have those fixtures deleted first.
+          This removes the squad and unassigns its players. Teams with fixtures
+          must have those fixtures deleted first.
         </p>
         <DialogActions>
-          <Button variant="secondary" onClick={() => setRemoving(null)} disabled={pending}>
+          <Button
+            variant="secondary"
+            onClick={() => setRemoving(null)}
+            disabled={pending}
+          >
             Cancel
           </Button>
           <Button

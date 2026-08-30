@@ -24,9 +24,11 @@ export function ProofViewer({
   if (devMock) {
     return (
       <div className="flex h-64 flex-col items-center justify-center gap-2 rounded-brand border border-dashed border-line bg-white/50 p-6 text-center">
-        <p className="font-mono text-step--1 font-bold uppercase">{format} proof</p>
+        <p className="font-mono text-step--1 font-bold uppercase">
+          {format} proof
+        </p>
         <p className="text-step--1 text-kit-soft">
-          Development placeholder — connect Cloudinary to view real proofs here.
+          Development placeholder connect Cloudinary to view real proofs here.
         </p>
       </div>
     );
@@ -52,24 +54,42 @@ export function ProofViewer({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="overflow-auto rounded-brand border border-line bg-kit/5" style={{ maxHeight: "32rem" }}>
+      <div
+        className="overflow-auto rounded-brand border border-line bg-kit/5"
+        style={{ maxHeight: "32rem" }}
+      >
         {/* Signed, session-gated proof image — next/image can't proxy it. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={src}
           alt="Payment proof"
           className="mx-auto transition-transform"
-          style={{ transform: `scale(${zoom}) rotate(${rotation}deg)`, transformOrigin: "center" }}
+          style={{
+            transform: `scale(${zoom}) rotate(${rotation}deg)`,
+            transformOrigin: "center",
+          }}
         />
       </div>
       <div className="flex flex-wrap gap-2">
-        <Button variant="secondary" size="sm" onClick={() => setZoom((z) => Math.min(3, z + 0.5))}>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => setZoom((z) => Math.min(3, z + 0.5))}
+        >
           Zoom in
         </Button>
-        <Button variant="secondary" size="sm" onClick={() => setZoom((z) => Math.max(1, z - 0.5))}>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => setZoom((z) => Math.max(1, z - 0.5))}
+        >
           Zoom out
         </Button>
-        <Button variant="secondary" size="sm" onClick={() => setRotation((r) => (r + 90) % 360)}>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => setRotation((r) => (r + 90) % 360)}
+        >
           Rotate
         </Button>
         <a

@@ -19,7 +19,9 @@ export function GuardianRejectedEmail({
   return (
     <EmailShell preview={`About ${playerName}'s registration`}>
       <Section style={emailStyles.section}>
-        <Text style={emailStyles.h2}>About {playerName}&apos;s registration</Text>
+        <Text style={emailStyles.h2}>
+          About {playerName}&apos;s registration
+        </Text>
         <Text style={emailStyles.p}>Dear {guardianName},</Text>
         <Text style={emailStyles.p}>
           We reviewed {playerName}&apos;s application (reference{" "}
@@ -28,11 +30,11 @@ export function GuardianRejectedEmail({
         </Text>
         <Text style={{ ...emailStyles.p, fontWeight: 600 }}>{reason}</Text>
         <Text style={emailStyles.p}>
-          This is fixable — you can submit a fresh application with the
-          corrected details or payment at{" "}
-          <a href={resubmitUrl}>moyoursacademy.com/enroll</a>. If you believe this
-          was a mistake, reply to this email or call 08099926480 and we&apos;ll
-          look at it together.
+          This is fixable you can submit a fresh application with the corrected
+          details or payment at{" "}
+          <a href={resubmitUrl}>moyoursacademy.com/enroll</a>. If you believe
+          this was a mistake, reply to this email or call 09139583674 and
+          we&apos;ll look at it together.
         </Text>
       </Section>
     </EmailShell>
@@ -46,7 +48,7 @@ We reviewed ${props.playerName}'s application (reference ${props.reference}) and
 
 ${props.reason}
 
-This is fixable — you can submit a fresh application with the corrected details or payment at ${props.resubmitUrl}. If you believe this was a mistake, reply to this email or call 08099926480 and we'll look at it together.
+This is fixable you can submit a fresh application with the corrected details or payment at ${props.resubmitUrl}. If you believe this was a mistake, reply to this email or call 08099926480 and we'll look at it together.
 
 Moyours Football Club Academy`;
 }

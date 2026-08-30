@@ -29,7 +29,7 @@ export function GuardianReuploadEmail({
           Upload new proof
         </Button>
         <Text style={{ ...emailStyles.p, marginTop: 16 }}>
-          Your application keeps the same reference — nothing else changes.
+          Your application keeps the same reference nothing else changes.
         </Text>
       </Section>
     </EmailShell>
@@ -43,7 +43,7 @@ We're reviewing ${props.playerName}'s application (reference ${props.reference})
 
 Upload a clearer photo or the PDF receipt from your banking app and we'll continue right away: ${props.reuploadUrl}
 
-Your application keeps the same reference — nothing else changes.
+Your application keeps the same reference nothing else changes.
 
 Moyours Football Club Academy`;
 }

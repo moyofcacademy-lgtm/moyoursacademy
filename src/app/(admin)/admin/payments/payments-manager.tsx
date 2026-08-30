@@ -10,7 +10,10 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { formatDateWAT, formatNaira } from "@/lib/utils";
-import { ProofUpload, type UploadedProof } from "@/app/(site)/enroll/proof-upload";
+import {
+  ProofUpload,
+  type UploadedProof,
+} from "@/app/(site)/enroll/proof-upload";
 import { markMonthlyPaid, removeMonthlyPayment } from "./actions";
 
 export type SubscriptionRow = {
@@ -55,33 +58,49 @@ export function PaymentsManager({
             aria-label="Subscription month"
             className="h-10 w-auto"
             value={month}
-            onChange={(e) => router.replace(`${pathname}?month=${e.target.value}`)}
+            onChange={(e) =>
+              router.replace(`${pathname}?month=${e.target.value}`)
+            }
           />
         </label>
         <p className="text-step--1 text-kit-soft">
-          <span className="font-mono font-bold text-pitch">{paid.length}</span> paid ·{" "}
-          <span className="font-mono font-bold text-kit">{unpaid.length}</span> unpaid ·
-          fee {formatNaira(monthlyKobo)}
+          <span className="font-mono font-bold text-pitch">{paid.length}</span>{" "}
+          paid ·{" "}
+          <span className="font-mono font-bold text-kit">{unpaid.length}</span>{" "}
+          unpaid · fee {formatNaira(monthlyKobo)}
         </p>
       </div>
 
       {players.length === 0 ? (
-        <EmptyState title="No active players yet — subscriptions start once players are accepted." />
+        <EmptyState title="No active players yet subscriptions start once players are accepted." />
       ) : (
         <div className="overflow-x-auto rounded-brand border border-line bg-white/60">
           <table className="w-full min-w-[720px] border-collapse text-step--1">
             <thead>
               <tr className="border-b-2 border-kit text-left">
-                <th scope="col" className="px-3 py-2.5 font-semibold">Player</th>
-                <th scope="col" className="px-3 py-2.5 font-semibold">Guardian</th>
-                <th scope="col" className="px-3 py-2.5 font-semibold">Status</th>
-                <th scope="col" className="px-3 py-2.5 font-semibold">Paid</th>
-                <th scope="col" className="px-3 py-2.5 font-semibold"><span className="sr-only">Actions</span></th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Player
+                </th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Guardian
+                </th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Status
+                </th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  Paid
+                </th>
+                <th scope="col" className="px-3 py-2.5 font-semibold">
+                  <span className="sr-only">Actions</span>
+                </th>
               </tr>
             </thead>
             <tbody>
               {[...unpaid, ...paid].map((player) => (
-                <tr key={player.id} className="border-b border-line last:border-0 hover:bg-kit/5">
+                <tr
+                  key={player.id}
+                  className="border-b border-line last:border-0 hover:bg-kit/5"
+                >
                   <td className="px-3 py-2.5">
                     <p className="font-semibold">{player.name}</p>
                     <p className="font-mono text-[0.6875rem] text-kit-soft">
@@ -91,7 +110,9 @@ export function PaymentsManager({
                   </td>
                   <td className="px-3 py-2.5">
                     <p>{player.guardianName}</p>
-                    <p className="font-mono text-[0.75rem] text-kit-soft">{player.guardianPhone}</p>
+                    <p className="font-mono text-[0.75rem] text-kit-soft">
+                      {player.guardianPhone}
+                    </p>
                   </td>
                   <td className="px-3 py-2.5">
                     {player.payment ? (
@@ -108,7 +129,8 @@ export function PaymentsManager({
                         {formatNaira(player.payment.amountKobo)}
                         {player.payment.paidAtIso && (
                           <span className="ml-1 text-kit-soft">
-                            · {formatDateWAT(new Date(player.payment.paidAtIso))}
+                            ·{" "}
+                            {formatDateWAT(new Date(player.payment.paidAtIso))}
                           </span>
                         )}
                       </span>
@@ -123,7 +145,9 @@ export function PaymentsManager({
                         size="sm"
                         onClick={() =>
                           startTransition(async () => {
-                            const result = await removeMonthlyPayment(player.payment!.id);
+                            const result = await removeMonthlyPayment(
+                              player.payment!.id,
+                            );
                             if (result.ok) {
                               toast.success("Payment record removed.");
                               router.refresh();
@@ -159,26 +183,43 @@ export function PaymentsManager({
       <Dialog
         open={marking !== null}
         onClose={() => setMarking(null)}
-        title={`Record ${month} payment — ${marking?.name}`}
+        title={`Record ${month} payment ${marking?.name}`}
       >
         <div className="flex flex-col gap-4">
           <Field label="Amount paid (₦)" required>
             {(a11y) => (
-              <Input {...a11y} type="number" min={0} value={amount} onChange={(e) => setAmount(e.target.value)} />
+              <Input
+                {...a11y}
+                type="number"
+                min={0}
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
             )}
           </Field>
           <Field label="Depositor name">
-            {(a11y) => <Input {...a11y} value={depositor} onChange={(e) => setDepositor(e.target.value)} />}
+            {(a11y) => (
+              <Input
+                {...a11y}
+                value={depositor}
+                onChange={(e) => setDepositor(e.target.value)}
+              />
+            )}
           </Field>
           <div>
             <p className="mb-1.5 text-step--1 font-semibold">
-              Proof of payment <span className="font-normal text-kit-soft">(optional)</span>
+              Proof of payment{" "}
+              <span className="font-normal text-kit-soft">(optional)</span>
             </p>
             <ProofUpload proof={proof} onChange={setProof} />
           </div>
         </div>
         <DialogActions>
-          <Button variant="secondary" onClick={() => setMarking(null)} disabled={pending}>
+          <Button
+            variant="secondary"
+            onClick={() => setMarking(null)}
+            disabled={pending}
+          >
             Cancel
           </Button>
           <Button
@@ -193,7 +234,12 @@ export function PaymentsManager({
                   amountKobo: Math.round(Number(amount) * 100),
                   depositorName: depositor || undefined,
                   proof: proof
-                    ? { publicId: proof.publicId, url: proof.url, format: proof.format, bytes: proof.bytes }
+                    ? {
+                        publicId: proof.publicId,
+                        url: proof.url,
+                        format: proof.format,
+                        bytes: proof.bytes,
+                      }
                     : null,
                 });
                 setMarking(null);

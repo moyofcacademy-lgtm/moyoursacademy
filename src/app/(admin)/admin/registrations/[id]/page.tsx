@@ -112,7 +112,7 @@ export default async function RegistrationReviewPage({
             </>
           ) : (
             <p className="rounded-brand border border-dashed border-line p-6 text-step--1 text-kit-soft">
-              No proof uploaded yet — the guardian was asked to re-upload.
+              No proof uploaded yet the guardian was asked to re-upload.
             </p>
           )}
         </section>
